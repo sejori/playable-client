@@ -3,7 +3,7 @@
 ## 1. Engine & Environment Rules
 - **Target Engine:** Godot 4.7.2-stable (Headless Linux CLI & Universal Client).
 - **Default 3D Physics:** `JoltPhysics3D` (`physics/3d/physics_engine="JoltPhysics3D"`). Never use legacy Bullet assumptions.
-- **Skeletal IK:** Use Godot 4.6+ native `IKModifier3D` nodes on `Skeleton3D`—never use deprecated `SkeletonIK3D`.
+- **Skeletal IK:** Use Godot 4.7+ native `IKModifier3D` nodes on `Skeleton3D`—never use deprecated `SkeletonIK3D`.
 - **Noise Generation:** Always use Godot 4's native `FastNoiseLite`. Never reference Godot 3's `OpenSimplexNoise`.
 - **Thread Safety:** Never run procedural generation (`SimpleXTerrain`, `godot-wfc`, `ProtonScatter`, or voxel meshing) synchronously inside `_ready()` on the main thread. Always dispatch heavy generation through `ProceduralJobRunner.run_on_worker_thread()`.
 

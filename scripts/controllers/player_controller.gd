@@ -1,6 +1,6 @@
 extends CharacterBody3D
 ## player_controller.gd
-## 3rd-Person CharacterBody3D controller with Godot 4.6+ native IKModifier3D foot placement
+## 3rd-Person CharacterBody3D controller with Godot 4.7+ native IKModifier3D foot placement
 ## and elemental metal/earth bending abilities.
 
 const MOVE_SPEED: float = 9.0

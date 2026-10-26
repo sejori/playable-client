@@ -1,7 +1,7 @@
 # playable-client (Open-Core Universal Client & Action-RPG Cartridge)
 
 **License:** MIT  
-**Engine:** Godot 4.7+ (`JoltPhysics3D` default, `IKModifier3D`, `FastNoiseLite`)
+**Engine:** Godot 4.7+ (`Forward Plus`, `JoltPhysics3D` default, `IKModifier3D`, `FastNoiseLite`)
 
 ## Overview
 

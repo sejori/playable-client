@@ -72,11 +72,11 @@ voice_architect_ptt={
 
 [physics]
 
-3d/physics_engine="DEFAULT"
+3d/physics_engine="JoltPhysics3D"
 3d/default_gravity=9.8
 common/physics_ticks_per_second=60
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="mobile"

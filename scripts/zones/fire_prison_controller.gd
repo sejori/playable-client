@@ -313,7 +313,7 @@ func _update_hud_text() -> void:
 	if _hud_label != null:
 		var mode_tag := "QUAD_DEBUG (Top-Down)" if quad_debug_enabled else "3RD_PERSON"
 		_hud_label.text = (
-			"[GODOT 4.3 WASM ENGINE] Zone: %s | View: %s\n" % [zone_title, mode_tag]
+			"[GODOT 4.7+ NATIVE ENGINE • JOLT PHYSICS 3D] Zone: %s | View: %s\n" % [zone_title, mode_tag]
 			+ "Boss: %s (%d / %d HP) | Hazard: %s\n" % [warden_name, int(warden_hp), int(warden_max_hp), hazard_name]
 			+ "Player HP: %d / 500 | Metal Shield: %s | Ability (Space): %s (%d DMG)" % [
 				player_hp_val,
