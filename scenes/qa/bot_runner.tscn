@@ -7,3 +7,12 @@
 script = ExtResource("1_botbrain")
 
 [node name="FirePrisonRig" parent="." instance=ExtResource("2_rigscene")]
+
+[node name="BotSwarm" type="Node3D" parent="."]
+
+[node name="QA_Bot_01" type="CharacterBody3D" parent="BotSwarm"]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="BotSwarm/QA_Bot_01"]
+path_desired_distance = 1.5
+target_desired_distance = 2.0
+radius = 0.6

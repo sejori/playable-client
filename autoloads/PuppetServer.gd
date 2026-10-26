@@ -2,17 +2,44 @@ extends Node
 ## PuppetServer.gd
 ## Localhost 127.0.0.1:9090 HTTP Vision & Input Contract for automated Xvfb QA & Bot Inspection.
 ## Implements Section 5.3 endpoints: /health, /state, /teleport, /input, /screenshot?mode=quad_debug.
+## Only binds TCP port when --puppet-server (or --puppet-port=<port>) or PLAYABLE_PUPPET_SERVER=1 is set.
 
 const LISTEN_PORT: int = 9090
 const BIND_HOST: String = "127.0.0.1"
 
 var _tcp_server: TCPServer = TCPServer.new()
 var _is_listening: bool = false
+var _bound_port: int = LISTEN_PORT
 var _puppet_target: Node3D = null
 var _pending_peers: Array[StreamPeerTCP] = []
 
 func _ready() -> void:
-	var err := _tcp_server.listen(LISTEN_PORT, BIND_HOST)
+	var should_listen: bool = OS.get_environment("PLAYABLE_PUPPET_SERVER") == "1"
+	var listen_port: int = LISTEN_PORT
+	var env_port := OS.get_environment("PLAYABLE_PUPPET_PORT")
+	if not env_port.is_empty() and env_port.is_valid_int():
+		var parsed_env_port := int(env_port)
+		if parsed_env_port > 0 and parsed_env_port <= 65535:
+			listen_port = parsed_env_port
+
+	var all_args: PackedStringArray = OS.get_cmdline_args()
+	all_args.append_array(OS.get_cmdline_user_args())
+	for arg in all_args:
+		if arg == "--puppet-server":
+			should_listen = true
+		elif arg.begins_with("--puppet-port="):
+			should_listen = true
+			var port_str := arg.trim_prefix("--puppet-port=")
+			if port_str.is_valid_int():
+				var parsed_port := int(port_str)
+				if parsed_port > 0 and parsed_port <= 65535:
+					listen_port = parsed_port
+
+	if not should_listen:
+		return
+
+	_bound_port = listen_port
+	var err := _tcp_server.listen(_bound_port, BIND_HOST)
 	if err == OK:
 		_is_listening = true
 
@@ -64,6 +91,7 @@ func handle_http_request_raw(raw_request: String) -> Dictionary:
 			current_scene_path = get_tree().current_scene.scene_file_path
 		return {
 			"status": "ok",
+			"port": _bound_port,
 			"fps": Engine.get_frames_per_second(),
 			"active_scene": current_scene_path
 		}
