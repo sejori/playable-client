@@ -1,0 +1,77 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Playable Universal Client & Action-RPG Cartridge"
+config/description="Open-Core Universal Godot 4.7+ Client & Elemental Prison Rig Starter Cartridge (playable.gg)"
+config/version="3.0.0"
+run/main_scene="res://scenes/zones/fire_prison_rig.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[autoload]
+
+BootLoader="*res://autoloads/BootLoader.gd"
+ProceduralJobRunner="*res://autoloads/ProceduralJobRunner.gd"
+TelemetryLogger="*res://autoloads/TelemetryLogger.gd"
+NetworkManager="*res://autoloads/NetworkManager.gd"
+PuppetServer="*res://autoloads/PuppetServer.gd"
+VoiceArchitectClient="*res://autoloads/VoiceArchitectClient.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[input]
+
+move_forward={
+"deadzone": 0.2,
+"events": []
+}
+move_back={
+"deadzone": 0.2,
+"events": []
+}
+move_left={
+"deadzone": 0.2,
+"events": []
+}
+move_right={
+"deadzone": 0.2,
+"events": []
+}
+ability_primary={
+"deadzone": 0.5,
+"events": []
+}
+ability_secondary={
+"deadzone": 0.5,
+"events": []
+}
+voice_architect_ptt={
+"deadzone": 0.5,
+"events": []
+}
+
+[layer_names]
+
+3d_physics/layer_1="Environment_Static"
+3d_physics/layer_2="Player_Character"
+3d_physics/layer_3="Enemy_Hitbox"
+3d_physics/layer_4="MetalBending_Interactable"
+3d_physics/layer_5="Projectile_Elemental"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
+3d/default_gravity=9.8
+common/physics_ticks_per_second=60

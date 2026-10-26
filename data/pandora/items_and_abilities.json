@@ -1,0 +1,41 @@
+{
+  "schema": "bitbrain.pandora.v1",
+  "categories": {
+    "abilities": [
+      {
+        "id": "ability_metal_shield",
+        "name": "Compressed Coal-Iron Aegis",
+        "element": "metal",
+        "chi_cost": 20,
+        "cooldown_sec": 4.0,
+        "mitigation_pct": 75.0,
+        "requires_group": "metal_source"
+      },
+      {
+        "id": "ability_earth_lance",
+        "name": "Tectonic Iron Spike",
+        "element": "earth",
+        "chi_cost": 15,
+        "cooldown_sec": 1.8,
+        "base_damage": 185.0,
+        "collision_layer": 5
+      }
+    ],
+    "items": [
+      {
+        "id": "item_compressed_coal_ore",
+        "name": "Compressed Rig Coal",
+        "rarity": "uncommon",
+        "stack_limit": 20,
+        "source_node": "Interactables/CoalVent_01"
+      },
+      {
+        "id": "item_warden_iron_seal",
+        "name": "Warden's Foundry Seal",
+        "rarity": "epic",
+        "stack_limit": 1,
+        "drop_chance": 1.0
+      }
+    ]
+  }
+}

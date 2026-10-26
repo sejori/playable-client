@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8p4rigzone014"]
+
+[ext_resource type="Script" path="res://scripts/zones/fire_prison_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://scripts/controllers/player_controller.gd" id="2_player"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_rig"]
+agent_radius = 0.6
+agent_max_slope = 40.0
+vertices = PackedVector3Array(-24, 0, -48, -24, 0, 24, 24, 0, 24, 24, 0, -48)
+polygons = [PackedInt32Array(0, 1, 2, 3)]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
+size = Vector3(2.2, 1.6, 2.2)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_arena"]
+radius = 12.0
+
+[node name="FirePrisonRig" type="Node3D"]
+script = ExtResource("1_controller")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_rig")
+
+[node name="RigDeckFloor" type="StaticBody3D" parent="NavigationRegion3D"]
+collision_layer = 1
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="PlayerBoatSpawn" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="CoalVent_01" type="StaticBody3D" parent="Interactables" groups=["metal_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0.8, 2.0)
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/CoalVent_01"]
+shape = SubResource("BoxShape3D_vent")
+
+[node name="BossArena" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
+
+[node name="WardenSpawn" type="Marker3D" parent="BossArena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+
+[node name="ArenaTrigger" type="Area3D" parent="BossArena"]
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BossArena/ArenaTrigger"]
+shape = SubResource("SphereShape3D_arena")
+
+[node name="PlayerCharacter" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
+collision_layer = 2
+script = ExtResource("2_player")
+
+[connection signal="body_entered" from="BossArena/ArenaTrigger" to="." method="_on_arena_trigger_body_entered"]

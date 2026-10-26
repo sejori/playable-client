@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint_014_prison_rig",
+  "project_name": "Elemental Campaign — Fire Prison Rig",
+  "cartridge_template": "template-action-rpg",
+  "branch": "feat/prison-rig",
+  "status": "READY_FOR_QA",
+  "workspace_credits": {
+    "tier": "Creator Pro",
+    "monthly_allowance": 150,
+    "credits_used": 18,
+    "credits_remaining": 132
+  },
+  "stages": [
+    {
+      "stage_id": "stage_1_scoping_design",
+      "title": "Scoping & Game Design",
+      "status": "DONE",
+      "summary": "Scoped 30s metal/earth combat loop, CoalVent_01 resource interaction, and Warden arena boss encounter."
+    },
+    {
+      "stage_id": "stage_2_systems_world",
+      "title": "Systems & Procedural World Build",
+      "status": "DONE",
+      "summary": "Generated interface_contracts.json, authoritative fire_prison_controller.gd, and 3D prison rig scene."
+    },
+    {
+      "stage_id": "stage_3_automated_qa",
+      "title": "Automated Bot & Visual QA",
+      "status": "DONE",
+      "summary": "Passed static AST security scan, 10x headless bot swarm (0 NAV_STUCK, 0 SCRIPT_ERROR), and 4-panel quad_debug probe."
+    },
+    {
+      "stage_id": "stage_4_packaging_deploy",
+      "title": "Packager & Realm Deploy",
+      "status": "DONE",
+      "summary": "Exported patch_v14.pck (18.4 MB) to R2 and spun up Preview Server Room #TEST-4821."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+
+[resource]
+resource_name = "MetalClangSfxPreset"
+metadata/generator = "GDsfxr"
+metadata/wave_type = 3
+metadata/base_freq = 0.42
+metadata/env_attack = 0.0
+metadata/env_sustain = 0.18
+metadata/env_decay = 0.34

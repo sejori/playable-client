@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+
+[resource]
+resource_name = "FireOceanRigTerrain"
+metadata/generator = "SimpleXTerrain"
+metadata/noise_type = "FastNoiseLite"
+metadata/seed = 14014
+metadata/frequency = 0.025
+metadata/hydraulic_erosion_iterations = 64
+metadata/biome = "volcanic_iron_sea"

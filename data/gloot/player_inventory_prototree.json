@@ -1,0 +1,22 @@
+{
+  "schema": "gloot.prototree.v3",
+  "inventory_capacity": {
+    "grid_width": 6,
+    "grid_height": 4,
+    "max_weight_kg": 45.0
+  },
+  "prototypes": [
+    {
+      "id": "item_compressed_coal_ore",
+      "width": 1,
+      "height": 1,
+      "weight_kg": 1.5
+    },
+    {
+      "id": "item_warden_iron_seal",
+      "width": 2,
+      "height": 2,
+      "weight_kg": 3.0
+    }
+  ]
+}

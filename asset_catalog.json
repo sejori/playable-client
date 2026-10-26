@@ -1,0 +1,45 @@
+{
+  "schema_version": "3.0.0",
+  "license": "CC0-1.0",
+  "sources": [
+    "KayKit Complete 3D",
+    "Kenney 3D All-in-One",
+    "Quaternius Ultimate Modular",
+    "Mixamo Retargeted 150-Clip AnimationLibrary"
+  ],
+  "assets": [
+    {
+      "id": "char_elemental_monk",
+      "path": "res://scenes/characters/elemental_monk.glb",
+      "category": "character",
+      "tags": ["player", "humanoid", "rigged", "ik_ready"],
+      "aabb": { "size": [0.8, 1.8, 0.6], "offset": [0.0, 0.9, 0.0] },
+      "skeleton_profile": "HumanoidMixamo150",
+      "ik_chains": ["LeftLeg_IKModifier3D", "RightLeg_IKModifier3D"]
+    },
+    {
+      "id": "char_fire_warden_boss",
+      "path": "res://scenes/characters/fire_warden_boss.glb",
+      "category": "character",
+      "tags": ["boss", "enemy", "heavy_armor", "rigged"],
+      "aabb": { "size": [1.6, 2.6, 1.4], "offset": [0.0, 1.3, 0.0] },
+      "skeleton_profile": "HumanoidMixamo150"
+    },
+    {
+      "id": "prop_coal_vent_01",
+      "path": "res://scenes/props/coal_vent_01.glb",
+      "category": "interactable",
+      "tags": ["metal_source", "industrial", "prison_rig"],
+      "aabb": { "size": [2.2, 1.6, 2.2], "offset": [0.0, 0.8, 0.0] },
+      "collision_layer": 4
+    },
+    {
+      "id": "env_iron_rig_platform",
+      "path": "res://scenes/props/iron_rig_platform.glb",
+      "category": "environment",
+      "tags": ["walkable", "modular", "industrial"],
+      "aabb": { "size": [24.0, 2.0, 24.0], "offset": [0.0, -1.0, 0.0] },
+      "collision_layer": 1
+    }
+  ]
+}

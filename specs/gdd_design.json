@@ -1,0 +1,25 @@
+{
+  "sprint_id": "sprint_014_prison_rig",
+  "genre": "template-action-rpg",
+  "title": "The Boiling Iron Rig — Elemental Prison Break",
+  "core_loop_30s": "Extract compressed coal/iron from industrial vents (CoalVent_01) -> Form Metal Shield to block Warden pyro-volleys -> Launch Earth Lance counter-attacks during Warden overheat window.",
+  "early_hook_90s": "Infiltrate by skiff at PlayerBoatSpawn, breach the courtyard barricades using environmental metal sources, and trigger the Warden boss encounter.",
+  "quests": [
+    {
+      "quest_id": "q_prison_break",
+      "title": "Spark in the Iron Yard",
+      "steps": [
+        { "step": 1, "objective": "Land at PlayerBoatSpawn and inspect the Iron Rig deck" },
+        { "step": 2, "objective": "Draw ore from Interactables/CoalVent_01 using MetalBending" },
+        { "step": 3, "objective": "Enter BossArena/ArenaTrigger and defeat Boss Warden" }
+      ]
+    }
+  ],
+  "combat_balance": {
+    "player_base_hp": 500,
+    "player_base_chi": 100,
+    "boss_warden_hp": 2200,
+    "target_ttk_seconds": 35.0,
+    "monte_carlo_win_rate": 0.78
+  }
+}
