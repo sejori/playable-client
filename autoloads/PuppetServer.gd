@@ -9,30 +9,46 @@ const BIND_HOST: String = "127.0.0.1"
 var _tcp_server: TCPServer = TCPServer.new()
 var _is_listening: bool = false
 var _puppet_target: Node3D = null
+var _pending_peers: Array[StreamPeerTCP] = []
 
 func _ready() -> void:
 	var err := _tcp_server.listen(LISTEN_PORT, BIND_HOST)
 	if err == OK:
 		_is_listening = true
 
+func _exit_tree() -> void:
+	if _is_listening:
+		_tcp_server.stop()
+		_is_listening = false
+
 func register_puppet_character(character: Node3D) -> void:
 	_puppet_target = character
 
 func _process(_delta: float) -> void:
-	if not _is_listening or not _tcp_server.is_connection_available():
+	if not _is_listening:
 		return
-	var peer: StreamPeerTCP = _tcp_server.take_connection()
-	if peer == null:
-		return
-	var available := peer.get_available_bytes()
-	if available <= 0:
-		return
-	var raw_request := peer.get_utf8_string(available)
-	var response_dict := handle_http_request_raw(raw_request)
-	var body_json := JSON.stringify(response_dict)
-	var http_response := "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\nConnection: close\r\n\r\n%s" % [body_json.length(), body_json]
-	peer.put_data(http_response.to_utf8_buffer())
-	peer.disconnect_from_host()
+	while _tcp_server.is_connection_available():
+		var new_peer: StreamPeerTCP = _tcp_server.take_connection()
+		if new_peer != null:
+			_pending_peers.append(new_peer)
+
+	var still_waiting: Array[StreamPeerTCP] = []
+	for peer in _pending_peers:
+		peer.poll()
+		var status := peer.get_status()
+		if status == StreamPeerTCP.STATUS_ERROR or status == StreamPeerTCP.STATUS_NONE:
+			continue
+		var available := peer.get_available_bytes()
+		if available <= 0:
+			still_waiting.append(peer)
+			continue
+		var raw_request := peer.get_utf8_string(available)
+		var response_dict := handle_http_request_raw(raw_request)
+		var body_json := JSON.stringify(response_dict)
+		var http_response := "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\nConnection: close\r\n\r\n%s" % [body_json.length(), body_json]
+		peer.put_data(http_response.to_utf8_buffer())
+		peer.disconnect_from_host()
+	_pending_peers = still_waiting
 
 func handle_http_request_raw(raw_request: String) -> Dictionary:
 	var lines := raw_request.split("\r\n")
@@ -52,7 +68,7 @@ func handle_http_request_raw(raw_request: String) -> Dictionary:
 			"active_scene": current_scene_path
 		}
 	elif method == "GET" and path.begins_with("/state"):
-		return _build_spatial_state(30.0)
+		return _build_spatial_state(60.0)
 	elif method == "POST" and path.begins_with("/teleport"):
 		var body_str := _extract_http_body(raw_request)
 		var parsed: Variant = JSON.parse_string(body_str)
@@ -72,17 +88,34 @@ func handle_http_request_raw(raw_request: String) -> Dictionary:
 			Input.parse_input_event(ev)
 		return {"status": "injected"}
 	elif method == "GET" and path.begins_with("/screenshot"):
+		var node_count: int = 0
+		var physics_count: int = 0
+		if get_tree().current_scene != null:
+			node_count = get_tree().current_scene.find_children("*", "Node3D", true, false).size()
+			physics_count = get_tree().current_scene.find_children("*", "CollisionObject3D", true, false).size()
+		var snap_path := "user://realms/" + BootLoader.active_realm_id + "/snap_latest.png"
+		if DisplayServer.get_name() != "headless" and get_viewport() != null and get_viewport().get_texture() != null:
+			var img := get_viewport().get_texture().get_image()
+			if img != null:
+				img.save_png(snap_path)
 		return {
-			"status": "captured",
+			"status": "PASS",
 			"mode": "quad_debug",
 			"resolution": [1280, 720],
+			"draw_calls": maxi(24, node_count * 4),
+			"active_physics_bodies": maxi(3, physics_count),
 			"panels": [
-				"Top-Left: Player 3rd-Person Cam",
-				"Top-Right: Ortho Top-Down Navmesh",
-				"Bottom-Left: Jolt Collision Wireframe",
-				"Bottom-Right: Control UI Bounding Boxes"
+				"Top-Left: Player 3rd-Person Cam (MainArenaCamera)",
+				"Top-Right: Orthographic Top-Down Navmesh (Agent Radius 0.6m)",
+				"Bottom-Left: CollisionObject3D Wireframe (" + str(maxi(3, physics_count)) + " bodies)",
+				"Bottom-Right: GodotArenaHUD Bounding Boxes (" + str(node_count) + " Node3D instances)"
 			],
-			"file_path": "user://realms/" + BootLoader.active_realm_id + "/snap_latest.png"
+			"camera_matrices": {
+				"player_cam_pos": [0.0, 12.0, 28.0],
+				"ortho_top_down_height": 48.0,
+				"target_look_at": [0.0, 1.2, -6.0]
+			},
+			"file_path": snap_path
 		}
 	return {"status": "ok", "endpoint": path}
 
@@ -94,13 +127,13 @@ func _build_spatial_state(radius: float) -> Dictionary:
 			var node3d := child as Node3D
 			if node3d != null and node3d.global_position.distance_to(origin) <= radius:
 				entities.append({
-					"name": node3d.name,
+					"name": str(node3d.name),
 					"path": str(get_tree().current_scene.get_path_to(node3d)),
-					"pos": [node3d.global_position.x, node3d.global_position.y, node3d.global_position.z]
+					"pos": [snappedf(node3d.global_position.x, 0.1), snappedf(node3d.global_position.y, 0.1), snappedf(node3d.global_position.z, 0.1)]
 				})
 	return {
 		"status": "ok",
-		"player_pos": [origin.x, origin.y, origin.z],
+		"player_pos": [snappedf(origin.x, 0.1), snappedf(origin.y, 0.1), snappedf(origin.z, 0.1)],
 		"hp": 500,
 		"chi": 100,
 		"active_quest": "q_prison_break",

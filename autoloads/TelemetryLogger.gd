@@ -11,6 +11,21 @@ var _buffer: Array[Dictionary] = []
 func _physics_process(_delta: float) -> void:
 	_tick_counter += 1
 
+func log_resource_interact(bot_id: String, source_node: String, group_name: String, quest_id: String, quest_step: int) -> Dictionary:
+	var entry := {
+		"ts": int(Time.get_unix_time_from_system()),
+		"tick": _tick_counter,
+		"branch": current_branch,
+		"bot_id": bot_id,
+		"event": "RESOURCE_INTERACT",
+		"source_node": source_node,
+		"group": group_name,
+		"quest_id": quest_id,
+		"quest_step": quest_step
+	}
+	_write_entry(entry)
+	return entry
+
 func log_nav_stuck(bot_id: String, pos: Vector3, target_pos: Vector3, blocking_collider: String, quest_id: String, quest_step: int) -> Dictionary:
 	var entry := {
 		"ts": int(Time.get_unix_time_from_system()),
@@ -46,12 +61,14 @@ func log_combat_summary(bot_id: String, encounter: String, outcome: String, dura
 
 func _write_entry(entry: Dictionary) -> void:
 	_buffer.append(entry)
+	var line := JSON.stringify(entry)
 	var log_path := "user://realms/" + BootLoader.active_realm_id + "/telemetry.jsonl"
 	var file := FileAccess.open(log_path, FileAccess.READ_WRITE)
 	if file == null:
 		file = FileAccess.open(log_path, FileAccess.WRITE)
 	if file != null:
 		file.seek_end()
-		file.store_line(JSON.stringify(entry))
+		file.store_line(line)
 		file.close()
+	print("TELEMETRY_JSONL:" + line)
 	telemetry_event_logged.emit(entry)

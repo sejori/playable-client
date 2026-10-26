@@ -27,7 +27,7 @@ func sample_camera_raycast(camera: Camera3D, max_distance: float = 120.0) -> Dic
 		return {"hit": false, "hit_pos": [to.x, to.y, to.z], "target_node": "sky_or_terrain"}
 	var pos: Vector3 = result.get("position", Vector3.ZERO)
 	var collider: Object = result.get("collider", null)
-	var collider_name := (collider as Node).name if collider is Node else "unknown"
+	var collider_name: String = str((collider as Node).name) if collider is Node else "unknown"
 	return {
 		"hit": true,
 		"hit_pos": [snappedf(pos.x, 0.1), snappedf(pos.y, 0.1), snappedf(pos.z, 0.1)],
