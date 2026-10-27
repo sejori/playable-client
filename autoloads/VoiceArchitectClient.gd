@@ -5,9 +5,17 @@ extends Node
 
 signal voice_capture_started(raycast_context: Dictionary)
 signal voice_prompt_dispatched(prompt_payload: Dictionary)
+signal voice_prompt_response_received(result: int, response_code: int, response_body: Dictionary)
 
 var is_recording: bool = false
 var last_raycast_context: Dictionary = {}
+var _http_request: HTTPRequest = null
+
+func _ready() -> void:
+	_http_request = HTTPRequest.new()
+	_http_request.name = "VoiceArchitectHTTPRequest"
+	add_child(_http_request)
+	_http_request.request_completed.connect(_on_http_request_completed)
 
 func begin_voice_capture(camera: Camera3D) -> Dictionary:
 	is_recording = true
@@ -43,4 +51,25 @@ func finish_voice_capture(transcribed_text: String) -> Dictionary:
 		"timestamp": int(Time.get_unix_time_from_system())
 	}
 	voice_prompt_dispatched.emit(payload)
+	_dispatch_to_server(payload)
 	return payload
+
+func _dispatch_to_server(payload: Dictionary) -> void:
+	if _http_request == null or not is_inside_tree():
+		return
+	var base_url: String = AuthManager.server_url.trim_suffix("/")
+	var target_url := base_url + "/api/voice-architect"
+	var headers := AuthManager.get_auth_headers()
+	var json_body := JSON.stringify(payload)
+	var err := _http_request.request(target_url, headers, HTTPClient.METHOD_POST, json_body)
+	if err != OK:
+		push_warning("VoiceArchitectClient: HTTP dispatch failed with code %d" % err)
+
+func _on_http_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	var body_dict: Dictionary = {}
+	var text := body.get_string_from_utf8()
+	if not text.is_empty():
+		var parsed: Variant = JSON.parse_string(text)
+		if typeof(parsed) == TYPE_DICTIONARY:
+			body_dict = parsed
+	voice_prompt_response_received.emit(result, response_code, body_dict)

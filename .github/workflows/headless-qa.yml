@@ -1,0 +1,44 @@
+name: Headless Client QA & Video Capture
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  godot-qa:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install System Dependencies (Godot, Mesa Lavapipe, Xvfb, FFmpeg)
+        run: |
+          sudo apt-get update && sudo apt-get install -y xvfb libgl1-mesa-dri mesa-vulkan-drivers ffmpeg curl unzip
+          curl -fsSL -o /tmp/godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d /tmp && sudo mv /tmp/Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
+          chmod +x /usr/local/bin/godot
+          godot --version
+
+      - name: Headless Zone Integrity Verification
+        run: |
+          godot --headless --path . --quit-after 30 res://scenes/zones/fire_prison_rig.tscn
+
+      - name: Headless Bot Swarm Deterministic Simulation
+        run: |
+          godot --headless --path . --time-scale 10.0 --quit-after 30 res://scenes/qa/bot_runner.tscn
+
+      - name: Headless Movie Maker Video Capture (Xvfb)
+        run: |
+          mkdir -p build
+          xvfb-run --auto-servernum godot --path . --write-movie build/capture_arena.avi --fixed-fps 60 --quit-after 180 res://scenes/zones/fire_prison_rig.tscn
+          ls -lh build/capture_arena.avi
+
+      - name: Transcode Video Showcase
+        run: |
+          ffmpeg -y -i build/capture_arena.avi -c:v libvpx-vp9 -b:v 2M -crf 28 -an build/arena-showcase.webm
+          ffmpeg -y -i build/capture_arena.avi -c:v libx264 -pix_fmt yuv420p -profile:v high -level 4.0 -crf 22 -an build/arena-showcase.mp4
+          ffmpeg -y -ss 00:00:01.5 -i build/capture_arena.avi -vframes 1 -q:v 2 build/arena-poster.jpg
+          ls -lh build/
