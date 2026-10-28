@@ -116,6 +116,24 @@ func write_log() -> void:
 """
         self.assertEqual(self._scan_snippet("scripts/valid_io.gd", valid_code)["status"], "PASS")
 
+        # 6. Legitimate client config paths (auth_session.json, settings.json) must pass
+        allowed_config_code = """extends Node
+const AUTH_SESSION_PATH: String = "user://auth_session.json"
+const SETTINGS_PATH: String = "user://settings.json"
+func test_configs() -> void:
+    var f1 := FileAccess.open(AUTH_SESSION_PATH, FileAccess.READ)
+    var f2 := FileAccess.open(SETTINGS_PATH, FileAccess.WRITE)
+    var f3 := FileAccess.open("user://settings.json", FileAccess.READ)
+"""
+        self.assertEqual(self._scan_snippet("scripts/configs.gd", allowed_config_code)["status"], "PASS")
+
+        # 7. Unapproved user:// paths must still fail
+        disallowed_user_code = """extends Node
+func test_bad_user() -> void:
+    var f := FileAccess.open("user://arbitrary_file.txt", FileAccess.WRITE)
+"""
+        self.assertEqual(self._scan_snippet("scripts/bad_user.gd", disallowed_user_code)["status"], "FAIL")
+
     def test_comments_do_not_trigger_false_positives(self):
         comment_only = """extends Node
 # OS.execute("rm", ["-rf", "/"])

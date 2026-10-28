@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/controls/TouchControlsOverlay.gd" id="1_tco"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchLookZone.tscn" id="2_tlk"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/VirtualThumbstick.tscn" id="3_vst"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/ActionCluster.tscn" id="4_act"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/VoicePTTWidget.tscn" id="5_vpt"]
+
+[node name="TouchControlsOverlay" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_tco")
+
+[node name="TouchLookZone" parent="." instance=ExtResource("2_tlk")]
+
+[node name="VirtualThumbstick" parent="." instance=ExtResource("3_vst")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -216.0
+offset_right = 216.0
+offset_bottom = -36.0
+grow_vertical = 0
+
+[node name="ActionCluster" parent="." instance=ExtResource("4_act")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -226.0
+offset_top = -176.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VoicePTTWidget" parent="." instance=ExtResource("5_vpt")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -96.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 96.0
+grow_horizontal = 0

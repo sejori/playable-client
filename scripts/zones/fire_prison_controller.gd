@@ -19,6 +19,7 @@ var primary_ability_name: String = "Earth Lance"
 var primary_ability_damage: float = 260.0
 var hazard_name: String = "Thermal Fire Ring"
 var hazard_radius: float = 11.0
+var interactable_label: String = "Resource Node"
 var npc_dialogue_preview: String = "The rig hull is pure iron! Extract coal from the vents (E) to forge a Metal Shield before crossing into the Warden's arena!"
 
 var sky_top_color: Color = Color("#0f172a")
@@ -89,6 +90,8 @@ func _apply_config_dictionary(cfg: Dictionary) -> void:
 		primary_ability_name = str(cfg["primary_ability_name"])
 	if cfg.has("primary_ability_damage"):
 		primary_ability_damage = float(cfg["primary_ability_damage"])
+	if cfg.has("interactable_name"):
+		interactable_label = str(cfg["interactable_name"])
 	if cfg.has("hazard_name"):
 		hazard_name = str(cfg["hazard_name"])
 	if cfg.has("hazard_radius"):
@@ -305,7 +308,7 @@ func _refresh_visual_materials() -> void:
 func _update_hud_text() -> void:
 	var player := get_node_or_null("PlayerCharacter")
 	var player_hp_val := 500
-	var shield_str := "OFF (Press E near CoalVent_01)"
+	var shield_str := "OFF (Press E near %s)" % interactable_label
 	if player != null:
 		player_hp_val = int(player.get("hp"))
 		if bool(player.get("metal_shield_active")):

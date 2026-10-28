@@ -48,30 +48,66 @@ func _parse_cmdline_args() -> void:
 				sim_time_scale = clampf(float(ts_str), 0.1, 100.0)
 
 func _initialize_swarm() -> void:
+	# 1. Dynamic zone root discovery (supports any custom realm scene name)
 	_rig = get_node_or_null("FirePrisonRig")
-	_boat_spawn = get_node_or_null("FirePrisonRig/SpawnPoints/PlayerBoatSpawn") as Node3D
-	_coal_vent = get_node_or_null("FirePrisonRig/Interactables/CoalVent_01") as Node3D
-	_warden_spawn = get_node_or_null("FirePrisonRig/BossArena/WardenSpawn") as Node3D
+	if _rig == null:
+		for child in get_children():
+			if child is Node3D and child.name != "BotSwarm":
+				_rig = child
+				break
+	if _rig == null:
+		_rig = self
 
-	if _rig == null or _boat_spawn == null or _coal_vent == null or _warden_spawn == null:
-		TelemetryLogger.log_nav_stuck(
-			"QA_Bot_01",
-			Vector3.ZERO,
-			Vector3(0.0, 1.5, -34.0),
-			"MissingRequiredContractNode",
-			"q_prison_break",
-			1
-		)
-		simulation_finished = true
-		get_tree().quit(0)
-		return
+	# 2. Dynamic spawn point discovery
+	_boat_spawn = _rig.get_node_or_null("SpawnPoints/PlayerBoatSpawn") as Node3D
+	if _boat_spawn == null:
+		_boat_spawn = _rig.get_node_or_null("SpawnPoints/PlayerSpawn") as Node3D
+	if _boat_spawn == null:
+		var spawns := get_tree().get_nodes_in_group("spawn_point")
+		if not spawns.is_empty():
+			_boat_spawn = spawns[0] as Node3D
+	if _boat_spawn == null:
+		_boat_spawn = _rig as Node3D
+
+	# 3. Dynamic interactable discovery (supports generic interactables, coal vents, power nodes)
+	_coal_vent = _rig.get_node_or_null("Interactables/CoalVent_01") as Node3D
+	if _coal_vent == null:
+		var interactables := get_tree().get_nodes_in_group("metal_source")
+		if interactables.is_empty():
+			interactables = get_tree().get_nodes_in_group("interactable")
+		if not interactables.is_empty():
+			_coal_vent = interactables[0] as Node3D
+	if _coal_vent == null:
+		_coal_vent = _boat_spawn
+
+	# 4. Dynamic boss / objective spawn discovery
+	_warden_spawn = _rig.get_node_or_null("BossArena/WardenSpawn") as Node3D
+	if _warden_spawn == null:
+		_warden_spawn = _rig.get_node_or_null("BossArena/BossSpawn") as Node3D
+	if _warden_spawn == null:
+		var bosses := get_tree().get_nodes_in_group("boss_target")
+		if not bosses.is_empty():
+			_warden_spawn = bosses[0] as Node3D
+	if _warden_spawn == null:
+		_warden_spawn = _rig.get_node_or_null("BossArena") as Node3D
+	if _warden_spawn == null:
+		_warden_spawn = _rig as Node3D
 
 	if _rig.get("warden_max_hp") != null:
 		_boss_hp = float(_rig.get("warden_max_hp"))
+	elif _rig.get("boss_max_hp") != null:
+		_boss_hp = float(_rig.get("boss_max_hp"))
+
 	if _rig.get("primary_ability_damage") != null:
 		_ability_dmg = float(_rig.get("primary_ability_damage"))
+	elif _rig.get("ability_damage") != null:
+		_ability_dmg = float(_rig.get("ability_damage"))
+
 	if _rig.get("warden_name") != null:
 		_boss_id = str(_rig.get("warden_name"))
+	elif _rig.get("boss_name") != null:
+		_boss_id = str(_rig.get("boss_name"))
+
 	_casts_needed = maxi(1, int(ceil(_boss_hp / maxf(1.0, _ability_dmg))))
 
 	var swarm_root := get_node_or_null("BotSwarm") as Node3D

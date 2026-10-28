@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8p4rigzone014"]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/zones/fire_prison_controller.gd" id="1_controller"]
 [ext_resource type="Script" path="res://scripts/controllers/player_controller.gd" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchControlsOverlay.tscn" id="3_touch"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_rig"]
 agent_radius = 0.6
@@ -55,5 +56,7 @@ shape = SubResource("SphereShape3D_arena")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
 collision_layer = 2
 script = ExtResource("2_player")
+
+[node name="TouchControlsOverlay" parent="." instance=ExtResource("3_touch")]
 
 [connection signal="body_entered" from="BossArena/ArenaTrigger" to="." method="_on_arena_trigger_body_entered"]

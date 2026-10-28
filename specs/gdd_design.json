@@ -1,25 +1,17 @@
 {
-  "sprint_id": "sprint_014_prison_rig",
+  "boss_color_hex": "#ff5a1f",
+  "boss_max_hp": 3200,
+  "boss_name": "The Fire Warden",
   "genre": "template-action-rpg",
-  "title": "The Boiling Iron Rig — Elemental Prison Break",
-  "core_loop_30s": "Extract compressed coal/iron from industrial vents (CoalVent_01) -> Form Metal Shield to block Warden pyro-volleys -> Launch Earth Lance counter-attacks during Warden overheat window.",
-  "early_hook_90s": "Infiltrate by skiff at PlayerBoatSpawn, breach the courtyard barricades using environmental metal sources, and trigger the Warden boss encounter.",
-  "quests": [
-    {
-      "quest_id": "q_prison_break",
-      "title": "Spark in the Iron Yard",
-      "steps": [
-        { "step": 1, "objective": "Land at PlayerBoatSpawn and inspect the Iron Rig deck" },
-        { "step": 2, "objective": "Draw ore from Interactables/CoalVent_01 using MetalBending" },
-        { "step": 3, "objective": "Enter BossArena/ArenaTrigger and defeat Boss Warden" }
-      ]
-    }
-  ],
-  "combat_balance": {
-    "player_base_hp": 500,
-    "player_base_chi": 100,
-    "boss_warden_hp": 2200,
-    "target_ttk_seconds": 35.0,
-    "monte_carlo_win_rate": 0.78
-  }
+  "grid_tint_hex": "#6b3a2a",
+  "hazard_name": "Coal Vent Blast",
+  "hazard_radius": 95.0,
+  "noise_seed": 771402,
+  "npc_dialogue_preview": "Bend the vent-iron while it's still cherry-red, mate \u2014 a shield's the only thing between us and the Warden's furnace.",
+  "primary_ability_damage": 340,
+  "primary_ability_name": "Slagbend Shield Bash",
+  "prompt_directive": "Build a prison break on a boiling iron rig out at sea. I want to bend metal from the coal vents into a shield, then take down the Fire Warden boss with my friends.",
+  "sky_bottom_hex": "#c2410c",
+  "sky_top_hex": "#2b0f0a",
+  "zone_title": "Rigbreak: The Boiling Iron"
 }

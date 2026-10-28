@@ -134,6 +134,12 @@ def strip_comments_preserving_newlines(content: str, ext: str) -> str:
     return "".join(result)
 
 
+ALLOWED_USER_CONFIG_PATHS = {
+    "user://auth_session.json",
+    "user://settings.json",
+}
+
+
 def _is_literal_path_allowed(literal: str) -> bool:
     if ".." in literal:
         return False
@@ -142,6 +148,8 @@ def _is_literal_path_allowed(literal: str) -> bool:
     if literal.startswith("res://"):
         return True
     if literal.startswith("user://realms/"):
+        return True
+    if literal in ALLOWED_USER_CONFIG_PATHS:
         return True
     return False
 
@@ -152,10 +160,11 @@ def _collect_safe_path_variables(stripped_content: str, rel_path: str) -> Set[st
     - Variables initialized via `.validate_filename()` (e.g. `var safe_id := realm_id.validate_filename()`)
     - Variables initialized as `"res://..." + ...` (without `..`)
     - Variables initialized as `"user://realms/" + BootLoader...` or `"user://realms/" + <validated_var>...`
+    - Known client configuration identifiers (e.g. AUTH_SESSION_PATH, SETTINGS_PATH)
     """
-    safe_identifiers: Set[str] = set()
+    safe_identifiers: Set[str] = {"AUTH_SESSION_PATH", "SETTINGS_PATH"}
     var_assign_re = re.compile(
-        r"\bvar\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?::\s*[A-Za-z0-9_]+)?\s*:?=\s*([^\n]+)"
+        r"\b(?:var|const)\s+([A-Za-z_][A-Za-z0-9_]*)\s*(?::\s*[A-Za-z0-9_]+)?\s*:?=\s*([^\n]+)"
     )
 
     # Pass 1: find identifiers sanitized via .validate_filename()

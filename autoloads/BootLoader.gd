@@ -41,12 +41,36 @@ func _setup_default_input_bindings() -> void:
 		InputMap.add_action("toggle_quad_debug")
 	_bind_key("toggle_quad_debug", KEY_Q)
 
+	# Standard Gamepad bindings
+	_bind_joy_axis("move_left", JOY_AXIS_LEFT_X, -1.0)
+	_bind_joy_axis("move_right", JOY_AXIS_LEFT_X, 1.0)
+	_bind_joy_axis("move_forward", JOY_AXIS_LEFT_Y, -1.0)
+	_bind_joy_axis("move_back", JOY_AXIS_LEFT_Y, 1.0)
+	_bind_joy_button("ability_primary", JOY_BUTTON_A)
+	_bind_joy_button("ability_secondary", JOY_BUTTON_X)
+	_bind_joy_button("voice_architect_ptt", JOY_BUTTON_LEFT_SHOULDER)
+
 func _bind_key(action_name: String, keycode: Key) -> void:
 	if not InputMap.has_action(action_name):
 		InputMap.add_action(action_name)
 	var ev := InputEventKey.new()
 	ev.physical_keycode = keycode
 	ev.keycode = keycode
+	InputMap.action_add_event(action_name, ev)
+
+func _bind_joy_button(action_name: String, button_index: JoyButton) -> void:
+	if not InputMap.has_action(action_name):
+		InputMap.add_action(action_name)
+	var ev := InputEventJoypadButton.new()
+	ev.button_index = button_index
+	InputMap.action_add_event(action_name, ev)
+
+func _bind_joy_axis(action_name: String, axis: JoyAxis, axis_value: float) -> void:
+	if not InputMap.has_action(action_name):
+		InputMap.add_action(action_name)
+	var ev := InputEventJoypadMotion.new()
+	ev.axis = axis
+	ev.axis_value = axis_value
 	InputMap.action_add_event(action_name, ev)
 
 func _ensure_realm_sandbox_dir(realm_id: String) -> void:

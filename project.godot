@@ -20,6 +20,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 
 AuthManager="*res://autoloads/AuthManager.gd"
 BootLoader="*res://autoloads/BootLoader.gd"
+InputSchemeManager="*res://autoloads/InputSchemeManager.gd"
 ProceduralJobRunner="*res://autoloads/ProceduralJobRunner.gd"
 TelemetryLogger="*res://autoloads/TelemetryLogger.gd"
 NetworkManager="*res://autoloads/NetworkManager.gd"
