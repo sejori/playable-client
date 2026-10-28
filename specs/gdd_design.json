@@ -1,38 +1,127 @@
 {
+  "abilities": [
+    {
+      "cooldown_seconds": 6.0,
+      "damage": 22,
+      "description": "Pyroclast raises both fists and slams the ground, emitting a radial shockwave with a clear wind-up ring.",
+      "id": "slam",
+      "name": "Caldera Slam",
+      "radius_m": 6.0,
+      "telegraph_seconds": 1.2,
+      "type": "melee_aoe"
+    },
+    {
+      "cooldown_seconds": 9.0,
+      "damage": 14,
+      "description": "Molten vents erupt in a line across the arena floor, leaving lingering lava pools that deny space.",
+      "id": "eruption",
+      "name": "Fissure Eruption",
+      "pool_duration_seconds": 5.0,
+      "telegraph_seconds": 1.6,
+      "type": "ground_hazard"
+    },
+    {
+      "arc_degrees": 120,
+      "cooldown_seconds": 7.5,
+      "damage": 18,
+      "description": "A wide sweeping arc of molten slag that forces lateral repositioning.",
+      "id": "magma_sweep",
+      "name": "Magma Sweep",
+      "telegraph_seconds": 1.0,
+      "type": "cone_attack"
+    },
+    {
+      "cooldown_seconds": 0.0,
+      "damage": 30,
+      "description": "Below 40% health the Warden's core cracks open, accelerating all attacks and igniting the arena rim.",
+      "id": "core_rupture",
+      "name": "Core Rupture (Phase 2)",
+      "telegraph_seconds": 2.0,
+      "trigger_health_percent": 40,
+      "type": "enrage_burst"
+    }
+  ],
+  "acceptance_criteria": [
+    "Arena scene loads with player spawn, boss anchor, and collision geometry.",
+    "All four boss abilities are telegraphed and executable via the combat loop.",
+    "Hazards apply damage-over-time and are visually distinct.",
+    "Atmosphere matches the molten palette with particles, fog, and emissive lighting.",
+    "Bot swarm test passes: player can damage boss, boss can damage player, phase two triggers."
+  ],
   "atmosphere": {
-    "ambient_light_hex": "#0E4A55",
-    "description": "Bioluminescent coral ruins lit by drifting thermal plumes, murky abyssal water, and pulsing teal vents.",
-    "fog_density": 0.045
+    "audio": {
+      "ambient": "Low rumble, distant rockfalls, hissing steam",
+      "combat": "Percussive forge drums with rising tension on enrage"
+    },
+    "fog": "Volumetric haze, warm and dense near the floor",
+    "lighting": {
+      "fill": "Orange omni lights from lava fissures",
+      "key": "Low warm directional light angled through the caldera mouth",
+      "rim": "Emissive glow from the Warden's core"
+    },
+    "mood": "Oppressive, awe-inspiring, molten",
+    "palette": {
+      "accent": "#FFE08A",
+      "basalt": "#3B2A26",
+      "primary": "#FF4D1A",
+      "secondary": "#FFB347",
+      "shadow": "#2A1410",
+      "sky_horizon": "#C24A1E",
+      "sky_top": "#5A1E12"
+    },
+    "sky": "Ash-choked crimson sky with drifting ember particles"
   },
-  "boss_color_hex": "#1B6E7A",
-  "boss_max_hp": 4200,
-  "boss_name": "Leviathan Abyssal Warden",
-  "cartridge": "template-action-rpg",
-  "combat_loop": {
-    "core_mechanic": "Players redirect deep-sea thermal currents from Coral Thermal Vents to weave a hydro-barrier that shields them and amplifies damage against the Leviathan Abyssal Warden.",
-    "phases": [
-      "Phase 1: Awaken the vents and learn current redirection.",
-      "Phase 2: Weave the hydro-barrier while dodging collapsing pressure waves.",
-      "Phase 3: Overcharge the barrier to shatter the Warden's coral plating."
+  "boss_archetype": "Heavy bruiser with telegraphed area denial and a phase-two enrage",
+  "boss_name": "Pyroclast, the Molten Warden",
+  "core_loop": [
+    "Enter the caldera arena and read the environment for cover and hazard lanes.",
+    "Bait and dodge Pyroclast's telegraphed attacks (Slam, Eruption, Magma Sweep).",
+    "Punish recovery windows to build stagger; break the core to trigger phase two.",
+    "Survive the enrage and land the finishing blow before the arena floods with lava."
+  ],
+  "deliverables": {
+    "geoff": [
+      "scenes/emberfall_caldera.tscn",
+      "resources/*.tres",
+      "shaders/*.gdshader",
+      "audio/*.tres"
+    ],
+    "jane": [
+      "specs/interface_contracts.json",
+      "scripts/*.gd",
+      "autoloads/*.gd",
+      "tests/*.gd"
+    ],
+    "john": [
+      "dialogues/*.dialogue",
+      "specs/quests.json"
     ]
   },
-  "environmental_hazards": [
-    "Hydro-Barrier Collapse pressure bursts",
-    "Collapsing coral pillars",
-    "Superheated thermal plumes"
+  "engine": "Godot 4.7",
+  "genre": "Single-player 3D action boss arena",
+  "hazards": [
+    {
+      "damage_per_second": 8,
+      "description": "Persistent molten pools from Fissure Eruption that deal damage over time.",
+      "id": "lava_pools",
+      "name": "Lingering Lava Pools"
+    },
+    {
+      "damage_per_second": 12,
+      "description": "In phase two the caldera rim ignites, shrinking the safe arena footprint.",
+      "id": "rim_ignition",
+      "name": "Ignited Rim"
+    },
+    {
+      "damage": 10,
+      "description": "Cracked basalt tiles that crumble after repeated impacts, opening new hazard gaps.",
+      "id": "unstable_ground",
+      "name": "Unstable Ground"
+    }
   ],
-  "genre": "action-rpg",
-  "grid_tint_hex": "#2FB6A8",
-  "hazard_name": "Hydro-Barrier Collapse",
-  "hazard_radius": 110,
-  "interactable_name": "Coral Thermal Vent",
-  "noise_seed": 77341,
-  "npc_dialogue_preview": "The Warden stirs in the trench below. Channel the thermal vents, shape the currents into a hydro-barrier, and the Leviathan's hide will break against the deep.",
-  "primary_ability_damage": 340,
-  "primary_ability_name": "Thermal Current Surge",
-  "prompt_directive": "Create an ancient sunken coral temple in the Abyssal Trenches where players manipulate deep-sea thermal currents into a hydro-barrier to defeat the Leviathan Abyssal Warden.",
-  "sky_bottom_hex": "#0A3A46",
-  "sky_top_hex": "#02121C",
-  "target_timeframe_minutes": "3-5",
-  "zone_title": "The Sunken Coral Temple of the Abyssal Trenches"
+  "player_fantasy": "A lone delver who reads telegraphed patterns, dodges molten hazards, and shatters the Warden's core.",
+  "project": "Emberfall Caldera",
+  "version": "1.0.0",
+  "zone_tagline": "A collapsed volcanic forge where the mountain's heart still beats.",
+  "zone_title": "The Emberfall Caldera"
 }
