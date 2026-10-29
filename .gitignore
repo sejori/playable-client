@@ -3,3 +3,4 @@ build/
 *.import
 *.tmp
 __pycache__/
+*.uid
