@@ -1,9 +1,4 @@
-~ start_prison_rig_infiltration
-
-Rebel Scout: Keep your head down! The Fire Warden's foundry guards patrol the upper catwalks.
-Rebel Scout: Look by the western smokestack — [b]CoalVent_01[/b] is venting compressed iron-rich coal.
-- Draw ore from the coal vent [if coal_vent_charges > 0]
-	Rebel Scout: That's it! Shape it into a shield before entering the Warden's arena!
-- Charge straight into the Boss Arena
-	Rebel Scout: Without metal shielding, his pyro-volleys will melt right through your guard!
+~ start_encounter
+Scout: Be ready, danger awaits in this realm!
+- Engage Boss (3000 HP)
 => END

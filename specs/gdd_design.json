@@ -1,55 +1,18 @@
 {
-  "boss_color_hex": "#1B6E7A",
-  "boss_max_hp": 2400,
-  "boss_name": "Leviathan Abyssal Warden",
-  "boss_phases": [
-    {
-      "behavior": "Slow charges and slams, 2 vent plumes per slam, single conduit active",
-      "hp_threshold": 1.0,
-      "phase": 1
-    },
-    {
-      "behavior": "Faster charges, 3 vent plumes, temple begins flooding, two conduits active",
-      "hp_threshold": 0.66,
-      "phase": 2
-    },
-    {
-      "behavior": "Enraged, 4 vent plumes, oxygen drain accelerates, all conduits active, shorter stagger windows",
-      "hp_threshold": 0.33,
-      "phase": 3
-    }
-  ],
-  "combat_loop": "1) EXPLORE the flooded coral nave and locate glowing Coral Thermal Conduits. 2) ACTIVATE a conduit to begin siphoning a deep-sea thermal current (channeled, interruptible). 3) The Leviathan Abyssal Warden charges and slams, spawning Hydrothermal Vent Plumes (radius 6.5) that deal burn damage \u2014 dodge out of the plume ring. 4) Once a current is fully siphoned, WEAVE it into a hydro-barrier that hardens around the Warden, staggering it and exposing its brine-soft core. 5) BURST the exposed core with Thermal Current Siphon (45 dmg per pulse) during the stagger window. 6) Repeat across three phases as the Warden floods the temple and adds more vent plumes; manage oxygen and current charges to survive.",
-  "environment": {
-    "biome": "Abyssal Trench / Sunken Coral Cathedral",
-    "fog": "Dense volumetric fog, deep blue-green, high density for depth occlusion",
-    "lighting": "Low ambient teal, volumetric god-rays through collapsed ceiling, emissive coral and vent glow",
-    "mood": "Bioluminescent dread, cathedral grandeur drowned in pressure and cold"
-  },
-  "grid_tint_hex": "#2FB6A8",
-  "hazard_name": "Hydrothermal Vent Plume",
+  "boss_color_hex": "#ff5a1f",
+  "boss_max_hp": 1200,
+  "boss_name": "Vulkran, the Molten Warden",
+  "combat_loop": "1) Player spawns at the Foundry Gate and navigates the catwalk toward the central Ember Core. 2) Interacting with the Ember Core grants the Ember Lance ability and awakens Vulkran. 3) Vulkran pursues the player and periodically triggers Molten Overflow, a radial lava hazard (radius 6.5m) that telegraphs then erupts. 4) Player kites the boss, dodging hazard eruptions, and fires Ember Lance (85 dmg) to whittle the Warden's 1200 HP. 5) On defeat, the Ember Core re-lights and the zone is cleared.",
+  "grid_tint_hex": "#ff8c42",
+  "hazard_name": "Molten Overflow",
   "hazard_radius": 6.5,
-  "interactable_name": "Coral Thermal Conduit",
-  "lose_condition": "Player oxygen reaches 0 or player HP reaches 0.",
-  "noise_seed": 77341,
-  "npc_dialogue_preview": "The Warden's hide is brine-hardened, diver. You cannot cut it \u2014 but the vents below still remember the sun's fire. Siphon the thermal currents, weave them into a hydro-barrier, and let the deep itself turn against its warden.",
-  "player_resources": {
-    "current_charges": {
-      "gain": "siphon a Coral Thermal Conduit",
-      "max": 3,
-      "spend": "weave a hydro-barrier"
-    },
-    "oxygen": {
-      "drain_per_sec": 2.5,
-      "max": 100,
-      "refill": "air pockets in coral alcoves"
-    }
-  },
-  "primary_ability_damage": 45,
-  "primary_ability_name": "Thermal Current Siphon",
-  "prompt_directive": "Create an ancient sunken coral temple in the Abyssal Trenches where players manipulate deep-sea thermal currents into a hydro-barrier to defeat the Leviathan Abyssal Warden.",
-  "sky_bottom_hex": "#0A3A44",
-  "sky_top_hex": "#02121C",
-  "win_condition": "Reduce Leviathan Abyssal Warden HP from 2400 to 0 across three phases using hydro-barrier staggers and Thermal Current Siphon bursts.",
-  "zone_title": "The Sunken Coral Cathedral of the Abyssal Trenches"
+  "interactable_name": "Ember Core",
+  "noise_seed": 87421,
+  "npc_dialogue_preview": "The Warden stirs... the Core remembers every hand that forged it. Take the Ember Lance, and do not let the floor drink you whole.",
+  "primary_ability_damage": 85,
+  "primary_ability_name": "Ember Lance",
+  "prompt_directive": "Build a playable 3D boss-arena zone set inside a collapsed volcanic foundry. The player descends into a molten forge where a rogue forge-golem guards the last Ember Core. Deliver a complete combat loop: navigate the arena, trigger the interactable Ember Core, survive the lava hazard, and defeat the boss using a ranged ember ability.",
+  "sky_bottom_hex": "#ff6a2b",
+  "sky_top_hex": "#1a0d0a",
+  "zone_title": "The Emberfall Foundry"
 }

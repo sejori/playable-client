@@ -1,0 +1,202 @@
+[gd_scene load_steps=14 format=3 uid="uid://bemberforgearena01"]
+
+[ext_resource type="Script" path="res://scripts/zones/ember_forge_arena.gd" id="1_arena"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ember"]
+sky_top_color = Color(0.09, 0.05, 0.08, 1)
+sky_horizon_color = Color(0.42, 0.16, 0.09, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.05, 0.03, 0.03, 1)
+ground_horizon_color = Color(0.3, 0.12, 0.07, 1)
+sun_angle_max = 30.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_ember"]
+sky_material = SubResource("ProceduralSkyMaterial_ember")
+
+[sub_resource type="Environment" id="Environment_ember"]
+background_mode = 2
+sky = SubResource("Sky_ember")
+ambient_light_source = 3
+ambient_light_color = Color(0.35, 0.14, 0.08, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 0.7
+tonemap_mode = 3
+tonemap_white = 6.0
+glow_enabled = true
+glow_intensity = 0.9
+glow_bloom = 0.25
+glow_hdr_threshold = 0.85
+fog_enabled = true
+fog_light_color = Color(0.4, 0.15, 0.08, 1)
+fog_light_energy = 0.6
+fog_density = 0.02
+fog_sky_affect = 0.4
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.035
+volumetric_fog_albedo = Color(0.5, 0.2, 0.1, 1)
+volumetric_fog_emission = Color(0.6, 0.18, 0.05, 1)
+volumetric_fog_emission_energy = 1.4
+volumetric_fog_gi_inject = 0.5
+volumetric_fog_length = 96.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.14, 0.11, 0.1, 1)
+roughness = 0.85
+metallic = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.1, 0.08, 0.08, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_lava"]
+albedo_color = Color(0.9, 0.25, 0.05, 1)
+emission_enabled = true
+emission = Color(1.0, 0.35, 0.08, 1)
+emission_energy_multiplier = 3.5
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_ember"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 1
+albedo_color = Color(1.0, 0.5, 0.15, 1)
+emission_enabled = true
+emission = Color(1.0, 0.4, 0.1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="Gradient" id="Gradient_ember"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.6, 0.2, 1, 1, 0.3, 0.05, 0.8, 0.4, 0.05, 0.02, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcess_ember"]
+emission_shape = 1
+emission_sphere_radius = 1.2
+direction = Vector3(0, 1, 0)
+spread = 18.0
+initial_velocity_min = 2.5
+initial_velocity_max = 5.5
+gravity = Vector3(0, 1.2, 0)
+scale_min = 0.05
+scale_max = 0.22
+color = Color(1.0, 0.45, 0.12, 1)
+color_ramp = SubResource("Gradient_ember")
+
+[sub_resource type="BoxShape3D" id="BoxShape_floor"]
+size = Vector3(48, 1, 48)
+
+[node name="EmberForgeArena" type="Node3D"]
+script = ExtResource("1_arena")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ember")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.86, -0.35, 0.36, 0, 0.72, 0.69, -0.5, -0.6, 0.62, 0, 24, 0)
+light_color = Color(1.0, 0.6, 0.35, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+
+[node name="ArenaGeometry" type="CSGCombiner3D" parent="NavigationRegion3D"]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+size = Vector3(48, 1, 48)
+material = SubResource("Mat_floor")
+
+[node name="LavaPool" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+radius = 6.0
+height = 0.2
+material = SubResource("Mat_lava")
+
+[node name="WallNorth" type="CSGBox3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -24)
+size = Vector3(48, 8, 1)
+material = SubResource("Mat_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 24)
+size = Vector3(48, 8, 1)
+material = SubResource("Mat_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 4, 0)
+size = Vector3(1, 8, 48)
+material = SubResource("Mat_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 4, 0)
+size = Vector3(1, 8, 48)
+material = SubResource("Mat_wall")
+
+[node name="PillarNE" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 5, -16)
+radius = 2.0
+height = 10.0
+material = SubResource("Mat_wall")
+
+[node name="PillarNW" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 5, -16)
+radius = 2.0
+height = 10.0
+material = SubResource("Mat_wall")
+
+[node name="PillarSE" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 5, 16)
+radius = 2.0
+height = 10.0
+material = SubResource("Mat_wall")
+
+[node name="PillarSW" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 5, 16)
+radius = 2.0
+height = 10.0
+material = SubResource("Mat_wall")
+
+[node name="BossPlatform" type="CSGCylinder3D" parent="NavigationRegion3D/ArenaGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -18)
+radius = 7.0
+height = 1.0
+material = SubResource("Mat_floor")
+
+[node name="EmberPlume" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+amount = 220
+lifetime = 3.5
+preprocess = 2.0
+emitting = true
+process_material = SubResource("ParticleProcess_ember")
+draw_pass_1 = SubResource("Mat_ember")
+
+[node name="LavaGlow" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(1.0, 0.4, 0.12, 1)
+light_energy = 3.0
+omni_range = 22.0
+shadow_enabled = true
+
+[node name="BossGlow" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -18)
+light_color = Color(1.0, 0.3, 0.05, 1)
+light_energy = 2.2
+omni_range = 16.0
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 18)
+
+[node name="BossSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -18)
+
+[node name="ArenaBounds" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape_floor")
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9063, 0.4226, 0, -0.4226, 0.9063, 0, 14, 26)
+current = true
+fov = 55.0

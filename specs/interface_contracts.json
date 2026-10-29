@@ -1,28 +1,46 @@
 {
-  "sprint_id": "sprint_014_prison_rig",
-  "target_scene": "res://scenes/zones/fire_prison_rig.tscn",
-  "root_node_type": "Node3D",
-  "performance_budget": {
-    "max_draw_calls": 180,
-    "max_active_physics_bodies": 64,
-    "navmesh_agent_radius": 0.6,
-    "navmesh_max_slope_deg": 40.0
-  },
+  "bound_script": "res://scripts/zones/fire_prison_controller.gd",
   "collision_layers": {
     "1": "Environment_Static",
     "2": "Player_Character",
     "3": "Enemy_Hitbox",
-    "4": "MetalBending_Interactable",
+    "4": "Interactable_Resource",
     "5": "Projectile_Elemental"
   },
+  "performance_budget": {
+    "max_active_physics_bodies": 64,
+    "max_draw_calls": 180,
+    "navmesh_agent_radius": 0.6,
+    "navmesh_max_slope_deg": 40.0
+  },
   "required_node_paths": [
-    {"path": "NavigationRegion3D", "type": "NavigationRegion3D", "baked_required": true},
-    {"path": "SpawnPoints/PlayerBoatSpawn", "type": "Marker3D"},
-    {"path": "BossArena/WardenSpawn", "type": "Marker3D"},
-    {"path": "Interactables/CoalVent_01", "type": "StaticBody3D", "collision_layer": 4, "group": "metal_source"}
+    {
+      "baked_required": true,
+      "path": "NavigationRegion3D",
+      "type": "NavigationRegion3D"
+    },
+    {
+      "path": "SpawnPoints/PlayerBoatSpawn",
+      "type": "Marker3D"
+    },
+    {
+      "path": "BossArena/WardenSpawn",
+      "type": "Marker3D"
+    },
+    {
+      "collision_layer": 4,
+      "group": "metal_source",
+      "path": "Interactables/CoalVent_01",
+      "type": "StaticBody3D"
+    }
   ],
-  "bound_script": "res://scripts/zones/fire_prison_controller.gd",
   "required_signals": [
-    {"source_node": "BossArena/ArenaTrigger", "signal": "body_entered(body: Node3D)"}
-  ]
+    {
+      "signal": "body_entered(body: Node3D)",
+      "source_node": "BossArena/ArenaTrigger"
+    }
+  ],
+  "root_node_type": "Node3D",
+  "sprint_id": "sprint_mock_autonomous",
+  "target_scene": "res://scenes/zones/fire_prison_rig.tscn"
 }
