@@ -4,6 +4,7 @@ extends Node3D
 ## Verifies multi-bot navigation from PlayerBoatSpawn -> CoalVent_01 -> BossArena/WardenSpawn,
 ## tracks actual stuck velocity (NAV_STUCK if a bot fails to make progress toward its target),
 ## reads --duration= and --time-scale= from command-line args, sets Engine.time_scale,
+## dynamically instantiates target_scene (from --scene or specs/interface_contracts.json),
 ## and calls get_tree().quit(0) when finished.
 
 @export var bot_count: int = 10
@@ -11,6 +12,9 @@ extends Node3D
 @export var sim_time_scale: float = 10.0
 @export var bot_move_speed: float = 14.0
 @export var stuck_timeout_sec: float = 2.5
+
+const FALLBACK_SCENE: String = "res://scenes/zones/fire_prison_rig.tscn"
+const CONTRACTS_PATH: String = "res://specs/interface_contracts.json"
 
 var elapsed_sim_sec: float = 0.0
 var total_sim_ticks: int = 0
@@ -32,6 +36,7 @@ var _casts_needed: int = 9
 func _ready() -> void:
 	_parse_cmdline_args()
 	Engine.time_scale = maxf(0.1, sim_time_scale)
+	_instantiate_target_scene()
 	_initialize_swarm()
 
 func _parse_cmdline_args() -> void:
@@ -47,16 +52,65 @@ func _parse_cmdline_args() -> void:
 			if ts_str.is_valid_float():
 				sim_time_scale = clampf(float(ts_str), 0.1, 100.0)
 
+func _resolve_target_scene() -> String:
+	# 1. Command-line args: check for --scene=<path>
+	var all_args: PackedStringArray = OS.get_cmdline_args()
+	all_args.append_array(OS.get_cmdline_user_args())
+	for arg in all_args:
+		if arg.begins_with("--scene="):
+			var raw_scene := arg.trim_prefix("--scene=").strip_edges()
+			if not raw_scene.is_empty():
+				if raw_scene.begins_with("res://"):
+					return raw_scene
+				elif not raw_scene.begins_with("user://") and not raw_scene.begins_with("/"):
+					return "res://" + raw_scene.trim_prefix("./")
+				return raw_scene
+
+	# 2. Interface contracts: specs/interface_contracts.json -> target_scene
+	if FileAccess.file_exists(CONTRACTS_PATH):
+		var file := FileAccess.open(CONTRACTS_PATH, FileAccess.READ)
+		if file != null:
+			var content := file.get_as_text()
+			file.close()
+			var parsed: Variant = JSON.parse_string(content)
+			if parsed is Dictionary and parsed.has("target_scene"):
+				var contract_scene := str(parsed["target_scene"]).strip_edges()
+				if not contract_scene.is_empty():
+					return contract_scene
+
+	# 3. Fallback safely
+	return FALLBACK_SCENE
+
+func _instantiate_target_scene() -> void:
+	var target_scene := _resolve_target_scene()
+	if not ResourceLoader.exists(target_scene):
+		push_warning("BotBrain: Scene '%s' not found, falling back to '%s'." % [target_scene, FALLBACK_SCENE])
+		target_scene = FALLBACK_SCENE
+
+	var packed := load(target_scene) as PackedScene
+	if packed == null and target_scene != FALLBACK_SCENE:
+		push_error("BotBrain: Failed to load PackedScene '%s', trying fallback '%s'." % [target_scene, FALLBACK_SCENE])
+		target_scene = FALLBACK_SCENE
+		packed = load(target_scene) as PackedScene
+
+	if packed != null:
+		_rig = packed.instantiate()
+		add_child(_rig)
+		move_child(_rig, 0)
+	else:
+		push_error("BotBrain: Failed to instantiate target scene or fallback!")
+
 func _initialize_swarm() -> void:
 	# 1. Dynamic zone root discovery (supports any custom realm scene name)
-	_rig = get_node_or_null("FirePrisonRig")
 	if _rig == null:
-		for child in get_children():
-			if child is Node3D and child.name != "BotSwarm":
-				_rig = child
-				break
-	if _rig == null:
-		_rig = self
+		_rig = get_node_or_null("FirePrisonRig")
+		if _rig == null:
+			for child in get_children():
+				if child is Node3D and child.name != "BotSwarm":
+					_rig = child
+					break
+		if _rig == null:
+			_rig = self
 
 	# 2. Dynamic spawn point discovery
 	_boat_spawn = _rig.get_node_or_null("SpawnPoints/PlayerBoatSpawn") as Node3D
