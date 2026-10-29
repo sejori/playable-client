@@ -79,7 +79,7 @@ func _load_gdd_design_config() -> void:
 	
 	# Load Geoff's terrain graph metadata if present
 	if ResourceLoader.exists("res://resources/terrain_graphs/fire_ocean_rig.tres"):
-		var tres := ResourceLoader.load("res://resources/terrain_graphs/fire_ocean_rig.tres")
+		var tres: Resource = load("res://resources/terrain_graphs/fire_ocean_rig.tres")
 		if tres != null:
 			if tres.has_meta("seed"):
 				noise_seed = int(tres.get_meta("seed"))
