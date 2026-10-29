@@ -1,12 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8qabotrunner1"]
+[gd_scene load_steps=2 format=3 uid="uid://c8qabotrunner1"]
 
 [ext_resource type="Script" path="res://scripts/ai/BotBrain.gd" id="1_botbrain"]
-[ext_resource type="PackedScene" uid="uid://c8p4rigzone014" path="res://scenes/zones/fire_prison_rig.tscn" id="2_rigscene"]
 
 [node name="BotRunner" type="Node3D"]
 script = ExtResource("1_botbrain")
-
-[node name="FirePrisonRig" parent="." instance=ExtResource("2_rigscene")]
 
 [node name="BotSwarm" type="Node3D" parent="."]
 

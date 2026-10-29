@@ -13,7 +13,7 @@ config_version=5
 config/name="Playable Universal Client & Action-RPG Cartridge"
 config/description="Open-Core Universal Godot 4.7+ Client & Elemental Prison Rig Starter Cartridge (playable.gg)"
 config/version="3.0.0"
-run/main_scene="res://scenes/zones/fire_prison_rig.tscn"
+run/main_scene="res://scenes/entrypoint.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]
