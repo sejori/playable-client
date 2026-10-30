@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cursor"]
+shading_mode = 0
+albedo_color = Color(1.0, 1.0, 1.0, 0.75)
+grow = true
+grow_amount = 0.01
+
+[sub_resource type="BoxMesh" id="BoxMesh_cursor"]
+material = SubResource("StandardMaterial3D_cursor")
+size = Vector3(1.02, 1.02, 1.02)
+
+[node name="VoxelCursorBox" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_cursor")

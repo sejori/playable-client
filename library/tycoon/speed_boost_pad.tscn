@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pad"]
+size = Vector3(2.4, 0.4, 3.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_boost"]
+albedo_color = Color(1.0, 0.5, 0.05, 1)
+roughness = 0.3
+emission_enabled = true
+emission = Color(1.0, 0.45, 0.0, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_pad"]
+material = SubResource("StandardMaterial3D_boost")
+size = Vector3(2.4, 0.2, 3.2)
+
+[node name="SpeedBoostPad" type="Area3D" groups=["boost_pad", "interactable"]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_pad")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_pad")

@@ -1,0 +1,303 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://library/tycoon/coin_token_gold.tscn" id="1_w70xq"]
+[ext_resource type="PackedScene" path="res://library/tycoon/gem_crystal_ruby.tscn" id="2_102g1"]
+[ext_resource type="PackedScene" path="res://library/tycoon/MultiplierGate.tscn" id="3_gumdr"]
+[ext_resource type="Script" path="res://library/tycoon/MultiplierGate.gd" id="4_j3wet"]
+[ext_resource type="PackedScene" path="res://library/tycoon/speed_boost_pad.tscn" id="5_vob5l"]
+[ext_resource type="PackedScene" path="res://library/tycoon/upgrade_pedestal.tscn" id="6_ldyny"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="7_3nbw6"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualChaseCamera3D.gd" id="8_gfbki"]
+[ext_resource type="PackedScene" path="res://library/tycoon/collector_cart_vehicle.tscn" id="9_pr1lt"]
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="10_b43nw"]
+[ext_resource type="Script" path="res://scripts/movement/VelocityRider3D.gd" id="11_uw5g6"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_erek5"]
+vertices = PackedVector3Array(-30, 0, -30, -30, 0, 30, 30, 0, 30, 30, 0, -30)
+polygons = [PackedInt32Array(0, 1, 2, 3)]
+agent_radius = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_emh2n"]
+size = Vector3(60, 0.4, 60)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_coin"]
+radius = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(1, 0.84, 0, 1)
+metallic = 0.95
+roughness = 0.2
+emission_enabled = true
+emission = Color(1, 0.75, 0.1, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_coin"]
+material = SubResource("StandardMaterial3D_gold")
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gem"]
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ruby"]
+albedo_color = Color(0.95, 0.1, 0.25, 1)
+metallic = 0.2
+roughness = 0.15
+emission_enabled = true
+emission = Color(0.9, 0.1, 0.2, 1)
+emission_energy_multiplier = 1.4
+
+[sub_resource type="PrismMesh" id="PrismMesh_crystal"]
+material = SubResource("StandardMaterial3D_ruby")
+size = Vector3(0.6, 0.8, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gate"]
+size = Vector3(4, 3.5, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_portal"]
+transparency = 1
+albedo_color = Color(0.1, 0.8, 1, 0.45)
+emission_enabled = true
+emission = Color(0.2, 0.9, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_portal"]
+material = SubResource("StandardMaterial3D_portal")
+size = Vector3(3.6, 3.2, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pad"]
+size = Vector3(2.4, 0.4, 3.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_boost"]
+albedo_color = Color(1, 0.5, 0.05, 1)
+roughness = 0.3
+emission_enabled = true
+emission = Color(1, 0.45, 0, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_pad"]
+material = SubResource("StandardMaterial3D_boost")
+size = Vector3(2.4, 0.2, 3.2)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pedestal"]
+height = 1.2
+radius = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedestal"]
+albedo_color = Color(0.3, 0.32, 0.35, 1)
+metallic = 0.5
+roughness = 0.6
+emission_enabled = true
+emission = Color(0.1, 0.6, 0.9, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+material = SubResource("StandardMaterial3D_pedestal")
+top_radius = 1.0
+bottom_radius = 1.3
+height = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cart"]
+size = Vector3(1.8, 1.2, 2.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cart"]
+albedo_color = Color(0.9, 0.2, 0.2, 1)
+metallic = 0.7
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_cart"]
+material = SubResource("StandardMaterial3D_cart")
+size = Vector3(1.8, 1, 2.8)
+
+[node name="CollectorTycoonCircuit" type="Node3D" unique_id=847882607]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1986854649]
+navigation_mesh = SubResource("NavigationMesh_erek5")
+
+[node name="TrackGround" type="StaticBody3D" parent="NavigationRegion3D" unique_id=972270804]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/TrackGround" unique_id=439905816]
+shape = SubResource("BoxShape3D_emh2n")
+
+[node name="Collectibles" type="Node3D" parent="." unique_id=1106949241]
+
+[node name="Coin_0" type="Area3D" parent="Collectibles" unique_id=477622612 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.5, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_0" unique_id=778879950]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_0" unique_id=1209513032]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_1" type="Area3D" parent="Collectibles" unique_id=2140891857 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.313708, 0.5, 11.313708)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_1" unique_id=1199855949]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_1" unique_id=1759865702]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_2" type="Area3D" parent="Collectibles" unique_id=749785193 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.796851e-16, 0.5, 16)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_2" unique_id=582057191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_2" unique_id=276570847]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_3" type="Area3D" parent="Collectibles" unique_id=840540778 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.313708, 0.5, 11.313708)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_3" unique_id=1704218365]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_3" unique_id=1928617808]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_4" type="Area3D" parent="Collectibles" unique_id=1358857198 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.5, 1.9593702e-15)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_4" unique_id=2144615378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_4" unique_id=413461771]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_5" type="Area3D" parent="Collectibles" unique_id=648522531 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.313708, 0.5, -11.313708)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_5" unique_id=2065099468]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_5" unique_id=1413524599]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_6" type="Area3D" parent="Collectibles" unique_id=157856680 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9390552e-15, 0.5, -16)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_6" unique_id=503195319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_6" unique_id=602146212]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="Coin_7" type="Area3D" parent="Collectibles" unique_id=1124897954 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("1_w70xq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.313708, 0.5, -11.313708)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/Coin_7" unique_id=724962215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_coin")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/Coin_7" unique_id=1580933484]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_coin")
+
+[node name="GemRuby_01" type="Area3D" parent="Collectibles" unique_id=249164975 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("2_102g1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collectibles/GemRuby_01" unique_id=109269009]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_gem")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Collectibles/GemRuby_01" unique_id=2120607690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PrismMesh_crystal")
+
+[node name="MultiplierGate" type="Area3D" parent="." unique_id=2057827740 groups=["multiplier_gate"] instance=ExtResource("3_gumdr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_j3wet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiplierGate" unique_id=277476367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+shape = SubResource("BoxShape3D_gate")
+
+[node name="PortalMesh" type="MeshInstance3D" parent="MultiplierGate" unique_id=341769166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+mesh = SubResource("BoxMesh_portal")
+
+[node name="SpeedBoostPad" type="Area3D" parent="." unique_id=2038449823 groups=["boost_pad", "interactable"] instance=ExtResource("5_vob5l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpeedBoostPad" unique_id=74381281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_pad")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpeedBoostPad" unique_id=1320604589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("BoxMesh_pad")
+
+[node name="UpgradePedestal" type="StaticBody3D" parent="." unique_id=1649906711 groups=["interactable", "upgrade_pedestal"] instance=ExtResource("6_ldyny")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UpgradePedestal" unique_id=476557013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("CylinderShape3D_pedestal")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="UpgradePedestal" unique_id=1648912160]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_base")
+
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=1165693512]
+script = ExtResource("7_3nbw6")
+
+[node name="VirtualChaseCamera" type="Node3D" parent="CameraHost3D" unique_id=1944590493]
+script = ExtResource("8_gfbki")
+priority = 10
+
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=1225949110 groups=["player_character", "vehicle"] instance=ExtResource("9_pr1lt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.6, 0)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("10_b43nw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=541771347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_cart")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=1227645777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_cart")
+
+[node name="VelocityRider3D" type="Node" parent="PlayerCharacter" unique_id=887808193]
+script = ExtResource("11_uw5g6")

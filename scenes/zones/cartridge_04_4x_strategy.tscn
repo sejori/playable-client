@@ -1,0 +1,405 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://library/strategy/TurnManager.gd" id="1_03f88"]
+[ext_resource type="Script" path="res://library/strategy/CommandCardHand.gd" id="2_x2rv6"]
+[ext_resource type="PackedScene" path="res://library/strategy/hex_mountain.tscn" id="3_rv4bh"]
+[ext_resource type="PackedScene" path="res://library/strategy/hex_forest.tscn" id="4_kubt7"]
+[ext_resource type="PackedScene" path="res://library/strategy/hex_plains.tscn" id="5_v3rov"]
+[ext_resource type="PackedScene" path="res://library/strategy/hex_water.tscn" id="6_fuf6b"]
+[ext_resource type="PackedScene" path="res://library/strategy/unit_pawn_knight.tscn" id="7_kaict"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="8_hr3ls"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualTabletopCamera3D.gd" id="9_eljxn"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hex"]
+height = 0.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
+albedo_color = Color(0.48, 0.46, 0.44, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hex"]
+material = SubResource("StandardMaterial3D_rock")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.5
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_peak"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+roughness = 0.8
+
+[sub_resource type="PrismMesh" id="PrismMesh_peak"]
+material = SubResource("StandardMaterial3D_peak")
+size = Vector3(1.6, 2.2, 1.6)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4rfei"]
+height = 0.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass"]
+albedo_color = Color(0.28, 0.54, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_13aw8"]
+material = SubResource("StandardMaterial3D_grass")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.5
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pine"]
+albedo_color = Color(0.12, 0.38, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tree"]
+material = SubResource("StandardMaterial3D_pine")
+top_radius = 0.1
+bottom_radius = 0.7
+height = 1.6
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dn46y"]
+height = 0.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plains"]
+albedo_color = Color(0.35, 0.65, 0.28, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7ybuk"]
+material = SubResource("StandardMaterial3D_plains")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.5
+radial_segments = 6
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rhslg"]
+height = 0.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_water"]
+transparency = 1
+albedo_color = Color(0.18, 0.45, 0.85, 0.8)
+roughness = 0.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r4gdf"]
+material = SubResource("StandardMaterial3D_water")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.5
+radial_segments = 6
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_unit"]
+radius = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
+albedo_color = Color(0.2, 0.6, 0.95, 1)
+emission_enabled = true
+emission = Color(0.15, 0.5, 0.9, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+material = SubResource("StandardMaterial3D_ring")
+inner_radius = 0.55
+outer_radius = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
+albedo_color = Color(0.9, 0.9, 0.92, 1)
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+material = SubResource("StandardMaterial3D_stone")
+top_radius = 0.35
+bottom_radius = 0.55
+height = 1.6
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+material = SubResource("StandardMaterial3D_stone")
+radius = 0.4
+height = 0.8
+
+[node name="StrategyHexBoard" type="Node3D" unique_id=965045683]
+
+[node name="TurnManager" type="Node" parent="." unique_id=260524874]
+script = ExtResource("1_03f88")
+
+[node name="CommandCardHand" type="Node" parent="." unique_id=1975549339]
+script = ExtResource("2_x2rv6")
+
+[node name="HexTiles" type="Node3D" parent="." unique_id=797501543]
+
+[node name="Hex_-2_0" type="StaticBody3D" parent="HexTiles" unique_id=1398309930 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_0" unique_id=1856657696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_0" unique_id=1842724888]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_0" unique_id=1654612897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="Hex_-2_1" type="StaticBody3D" parent="HexTiles" unique_id=357632160 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, 3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_1" unique_id=795296506]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_4rfei")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=1903163414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_13aw8")
+
+[node name="Tree1" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=664343720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, -0.3)
+mesh = SubResource("CylinderMesh_tree")
+
+[node name="Tree2" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=1358350783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.05, 0.4)
+mesh = SubResource("CylinderMesh_tree")
+
+[node name="Hex_-2_2" type="StaticBody3D" parent="HexTiles" unique_id=274359876 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_2" unique_id=1162742630]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_dn46y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-2_2" unique_id=1254573038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_7ybuk")
+
+[node name="Hex_-1_-1" type="StaticBody3D" parent="HexTiles" unique_id=1363037258 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_-1" unique_id=1731641244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-1_-1" unique_id=1944546483]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_-1_-1" unique_id=1587663696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="Hex_-1_0" type="StaticBody3D" parent="HexTiles" unique_id=1458268379 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_0" unique_id=599752153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_0" unique_id=1623395417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_-1_1" type="StaticBody3D" parent="HexTiles" unique_id=1220373283 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, 3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_1" unique_id=1741935727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_dn46y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_1" unique_id=1725910914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_7ybuk")
+
+[node name="Hex_-1_2" type="StaticBody3D" parent="HexTiles" unique_id=1054472651 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_2" unique_id=1274422838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_2" unique_id=16458790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_0_-2" type="StaticBody3D" parent="HexTiles" unique_id=1523983089 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_-2" unique_id=2126765398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_-2" unique_id=159902628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_-2" unique_id=514460974]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="Hex_0_-1" type="StaticBody3D" parent="HexTiles" unique_id=1838705659 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_-1" unique_id=793634826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_-1" unique_id=566653934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_0_0" type="StaticBody3D" parent="HexTiles" unique_id=756501773 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_0" unique_id=1675352361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_dn46y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_0" unique_id=960217067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_7ybuk")
+
+[node name="Hex_0_1" type="StaticBody3D" parent="HexTiles" unique_id=2142464077 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, 3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_1" unique_id=284799734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_1" unique_id=587756773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_0_2" type="StaticBody3D" parent="HexTiles" unique_id=1681104490 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_2" unique_id=520571231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_2" unique_id=1907558452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_2" unique_id=219565378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="Hex_1_-2" type="StaticBody3D" parent="HexTiles" unique_id=1210723364 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_-2" unique_id=1665384450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_-2" unique_id=783374196]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_1_-1" type="StaticBody3D" parent="HexTiles" unique_id=1000254745 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_-1" unique_id=847786453]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_dn46y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_-1" unique_id=541628417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_7ybuk")
+
+[node name="Hex_1_0" type="StaticBody3D" parent="HexTiles" unique_id=1586815005 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_0" unique_id=404668799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_rhslg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_0" unique_id=961171913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_r4gdf")
+
+[node name="Hex_1_1" type="StaticBody3D" parent="HexTiles" unique_id=1322202506 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, 3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_1" unique_id=573194960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_1_1" unique_id=403758628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_1_1" unique_id=894637779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="Hex_2_-2" type="StaticBody3D" parent="HexTiles" unique_id=821402461 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_-2" unique_id=1764854943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_dn46y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_2_-2" unique_id=1397368163]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_7ybuk")
+
+[node name="Hex_2_-1" type="StaticBody3D" parent="HexTiles" unique_id=390656896 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_-1" unique_id=1668426631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_4rfei")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=878142265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_13aw8")
+
+[node name="Tree1" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=1456760326]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, -0.3)
+mesh = SubResource("CylinderMesh_tree")
+
+[node name="Tree2" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=1861979403]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.05, 0.4)
+mesh = SubResource("CylinderMesh_tree")
+
+[node name="Hex_2_0" type="StaticBody3D" parent="HexTiles" unique_id=1309033449 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_0" unique_id=2012494874]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_0" unique_id=1704292480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_0" unique_id=1945292834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
+
+[node name="KnightPawn_Blue" type="CharacterBody3D" parent="." unique_id=1776635027 groups=["tactical_unit"] instance=ExtResource("7_kaict")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KnightPawn_Blue" unique_id=435986790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_unit")
+
+[node name="TeamRing" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=89763079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_ring")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=100759675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("CylinderMesh_body")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=941693784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0)
+mesh = SubResource("SphereMesh_head")
+
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=1811502990]
+script = ExtResource("8_hr3ls")
+
+[node name="VirtualTabletopCamera" type="Node3D" parent="CameraHost3D" unique_id=1693501434]
+script = ExtResource("9_eljxn")
+elevation = 18.0
+priority = 10

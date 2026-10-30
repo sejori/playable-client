@@ -1,0 +1,118 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/zones/arena_zone.gd" id="1_a4shw"]
+[ext_resource type="PackedScene" path="res://library/modular/hazard_vent.tscn" id="2_2xvmx"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="3_adg75"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualFollowCamera3D.gd" id="4_vevxx"]
+[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="5_d4pep"]
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="6_rgvjv"]
+[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="7_86isv"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_2e3pm"]
+vertices = PackedVector3Array(-24, 0, -48, -24, 0, 24, 24, 0, 24, 24, 0, -48)
+polygons = [PackedInt32Array(0, 1, 2, 3)]
+agent_radius = 0.6
+agent_max_slope = 40.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qu5di"]
+size = Vector3(48, 0.4, 72)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
+size = Vector3(2.2, 1.6, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.4
+roughness = 0.7
+emission_enabled = true
+emission = Color(0.85, 0.35, 0.05, 1)
+emission_energy_multiplier = 1.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vent"]
+material = SubResource("StandardMaterial3D_vent")
+top_radius = 1.0
+bottom_radius = 1.2
+height = 1.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ej70y"]
+radius = 12.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hero"]
+albedo_color = Color(0.22, 0.58, 0.92, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.1, 0.4, 0.8, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hero"]
+material = SubResource("StandardMaterial3D_hero")
+height = 1.8
+
+[node name="ActionRpgArena" type="Node3D" unique_id=1474418498]
+script = ExtResource("1_a4shw")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1220388577]
+navigation_mesh = SubResource("NavigationMesh_2e3pm")
+
+[node name="RigDeckFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1264521677]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/RigDeckFloor" unique_id=1873929706]
+shape = SubResource("BoxShape3D_qu5di")
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=86551952]
+
+[node name="PlayerBoatSpawn" type="Marker3D" parent="SpawnPoints" unique_id=1037093920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
+
+[node name="Interactables" type="Node3D" parent="." unique_id=625052998]
+
+[node name="CoalVent_01" type="StaticBody3D" parent="Interactables" unique_id=1840915186 groups=["interactable", "metal_source"] instance=ExtResource("2_2xvmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, 2)
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/CoalVent_01" unique_id=2113814666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_vent")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/CoalVent_01" unique_id=64749634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_vent")
+
+[node name="BossArena" type="Node3D" parent="." unique_id=1669083362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
+
+[node name="WardenSpawn" type="Marker3D" parent="BossArena" unique_id=555527277]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
+
+[node name="ArenaTrigger" type="Area3D" parent="BossArena" unique_id=255237291]
+collision_mask = 2
+
+[node name="@CollisionShape3D@3" type="CollisionShape3D" parent="BossArena/ArenaTrigger" unique_id=549576261]
+shape = SubResource("SphereShape3D_ej70y")
+
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=1465815632]
+script = ExtResource("3_adg75")
+
+[node name="VirtualFollowCamera" type="Node3D" parent="CameraHost3D" unique_id=1621748370]
+script = ExtResource("4_vevxx")
+priority = 10
+
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=1028824848 instance=ExtResource("5_d4pep")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("6_rgvjv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=37704746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_hero")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=313703672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_hero")
+
+[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=779653455]
+script = ExtResource("7_86isv")

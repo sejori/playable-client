@@ -1,0 +1,1511 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://library/voxel/VoxelWorldGenerator.gd" id="1_ibsrm"]
+[ext_resource type="PackedScene" path="res://library/voxel/voxel_dirt.tscn" id="2_173yj"]
+[ext_resource type="PackedScene" path="res://library/voxel/voxel_stone.tscn" id="3_vxm6y"]
+[ext_resource type="PackedScene" path="res://library/voxel/voxel_cursor_box.tscn" id="4_3cd4u"]
+[ext_resource type="Script" path="res://library/voxel/VoxelHotbar.gd" id="5_upqwk"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="6_1b42i"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualFPVCamera3D.gd" id="7_mocxg"]
+[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="8_v3xf3"]
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="9_n8x3p"]
+[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="10_x0duw"]
+[ext_resource type="Script" path="res://scripts/movement/VoxelMover3D.gd" id="11_jowwx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dirt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dirt"]
+albedo_color = Color(0.44, 0.3, 0.18, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_dirt"]
+material = SubResource("StandardMaterial3D_dirt")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stone"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
+albedo_color = Color(0.5, 0.5, 0.52, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_stone"]
+material = SubResource("StandardMaterial3D_stone")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cursor"]
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.75)
+grow = true
+grow_amount = 0.01
+
+[sub_resource type="BoxMesh" id="BoxMesh_cursor"]
+material = SubResource("StandardMaterial3D_cursor")
+size = Vector3(1.02, 1.02, 1.02)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hero"]
+albedo_color = Color(0.22, 0.58, 0.92, 1)
+roughness = 0.5
+emission_enabled = true
+emission = Color(0.1, 0.4, 0.8, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hero"]
+material = SubResource("StandardMaterial3D_hero")
+height = 1.8
+
+[node name="VoxelSurvivalPlot" type="Node3D" unique_id=980790617]
+
+[node name="VoxelWorldGenerator" type="Node3D" parent="." unique_id=1209898958]
+script = ExtResource("1_ibsrm")
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1321288591]
+
+[node name="PlayerSpawn" type="Marker3D" parent="SpawnPoints" unique_id=547016724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 14, 8)
+
+[node name="VoxelPlotTerrain" type="Node3D" parent="." unique_id=1581303607]
+
+[node name="VoxelDirt" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=627069943 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/VoxelDirt" unique_id=1116108094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/VoxelDirt" unique_id=1007159934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="VoxelStone" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1901287899 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/VoxelStone" unique_id=1267528584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/VoxelStone" unique_id=1557845558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@2" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2010524597 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@2" unique_id=23701130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@2" unique_id=1172371646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=446062917 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@3" unique_id=1603617106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@3" unique_id=2066594971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=125985717 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@4" unique_id=177812760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@4" unique_id=1328976868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=221282533 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@5" unique_id=1067474291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@5" unique_id=45964579]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=810959566 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@6" unique_id=326538336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@6" unique_id=986744561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@7" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1081152819 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@7" unique_id=924479788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@7" unique_id=876435899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@8" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1945126855 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@8" unique_id=191400275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@8" unique_id=2033802288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@9" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1508890965 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@9" unique_id=1751970664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@9" unique_id=1165055364]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@10" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1546334083 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@10" unique_id=1221669065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@10" unique_id=1776035173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@11" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=695269527 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@11" unique_id=429223112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@11" unique_id=839047]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@12" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=996006610 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@12" unique_id=170766551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@12" unique_id=477643027]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@13" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1356023837 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@13" unique_id=216129679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@13" unique_id=1423541569]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@14" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1586210948 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@14" unique_id=1522957457]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@14" unique_id=760956972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@15" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=130065112 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@15" unique_id=2029159788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@15" unique_id=448878213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@16" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2069492134 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@16" unique_id=1959626209]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@16" unique_id=2124175290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@17" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=477126017 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@17" unique_id=4810038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@17" unique_id=1862919601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@18" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1398878017 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@18" unique_id=2100971928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@18" unique_id=2134676438]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@19" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1702311094 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@19" unique_id=1212333031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@19" unique_id=1915413581]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@20" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=717040726 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@20" unique_id=1693313643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@20" unique_id=34724721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@21" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1743666200 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@21" unique_id=1775664974]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@21" unique_id=432942937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@22" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=320405606 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@22" unique_id=1874352804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@22" unique_id=1009369106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@23" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=401841794 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@23" unique_id=1952167715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@23" unique_id=1662079579]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@24" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=397083272 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@24" unique_id=1637087879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@24" unique_id=623311049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@25" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=435432977 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@25" unique_id=231385583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@25" unique_id=273939226]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@26" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1780881863 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@26" unique_id=1737818173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@26" unique_id=1748298216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@27" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=82447182 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@27" unique_id=271610218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@27" unique_id=1668403474]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@28" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1605560986 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@28" unique_id=1193436491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@28" unique_id=1413501090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@29" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=682571628 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@29" unique_id=1413982877]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@29" unique_id=571483471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@30" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1653395353 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@30" unique_id=1530077536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@30" unique_id=611063715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@31" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=930579264 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@31" unique_id=38980166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@31" unique_id=1288997754]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@32" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=642172056 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@32" unique_id=1942452001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@32" unique_id=724904846]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@33" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2115809310 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@33" unique_id=1738735487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@33" unique_id=311145530]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@34" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1801946202 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@34" unique_id=802952604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@34" unique_id=360084532]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@35" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=846245386 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@35" unique_id=74667526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@35" unique_id=1543443945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@36" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1178566665 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@36" unique_id=88775622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@36" unique_id=2128921435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@37" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1301047098 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@37" unique_id=347664120]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@37" unique_id=1977471353]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@38" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1440277026 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@38" unique_id=1685739533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@38" unique_id=1668523187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@39" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1506291003 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@39" unique_id=739531367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@39" unique_id=4280258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@40" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1238725896 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@40" unique_id=151174250]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@40" unique_id=368522332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@41" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=867020981 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@41" unique_id=1283943609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@41" unique_id=108424939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@42" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=531928975 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@42" unique_id=967960965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@42" unique_id=344503360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@43" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=181638847 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@43" unique_id=170886756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@43" unique_id=164116032]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@44" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=298498138 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@44" unique_id=2077054525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@44" unique_id=1670418070]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@45" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2091876125 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@45" unique_id=453671287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@45" unique_id=1241272064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@46" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=969318875 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@46" unique_id=1127268696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@46" unique_id=1929625478]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@47" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1591544243 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@47" unique_id=1261444085]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@47" unique_id=324233929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@48" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=504161222 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@48" unique_id=914119947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@48" unique_id=432062605]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@49" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=401424709 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@49" unique_id=15608148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@49" unique_id=722068301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@50" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1136402573 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@50" unique_id=1399205734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@50" unique_id=806683358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@51" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=194583923 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@51" unique_id=633312689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@51" unique_id=479026810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@52" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=836937270 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@52" unique_id=1444815193]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@52" unique_id=1162013524]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@53" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=545302379 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@53" unique_id=950021893]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@53" unique_id=547500183]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@54" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=775661108 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@54" unique_id=909165061]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@54" unique_id=1355723318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@55" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=148889101 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@55" unique_id=19118618]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@55" unique_id=566177034]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@56" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1372771903 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@56" unique_id=1662492511]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@56" unique_id=1961664592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@57" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1119007887 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@57" unique_id=512068993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@57" unique_id=286360686]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@58" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=92730090 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@58" unique_id=1890748041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@58" unique_id=842066199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@59" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=704871609 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@59" unique_id=550771517]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@59" unique_id=1263425553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@60" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1092642959 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@60" unique_id=871079020]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@60" unique_id=1830340330]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@61" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1892435585 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@61" unique_id=467633766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@61" unique_id=350830847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@62" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2057091005 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@62" unique_id=1273028492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@62" unique_id=955013409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@63" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1581017564 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@63" unique_id=1184079814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@63" unique_id=1541357559]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@64" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1425185220 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@64" unique_id=827970338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@64" unique_id=1007783429]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@65" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1831291424 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@65" unique_id=141103061]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@65" unique_id=966265929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@66" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=694328053 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@66" unique_id=122908015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@66" unique_id=1806487606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@67" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1867798292 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@67" unique_id=2009913973]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@67" unique_id=562770222]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@68" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1349542705 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@68" unique_id=993604450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@68" unique_id=1899901357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@69" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1331533992 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@69" unique_id=1214873552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@69" unique_id=1427815193]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@70" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=333464302 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@70" unique_id=1084460687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@70" unique_id=340093148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@71" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1256528843 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@71" unique_id=355809385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@71" unique_id=717089925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@72" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1902543752 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@72" unique_id=1002117239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@72" unique_id=1915345707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@73" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=639308349 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@73" unique_id=1468285300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@73" unique_id=1248397757]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@74" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=146734833 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@74" unique_id=1878045341]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@74" unique_id=612338581]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@75" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2064274714 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@75" unique_id=2137960336]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@75" unique_id=986956710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@76" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=577221197 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@76" unique_id=1435230094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@76" unique_id=128396101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@77" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=900471501 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@77" unique_id=820710418]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@77" unique_id=797010976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@78" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=630012655 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@78" unique_id=593738054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@78" unique_id=1964289657]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@79" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1984614950 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@79" unique_id=1903522643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@79" unique_id=1345506875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@80" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1436560146 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@80" unique_id=785992435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@80" unique_id=112752230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@81" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=867858400 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@81" unique_id=474773208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@81" unique_id=525133287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@82" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=848650101 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@82" unique_id=983361787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@82" unique_id=1498326429]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@83" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=41459682 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@83" unique_id=313867720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@83" unique_id=961058944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@84" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=54477786 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@84" unique_id=1910018276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@84" unique_id=46977741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@85" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1871705577 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@85" unique_id=1251845229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@85" unique_id=1923375129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@86" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=556708831 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@86" unique_id=1730504886]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@86" unique_id=2074478750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@87" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=274564260 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@87" unique_id=1854334588]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@87" unique_id=1143915679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@88" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=526735789 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@88" unique_id=156615608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@88" unique_id=307541695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@89" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=524861362 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@89" unique_id=210760070]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@89" unique_id=1082191767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@90" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=53308423 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@90" unique_id=83674402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@90" unique_id=99315445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@91" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1377142910 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@91" unique_id=83631474]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@91" unique_id=1188944720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@92" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=955534952 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@92" unique_id=1074669613]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@92" unique_id=1615256234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@93" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=559766610 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@93" unique_id=1826881475]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@93" unique_id=1423158773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@94" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1420674547 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@94" unique_id=1341350887]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@94" unique_id=1357140914]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@95" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=110268030 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@95" unique_id=709230071]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@95" unique_id=580729262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@96" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1568953319 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@96" unique_id=1548501705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@96" unique_id=1274212608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@97" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=914813611 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@97" unique_id=971971043]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@97" unique_id=1704944893]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@98" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=205640250 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@98" unique_id=122325077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@98" unique_id=1116860577]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@99" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1427981868 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@99" unique_id=81619411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@99" unique_id=1631673553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@100" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=668492456 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@100" unique_id=1388909191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@100" unique_id=1653168156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@101" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=373551351 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@101" unique_id=857581686]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@101" unique_id=936819376]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@102" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=2110184323 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@102" unique_id=450705260]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@102" unique_id=1198662689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@103" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1487628707 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@103" unique_id=372281213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@103" unique_id=1190907713]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@104" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1650357056 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@104" unique_id=654384522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@104" unique_id=938202524]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@105" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1725986573 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@105" unique_id=830335307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@105" unique_id=1017245081]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@106" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1772513456 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@106" unique_id=1615133002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@106" unique_id=1407672100]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@107" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=159751816 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@107" unique_id=1978584772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@107" unique_id=918923561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@108" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=557486992 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@108" unique_id=1752894351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@108" unique_id=1799260522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@109" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=997201681 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@109" unique_id=1425597561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@109" unique_id=1014668511]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@110" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1665641587 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@110" unique_id=343672464]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@110" unique_id=2071837428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@111" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=453232722 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@111" unique_id=856085915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@111" unique_id=286101921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@112" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=596550025 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@112" unique_id=878217214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@112" unique_id=1341563060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@113" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1594657350 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@113" unique_id=1928807074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@113" unique_id=919691165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@114" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1106293607 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@114" unique_id=229749661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@114" unique_id=2121782409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@115" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=84965129 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@115" unique_id=1159165767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@115" unique_id=1156452965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@116" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1745253611 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@116" unique_id=1111393225]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@116" unique_id=784787428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@117" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1193586845 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@117" unique_id=901289498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@117" unique_id=1633123981]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@118" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=989832808 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@118" unique_id=1252655926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@118" unique_id=2077673983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@119" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=361702081 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@119" unique_id=1746683494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@119" unique_id=903066271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@120" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=109365003 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@120" unique_id=1125252658]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@120" unique_id=1318805555]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@121" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1438532876 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@121" unique_id=1027854353]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@121" unique_id=2006190818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@122" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=276163261 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@122" unique_id=469996381]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@122" unique_id=1468000007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@123" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1895396031 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@123" unique_id=529954934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@123" unique_id=1150692633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@124" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1638805662 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@124" unique_id=801055276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@124" unique_id=1002829692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@125" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=614484040 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@125" unique_id=1659079192]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@125" unique_id=1018047929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="@StaticBody3D@126" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=190655562 groups=["voxel_block"] instance=ExtResource("2_173yj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 12, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@126" unique_id=1919892875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_dirt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@126" unique_id=427905402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_dirt")
+
+[node name="@StaticBody3D@127" type="StaticBody3D" parent="VoxelPlotTerrain" unique_id=1132226870 groups=["voxel_block"] instance=ExtResource("3_vxm6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 10, 14)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VoxelPlotTerrain/@StaticBody3D@127" unique_id=1559561515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+shape = SubResource("BoxShape3D_stone")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelPlotTerrain/@StaticBody3D@127" unique_id=1278546724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_stone")
+
+[node name="VoxelCursorBox" type="Node3D" parent="." unique_id=544805125 instance=ExtResource("4_3cd4u")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VoxelCursorBox" unique_id=1280695245]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
+mesh = SubResource("BoxMesh_cursor")
+
+[node name="VoxelHotbar" type="Node" parent="." unique_id=1130018901]
+script = ExtResource("5_upqwk")
+
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=837476257]
+script = ExtResource("6_1b42i")
+
+[node name="VirtualFPVCamera" type="Node3D" parent="CameraHost3D" unique_id=1935796389]
+script = ExtResource("7_mocxg")
+priority = 10
+
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=57539578 instance=ExtResource("8_v3xf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 14, 8)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("9_n8x3p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=1807709406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_hero")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=1757942445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_hero")
+
+[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=646478440]
+script = ExtResource("10_x0duw")
+
+[node name="VoxelMover3D" type="Node" parent="PlayerCharacter" unique_id=1927802735]
+script = ExtResource("11_jowwx")

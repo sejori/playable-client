@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hex"]
+height = 0.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
+albedo_color = Color(0.48, 0.46, 0.44, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hex"]
+material = SubResource("StandardMaterial3D_rock")
+top_radius = 2.0
+bottom_radius = 2.0
+height = 0.5
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_peak"]
+albedo_color = Color(0.85, 0.88, 0.92, 1)
+roughness = 0.8
+
+[sub_resource type="PrismMesh" id="PrismMesh_peak"]
+material = SubResource("StandardMaterial3D_peak")
+size = Vector3(1.6, 2.2, 1.6)
+
+[node name="HexMountain" type="StaticBody3D" groups=["hex_tile"]]
+collision_layer = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_hex")
+
+[node name="BaseMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("CylinderMesh_hex")
+
+[node name="PeakMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("PrismMesh_peak")
