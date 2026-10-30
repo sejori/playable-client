@@ -151,19 +151,11 @@ def run_capture(slug: str):
     subprocess.run(cmd_poster, check=True, capture_output=True)
     print(f"Extracted Poster: {poster_out.name} ({poster_out.stat().st_size} bytes)")
     
-    # Update showcase registry JSON
+    # Update showcase registry JSON with safe retry
+    import time
     registry_file = root_dir / "playable-web" / "src" / "data" / "showcase_cartridges.json"
     registry_file.parent.mkdir(parents=True, exist_ok=True)
     
-    registry = []
-    if registry_file.exists():
-        try:
-            with open(registry_file, "r", encoding="utf-8") as f:
-                registry = json.load(f)
-        except Exception:
-            registry = []
-            
-    # Update or append
     item_data = {
         "slug": slug,
         "id": cfg["id"],
@@ -176,15 +168,28 @@ def run_capture(slug: str):
         "videoMp4": f"./showcase/{slug}.mp4",
         "poster": f"./showcase/{slug}-poster.jpg"
     }
-    
-    existing_idx = next((i for i, item in enumerate(registry) if item.get("slug") == slug), None)
-    if existing_idx is not None:
-        registry[existing_idx] = item_data
-    else:
-        registry.append(item_data)
-        
-    with open(registry_file, "w", encoding="utf-8") as f:
-        json.dump(registry, f, indent=2)
+
+    for attempt in range(5):
+        try:
+            registry = []
+            if registry_file.exists():
+                with open(registry_file, "r", encoding="utf-8") as f:
+                    registry = json.load(f)
+            
+            existing_idx = next((i for i, item in enumerate(registry) if item.get("slug") == slug), None)
+            if existing_idx is not None:
+                registry[existing_idx] = item_data
+            else:
+                registry.append(item_data)
+                
+            # Maintain stable cartridge ordering
+            registry.sort(key=lambda x: x.get("cartridge", "99"))
+            
+            with open(registry_file, "w", encoding="utf-8") as f:
+                json.dump(registry, f, indent=2)
+            break
+        except Exception:
+            time.sleep(0.3)
         
     print(f"Showcase registry updated at: {registry_file}")
     print(f"=== Showcase for {slug} COMPLETE ===")
