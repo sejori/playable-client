@@ -1,12 +1,19 @@
 extends SceneTree
 ## scaffold.gd
-## Headless Scaffolding Engine (Layer 4) for generating complete 3D zone scenes across 6 genres:
+## Headless Scaffolding Engine (Layer 6) for generating minimal, crash-proof 3D zone substrates across 6 genres:
 ## 1. arena (Action-RPG)
 ## 2. town_square (Tick Sandbox)
 ## 3. voxel_plot (Voxel Survival)
 ## 4. hex_board (4X Strategy)
 ## 5. three_lane_fps (Arena FPS)
 ## 6. circuit_track (Collector Tycoon)
+##
+## Guarantees the 5 core mechanical invariants:
+## - Static collision floor (StaticBody3D + CollisionShape3D)
+## - Lighting baseline (DirectionalLight3D + WorldEnvironment)
+## - Navigation substrate (NavigationRegion3D)
+## - Player spawn & avatar (Marker3D PlayerSpawn + CharacterBody3D PlayerCharacter)
+## - Active camera substrate (CameraHost3D + genre VirtualCamera)
 ##
 ## Usage:
 ## godot --headless --path playable-client -s res://tools/scaffold.gd -- pattern=<pattern> output=<path>
@@ -48,7 +55,7 @@ func _init() -> void:
 		elif arg.begins_with("--output="):
 			output_path = arg.trim_prefix("--output=").strip_edges()
 
-	print("[ScaffoldEngine] Generating pattern '%s' -> '%s'..." % [pattern, output_path])
+	print("[ScaffoldEngine] Generating neutral pattern '%s' -> '%s'..." % [pattern, output_path])
 
 	var root_node: Node3D = null
 	match pattern:
@@ -88,7 +95,7 @@ func _init() -> void:
 		quit(1)
 		return
 
-	print("[ScaffoldEngine] Successfully scaffolded '%s' -> '%s'!" % [pattern, output_path])
+	print("[ScaffoldEngine] Successfully scaffolded neutral substrate '%s' -> '%s'!" % [pattern, output_path])
 	quit(0)
 
 func _set_owner_recursive(node: Node, scene_owner: Node) -> void:
@@ -96,15 +103,36 @@ func _set_owner_recursive(node: Node, scene_owner: Node) -> void:
 		child.owner = scene_owner
 		_set_owner_recursive(child, scene_owner)
 
+func _add_default_environment(root: Node3D) -> void:
+	var env_node := WorldEnvironment.new()
+	env_node.name = "WorldEnvironment"
+	var env := Environment.new()
+	env.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sky_mat := ProceduralSkyMaterial.new()
+	sky.sky_material = sky_mat
+	env.sky = sky
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	env_node.environment = env
+	root.add_child(env_node)
+
+	var sun := DirectionalLight3D.new()
+	sun.name = "DirectionalLight3D"
+	sun.rotation_degrees = Vector3(-45.0, 30.0, 0.0)
+	sun.shadow_enabled = true
+	root.add_child(sun)
+
 # ==============================================================================
-# 1. Pattern: ARENA (Cartridge 1: Action-RPG)
+# 1. Pattern: ARENA (Action-RPG Substrate)
 # ==============================================================================
 func _build_arena_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "ActionRpgArena"
 	root.set_script(load("res://scripts/zones/arena_zone.gd"))
 
-	# Navigation Region & Floor
+	_add_default_environment(root)
+
+	# Navigation Region & Ground Floor
 	var nav_region := NavigationRegion3D.new()
 	nav_region.name = "NavigationRegion3D"
 	var nav_mesh := NavigationMesh.new()
@@ -118,7 +146,7 @@ func _build_arena_pattern() -> Node3D:
 	root.add_child(nav_region)
 
 	var floor_body := StaticBody3D.new()
-	floor_body.name = "RigDeckFloor"
+	floor_body.name = "GroundFloor"
 	floor_body.collision_layer = 1
 	var floor_col := CollisionShape3D.new()
 	var floor_box := BoxShape3D.new()
@@ -127,49 +155,15 @@ func _build_arena_pattern() -> Node3D:
 	floor_body.add_child(floor_col)
 	nav_region.add_child(floor_body)
 
-	# Spawns
+	# Generic Player Spawn
 	var spawns := Node3D.new()
 	spawns.name = "SpawnPoints"
 	root.add_child(spawns)
 
 	var p_spawn := Marker3D.new()
-	p_spawn.name = "PlayerBoatSpawn"
-	p_spawn.position = Vector3(0.0, 1.2, 18.0)
+	p_spawn.name = "PlayerSpawn"
+	p_spawn.position = Vector3(0.0, 1.2, 0.0)
 	spawns.add_child(p_spawn)
-
-	# Interactables / Hazard Vents
-	var interactables := Node3D.new()
-	interactables.name = "Interactables"
-	root.add_child(interactables)
-
-	var vent_scene := load("res://library/modular/hazard_vent.tscn") as PackedScene
-	if vent_scene != null:
-		var vent := vent_scene.instantiate() as Node3D
-		vent.name = "CoalVent_01"
-		vent.position = Vector3(-8.5, 0.0, 2.0)
-		interactables.add_child(vent)
-
-	# Boss Arena
-	var boss_arena := Node3D.new()
-	boss_arena.name = "BossArena"
-	boss_arena.position = Vector3(0.0, 0.0, -28.0)
-	root.add_child(boss_arena)
-
-	var warden_spawn := Marker3D.new()
-	warden_spawn.name = "WardenSpawn"
-	warden_spawn.position = Vector3(0.0, 1.5, -6.0)
-	boss_arena.add_child(warden_spawn)
-
-	var arena_trigger := Area3D.new()
-	arena_trigger.name = "ArenaTrigger"
-	arena_trigger.collision_layer = 1
-	arena_trigger.collision_mask = 2
-	var trig_col := CollisionShape3D.new()
-	var sph := SphereShape3D.new()
-	sph.radius = 12.0
-	trig_col.shape = sph
-	arena_trigger.add_child(trig_col)
-	boss_arena.add_child(arena_trigger)
 
 	# Camera Host & Follow Camera
 	var cam_host := CameraHost3DScript.new()
@@ -187,18 +181,20 @@ func _build_arena_pattern() -> Node3D:
 	if hero_scene != null:
 		var hero := hero_scene.instantiate() as CharacterBody3D
 		hero.name = "PlayerCharacter"
-		hero.position = Vector3(0.0, 1.2, 18.0)
+		hero.position = Vector3(0.0, 1.2, 0.0)
 		root.add_child(hero)
 		follow_cam.target = hero
 
 	return root
 
 # ==============================================================================
-# 2. Pattern: TOWN_SQUARE (Cartridge 2: Tick Sandbox)
+# 2. Pattern: TOWN_SQUARE (Tick Sandbox Substrate)
 # ==============================================================================
 func _build_town_square_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "TickSandboxTown"
+
+	_add_default_environment(root)
 
 	var nav_region := NavigationRegion3D.new()
 	nav_region.name = "NavigationRegion3D"
@@ -211,9 +207,8 @@ func _build_town_square_pattern() -> Node3D:
 	nav_region.navigation_mesh = nav_mesh
 	root.add_child(nav_region)
 
-	# Town ground
 	var ground := StaticBody3D.new()
-	ground.name = "TownSquareFloor"
+	ground.name = "GroundFloor"
 	ground.collision_layer = 1
 	var g_col := CollisionShape3D.new()
 	var g_box := BoxShape3D.new()
@@ -222,7 +217,7 @@ func _build_town_square_pattern() -> Node3D:
 	ground.add_child(g_col)
 	nav_region.add_child(ground)
 
-	# Spawns
+	# Generic Player Spawn
 	var spawns := Node3D.new()
 	spawns.name = "SpawnPoints"
 	root.add_child(spawns)
@@ -230,30 +225,6 @@ func _build_town_square_pattern() -> Node3D:
 	p_spawn.name = "PlayerSpawn"
 	p_spawn.position = Vector3(0.0, 0.5, 0.0)
 	spawns.add_child(p_spawn)
-
-	# Bank Booth
-	var bank_scene := load("res://library/sandbox/bank_booth.tscn") as PackedScene
-	if bank_scene != null:
-		var bank := bank_scene.instantiate() as Node3D
-		bank.name = "BankBooth"
-		bank.position = Vector3(0.0, 0.0, -8.0)
-		root.add_child(bank)
-
-	# Harvest Tree
-	var tree_scene := load("res://library/sandbox/harvest_tree_oak.tscn") as PackedScene
-	if tree_scene != null:
-		var tree := tree_scene.instantiate() as Node3D
-		tree.name = "HarvestTree_01"
-		tree.position = Vector3(6.0, 0.0, 4.0)
-		root.add_child(tree)
-
-	# Iron Ore Rock
-	var rock_scene := load("res://library/sandbox/mine_rock_iron.tscn") as PackedScene
-	if rock_scene != null:
-		var rock := rock_scene.instantiate() as Node3D
-		rock.name = "MineRock_01"
-		rock.position = Vector3(-6.0, 0.0, 5.0)
-		root.add_child(rock)
 
 	# Deterministic 600ms Tick Server
 	var tick_server := TickServerScript.new()
@@ -277,7 +248,6 @@ func _build_town_square_pattern() -> Node3D:
 		var hero := hero_scene.instantiate() as CharacterBody3D
 		hero.name = "PlayerCharacter"
 		hero.position = Vector3(0.0, 0.5, 0.0)
-		# Replace mover with ClickToMove
 		var old_mover := hero.get_node_or_null("ActionMover3D")
 		if old_mover != null:
 			old_mover.queue_free()
@@ -290,11 +260,13 @@ func _build_town_square_pattern() -> Node3D:
 	return root
 
 # ==============================================================================
-# 3. Pattern: VOXEL_PLOT (Cartridge 3: Voxel Survival)
+# 3. Pattern: VOXEL_PLOT (Voxel Survival Substrate)
 # ==============================================================================
 func _build_voxel_plot_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "VoxelSurvivalPlot"
+
+	_add_default_environment(root)
 
 	# Voxel Generator & Grid
 	var generator := VoxelWorldGeneratorScript.new()
@@ -310,7 +282,7 @@ func _build_voxel_plot_pattern() -> Node3D:
 	p_spawn.position = Vector3(8.0, 14.0, 8.0)
 	spawns.add_child(p_spawn)
 
-	# Base plot dirt floor (16x16)
+	# Base plot terrain
 	var plot_root := Node3D.new()
 	plot_root.name = "VoxelPlotTerrain"
 	root.add_child(plot_root)
@@ -329,14 +301,13 @@ func _build_voxel_plot_pattern() -> Node3D:
 				stone.position = Vector3(x, 10, z)
 				plot_root.add_child(stone)
 
-	# Wireframe cursor box
+	# Wireframe cursor box & Hotbar selector
 	var cursor_scene := load("res://library/voxel/voxel_cursor_box.tscn") as PackedScene
 	if cursor_scene != null:
 		var cursor := cursor_scene.instantiate() as Node3D
 		cursor.name = "VoxelCursorBox"
 		root.add_child(cursor)
 
-	# Hotbar selector
 	var hotbar := VoxelHotbarScript.new()
 	hotbar.name = "VoxelHotbar"
 	root.add_child(hotbar)
@@ -369,11 +340,13 @@ func _build_voxel_plot_pattern() -> Node3D:
 	return root
 
 # ==============================================================================
-# 4. Pattern: HEX_BOARD (Cartridge 4: 4X Strategy & Tabletop)
+# 4. Pattern: HEX_BOARD (4X Strategy Substrate)
 # ==============================================================================
 func _build_hex_board_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "StrategyHexBoard"
+
+	_add_default_environment(root)
 
 	var turn_manager := TurnManagerScript.new()
 	turn_manager.name = "TurnManager"
@@ -407,7 +380,7 @@ func _build_hex_board_pattern() -> Node3D:
 					tile.position = world_pos
 					board_root.add_child(tile)
 
-	# Unit Knight Figurine
+	# Unit Figurine
 	var knight_scene := load("res://library/strategy/unit_pawn_knight.tscn") as PackedScene
 	if knight_scene != null:
 		var knight := knight_scene.instantiate() as CharacterBody3D
@@ -429,11 +402,13 @@ func _build_hex_board_pattern() -> Node3D:
 	return root
 
 # ==============================================================================
-# 5. Pattern: THREE_LANE_FPS (Cartridge 5: Arena FPS)
+# 5. Pattern: THREE_LANE_FPS (Arena FPS Substrate)
 # ==============================================================================
 func _build_three_lane_fps_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "ArenaFpsThreeLane"
+
+	_add_default_environment(root)
 
 	var nav_region := NavigationRegion3D.new()
 	nav_region.name = "NavigationRegion3D"
@@ -447,7 +422,7 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	root.add_child(nav_region)
 
 	var floor_body := StaticBody3D.new()
-	floor_body.name = "ArenaFloor"
+	floor_body.name = "GroundFloor"
 	floor_body.collision_layer = 1
 	var f_col := CollisionShape3D.new()
 	var f_box := BoxShape3D.new()
@@ -456,49 +431,15 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	floor_body.add_child(f_col)
 	nav_region.add_child(floor_body)
 
-	# Spawns
+	# Generic Player Spawn
 	var spawns := Node3D.new()
 	spawns.name = "SpawnPoints"
 	root.add_child(spawns)
 
-	var alpha_spawn := Marker3D.new()
-	alpha_spawn.name = "SpawnAlpha"
-	alpha_spawn.position = Vector3(0.0, 1.0, 28.0)
-	spawns.add_child(alpha_spawn)
-
-	var beta_spawn := Marker3D.new()
-	beta_spawn.name = "SpawnBeta"
-	beta_spawn.position = Vector3(0.0, 1.0, -28.0)
-	spawns.add_child(beta_spawn)
-
-	# Cover barriers & bunker walls
-	var bunker_scene := load("res://library/fps/bunker_wall_steel_4x3.tscn") as PackedScene
-	var barrier_scene := load("res://library/fps/cover_barrier_half_2x1.tscn") as PackedScene
-	var pad_scene := load("res://library/fps/pickup_health_pad.tscn") as PackedScene
-
-	var covers := Node3D.new()
-	covers.name = "ArenaCover"
-	root.add_child(covers)
-
-	# Left, Center, Right lane barriers
-	if barrier_scene != null:
-		var c_left := barrier_scene.instantiate() as Node3D
-		c_left.position = Vector3(-12.0, 0.0, 0.0)
-		covers.add_child(c_left)
-
-		var c_mid := barrier_scene.instantiate() as Node3D
-		c_mid.position = Vector3(0.0, 0.0, 0.0)
-		covers.add_child(c_mid)
-
-		var c_right := barrier_scene.instantiate() as Node3D
-		c_right.position = Vector3(12.0, 0.0, 0.0)
-		covers.add_child(c_right)
-
-	# Central health pickup
-	if pad_scene != null:
-		var pad := pad_scene.instantiate() as Node3D
-		pad.position = Vector3(0.0, 0.0, 6.0)
-		root.add_child(pad)
+	var p_spawn := Marker3D.new()
+	p_spawn.name = "PlayerSpawn"
+	p_spawn.position = Vector3(0.0, 1.0, 0.0)
+	spawns.add_child(p_spawn)
 
 	# FPV Camera Host
 	var cam_host := CameraHost3DScript.new()
@@ -515,7 +456,7 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	if hero_scene != null:
 		var hero := hero_scene.instantiate() as CharacterBody3D
 		hero.name = "PlayerCharacter"
-		hero.position = Vector3(0.0, 1.0, 28.0)
+		hero.position = Vector3(0.0, 1.0, 0.0)
 		var old_mover := hero.get_node_or_null("ActionMover3D")
 		if old_mover != null:
 			old_mover.queue_free()
@@ -523,7 +464,6 @@ func _build_three_lane_fps_pattern() -> Node3D:
 		fps_mover.name = "FPSMover3D"
 		hero.add_child(fps_mover)
 
-		# Add viewmodel blaster
 		var blaster_scene := load("res://library/fps/fps_viewmodel_blaster.tscn") as PackedScene
 		if blaster_scene != null:
 			var blaster := blaster_scene.instantiate() as Node3D
@@ -535,11 +475,13 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	return root
 
 # ==============================================================================
-# 6. Pattern: CIRCUIT_TRACK (Cartridge 6: Collector Tycoon)
+# 6. Pattern: CIRCUIT_TRACK (Collector Tycoon Substrate)
 # ==============================================================================
 func _build_circuit_track_pattern() -> Node3D:
 	var root := Node3D.new()
 	root.name = "CollectorTycoonCircuit"
+
+	_add_default_environment(root)
 
 	var nav_region := NavigationRegion3D.new()
 	nav_region.name = "NavigationRegion3D"
@@ -553,7 +495,7 @@ func _build_circuit_track_pattern() -> Node3D:
 	root.add_child(nav_region)
 
 	var floor_body := StaticBody3D.new()
-	floor_body.name = "TrackGround"
+	floor_body.name = "GroundFloor"
 	floor_body.collision_layer = 1
 	var f_col := CollisionShape3D.new()
 	var f_box := BoxShape3D.new()
@@ -562,45 +504,15 @@ func _build_circuit_track_pattern() -> Node3D:
 	floor_body.add_child(f_col)
 	nav_region.add_child(floor_body)
 
-	# Tokens & Pickups along circuit
-	var coin_scene := load("res://library/tycoon/coin_token_gold.tscn") as PackedScene
-	var gem_scene := load("res://library/tycoon/gem_crystal_ruby.tscn") as PackedScene
-	var gate_scene := load("res://library/tycoon/MultiplierGate.tscn") as PackedScene
-	var boost_scene := load("res://library/tycoon/speed_boost_pad.tscn") as PackedScene
-	var pedestal_scene := load("res://library/tycoon/upgrade_pedestal.tscn") as PackedScene
+	# Generic Player Spawn
+	var spawns := Node3D.new()
+	spawns.name = "SpawnPoints"
+	root.add_child(spawns)
 
-	var collectibles := Node3D.new()
-	collectibles.name = "Collectibles"
-	root.add_child(collectibles)
-
-	if coin_scene != null:
-		for i in range(8):
-			var angle := float(i) * (TAU / 8.0)
-			var coin := coin_scene.instantiate() as Node3D
-			coin.name = "Coin_%d" % i
-			coin.position = Vector3(cos(angle) * 16.0, 0.5, sin(angle) * 16.0)
-			collectibles.add_child(coin)
-
-	if gem_scene != null:
-		var gem := gem_scene.instantiate() as Node3D
-		gem.name = "GemRuby_01"
-		gem.position = Vector3(0.0, 0.5, 0.0)
-		collectibles.add_child(gem)
-
-	if gate_scene != null:
-		var gate := gate_scene.instantiate() as Node3D
-		gate.position = Vector3(16.0, 0.0, 0.0)
-		root.add_child(gate)
-
-	if boost_scene != null:
-		var boost := boost_scene.instantiate() as Node3D
-		boost.position = Vector3(0.0, 0.0, -16.0)
-		root.add_child(boost)
-
-	if pedestal_scene != null:
-		var ped := pedestal_scene.instantiate() as Node3D
-		ped.position = Vector3(-6.0, 0.0, -6.0)
-		root.add_child(ped)
+	var p_spawn := Marker3D.new()
+	p_spawn.name = "PlayerSpawn"
+	p_spawn.position = Vector3(0.0, 0.6, 0.0)
+	spawns.add_child(p_spawn)
 
 	# Chase Camera Host
 	var cam_host := CameraHost3DScript.new()
@@ -617,7 +529,7 @@ func _build_circuit_track_pattern() -> Node3D:
 	if vehicle_scene != null:
 		var cart := vehicle_scene.instantiate() as CharacterBody3D
 		cart.name = "PlayerCharacter"
-		cart.position = Vector3(-16.0, 0.6, 0.0)
+		cart.position = Vector3(0.0, 0.6, 0.0)
 		root.add_child(cart)
 		chase_cam.target = cart
 
