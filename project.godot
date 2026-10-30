@@ -63,6 +63,23 @@ voice_architect_ptt={
 "deadzone": 0.5,
 "events": []
 }
+jump={
+"deadzone": 0.5,
+"events": []
+}
+sprint={
+"deadzone": 0.5,
+"events": []
+}
+crouch={
+"deadzone": 0.5,
+"events": []
+}
+dodge={
+"deadzone": 0.5,
+"events": []
+}
+
 
 [layer_names]
 
