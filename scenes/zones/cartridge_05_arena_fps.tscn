@@ -1,52 +1,32 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://library/fps/cover_barrier_half_2x1.tscn" id="1_mwln2"]
-[ext_resource type="PackedScene" path="res://library/fps/pickup_health_pad.tscn" id="2_is8sa"]
-[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="3_ulgam"]
-[ext_resource type="Script" path="res://scripts/camera/VirtualFPVCamera3D.gd" id="4_y827u"]
-[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="5_8gql5"]
-[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="6_eyaga"]
-[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="7_n0ula"]
-[ext_resource type="Script" path="res://scripts/movement/FPSMover3D.gd" id="8_jf2iq"]
-[ext_resource type="PackedScene" path="res://library/fps/fps_viewmodel_blaster.tscn" id="9_ur8ve"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="1_hpgqm"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualFPVCamera3D.gd" id="2_o14de"]
+[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="3_mwln2"]
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="4_is8sa"]
+[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="5_ulgam"]
+[ext_resource type="Script" path="res://scripts/movement/FPSMover3D.gd" id="6_y827u"]
+[ext_resource type="PackedScene" path="res://library/fps/fps_viewmodel_blaster.tscn" id="7_8gql5"]
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_s3b53"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eyaga"]
+
+[sub_resource type="Sky" id="Sky_n0ula"]
+sky_material = SubResource("ProceduralSkyMaterial_eyaga")
+
+[sub_resource type="Environment" id="Environment_jf2iq"]
+background_mode = 2
+sky = SubResource("Sky_n0ula")
+ambient_light_source = 3
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_ur8ve"]
 vertices = PackedVector3Array(-24, 0, -36, -24, 0, 36, 24, 0, 36, 24, 0, -36)
 polygons = [PackedInt32Array(0, 1, 2, 3)]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vl8tq"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_s3b53"]
 size = Vector3(48, 0.4, 72)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_barrier"]
-size = Vector3(2, 1.2, 0.6)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_barrier"]
-albedo_color = Color(0.35, 0.38, 0.42, 1)
-metallic = 0.5
-roughness = 0.7
-
-[sub_resource type="BoxMesh" id="BoxMesh_barrier"]
-material = SubResource("StandardMaterial3D_barrier")
-size = Vector3(2, 1.2, 0.6)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_pad"]
-height = 0.8
-radius = 1.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cross"]
-albedo_color = Color(0.15, 0.9, 0.35, 1)
-roughness = 0.2
-emission_enabled = true
-emission = Color(0.1, 0.95, 0.3, 1)
-emission_energy_multiplier = 1.5
-
-[sub_resource type="BoxMesh" id="BoxMesh_bar_h"]
-material = SubResource("StandardMaterial3D_cross")
-size = Vector3(0.8, 0.24, 0.2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_bar_v"]
-material = SubResource("StandardMaterial3D_cross")
-size = Vector3(0.24, 0.8, 0.2)
+[sub_resource type="BoxMesh" id="BoxMesh_vl8tq"]
+size = Vector3(48, 0.4, 72)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
 height = 1.8
@@ -83,108 +63,65 @@ top_radius = 0.04
 bottom_radius = 0.04
 height = 0.35
 
-[node name="ArenaFpsThreeLane" type="Node3D" unique_id=1506387877]
+[node name="ArenaFpsThreeLane" type="Node3D" unique_id=1223818449]
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=713238686]
-navigation_mesh = SubResource("NavigationMesh_s3b53")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=254001895]
+environment = SubResource("Environment_jf2iq")
 
-[node name="ArenaFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1766926762]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=908194157]
+transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
+shadow_enabled = true
 
-[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/ArenaFloor" unique_id=759678188]
-shape = SubResource("BoxShape3D_vl8tq")
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=548081265]
+navigation_mesh = SubResource("NavigationMesh_ur8ve")
 
-[node name="SpawnPoints" type="Node3D" parent="." unique_id=1446255096]
+[node name="GroundFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=703905700]
 
-[node name="SpawnAlpha" type="Marker3D" parent="SpawnPoints" unique_id=141753527]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 28)
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/GroundFloor" unique_id=1417381888]
+shape = SubResource("BoxShape3D_s3b53")
 
-[node name="SpawnBeta" type="Marker3D" parent="SpawnPoints" unique_id=987592694]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -28)
+[node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=284164383]
+mesh = SubResource("BoxMesh_vl8tq")
 
-[node name="ArenaCover" type="Node3D" parent="." unique_id=1691145753]
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1317099955]
 
-[node name="CoverBarrierHalf2x1" type="StaticBody3D" parent="ArenaCover" unique_id=2008037831 instance=ExtResource("1_mwln2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+[node name="PlayerSpawn" type="Marker3D" parent="SpawnPoints" unique_id=787333587]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaCover/CoverBarrierHalf2x1" unique_id=2019147882]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_barrier")
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=1017562943]
+script = ExtResource("1_hpgqm")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaCover/CoverBarrierHalf2x1" unique_id=1774735237]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_barrier")
-
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="ArenaCover" unique_id=165643130 instance=ExtResource("1_mwln2")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaCover/@StaticBody3D@3" unique_id=97863916]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_barrier")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaCover/@StaticBody3D@3" unique_id=1337643639]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_barrier")
-
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="ArenaCover" unique_id=1889767110 instance=ExtResource("1_mwln2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaCover/@StaticBody3D@4" unique_id=1233500966]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_barrier")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaCover/@StaticBody3D@4" unique_id=15752344]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_barrier")
-
-[node name="PickupHealthPad" type="Area3D" parent="." unique_id=1983813501 groups=["health_pickup", "interactable"] instance=ExtResource("2_is8sa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
-collision_layer = 4
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PickupHealthPad" unique_id=99073676]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-shape = SubResource("CylinderShape3D_pad")
-
-[node name="CrossHorizontal" type="MeshInstance3D" parent="PickupHealthPad" unique_id=1816853882]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_bar_h")
-
-[node name="CrossVertical" type="MeshInstance3D" parent="PickupHealthPad" unique_id=198047034]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_bar_v")
-
-[node name="CameraHost3D" type="Node3D" parent="." unique_id=611938165]
-script = ExtResource("3_ulgam")
-
-[node name="VirtualFPVCamera" type="Node3D" parent="CameraHost3D" unique_id=1107207682]
-script = ExtResource("4_y827u")
+[node name="VirtualFPVCamera" type="Node3D" parent="CameraHost3D" unique_id=1453787017]
+script = ExtResource("2_o14de")
 priority = 10
+target_path = NodePath("../../PlayerCharacter")
 
-[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=11200725 instance=ExtResource("5_8gql5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 28)
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=204780956 instance=ExtResource("3_mwln2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 collision_layer = 2
 collision_mask = 13
-script = ExtResource("6_eyaga")
+script = ExtResource("4_is8sa")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=1612288786]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=1718944959]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_hero")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=444280845]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=1057970372]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 mesh = SubResource("CapsuleMesh_hero")
 
-[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=998184492]
-script = ExtResource("7_n0ula")
+[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=1723276284]
+script = ExtResource("5_ulgam")
 
-[node name="FPSMover3D" type="Node" parent="PlayerCharacter" unique_id=1230429514]
-script = ExtResource("8_jf2iq")
+[node name="FPSMover3D" type="Node" parent="PlayerCharacter" unique_id=1080432051]
+script = ExtResource("6_y827u")
 
-[node name="FPSViewmodelBlaster" type="Node3D" parent="PlayerCharacter" unique_id=540015080 instance=ExtResource("9_ur8ve")]
+[node name="FPSViewmodelBlaster" type="Node3D" parent="PlayerCharacter" unique_id=992731896 instance=ExtResource("7_8gql5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.45)
 
-[node name="BlasterBody" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=904007878]
+[node name="BlasterBody" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=553281230]
 mesh = SubResource("BoxMesh_body")
 
-[node name="BlasterBarrel" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=298229302]
+[node name="BlasterBarrel" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=425421630]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.04, -0.3)
 mesh = SubResource("CylinderMesh_barrel")
