@@ -1,71 +1,32 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://library/sandbox/bank_booth.tscn" id="1_k5ua7"]
-[ext_resource type="PackedScene" path="res://library/sandbox/harvest_tree_oak.tscn" id="2_3yxqv"]
-[ext_resource type="PackedScene" path="res://library/sandbox/mine_rock_iron.tscn" id="3_ww4gj"]
-[ext_resource type="Script" path="res://library/sandbox/TickServer.gd" id="4_xha8s"]
-[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="5_l0m0d"]
-[ext_resource type="Script" path="res://scripts/camera/VirtualIsometricCamera3D.gd" id="6_rrfrf"]
-[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="7_wp4xb"]
-[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="8_676wc"]
-[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="9_jfgrk"]
-[ext_resource type="Script" path="res://scripts/movement/ClickToMoveMover3D.gd" id="10_tg2gn"]
+[ext_resource type="Script" path="res://library/sandbox/TickServer.gd" id="1_oycmp"]
+[ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="2_n6mxc"]
+[ext_resource type="Script" path="res://scripts/camera/VirtualIsometricCamera3D.gd" id="3_qcmi8"]
+[ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="4_k5ua7"]
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="5_3yxqv"]
+[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="6_ww4gj"]
+[ext_resource type="Script" path="res://scripts/movement/ClickToMoveMover3D.gd" id="7_xha8s"]
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_bdsda"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_l0m0d"]
+
+[sub_resource type="Sky" id="Sky_rrfrf"]
+sky_material = SubResource("ProceduralSkyMaterial_l0m0d")
+
+[sub_resource type="Environment" id="Environment_wp4xb"]
+background_mode = 2
+sky = SubResource("Sky_rrfrf")
+ambient_light_source = 3
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_676wc"]
 vertices = PackedVector3Array(-20, 0, -20, -20, 0, 20, 20, 0, 20, 20, 0, -20)
 polygons = [PackedInt32Array(0, 1, 2, 3)]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_givye"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_jfgrk"]
 size = Vector3(40, 0.4, 40)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_booth"]
-size = Vector3(2.4, 1.4, 1.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
-albedo_color = Color(0.48, 0.32, 0.18, 1)
-roughness = 0.75
-
-[sub_resource type="BoxMesh" id="BoxMesh_counter"]
-material = SubResource("StandardMaterial3D_wood")
-size = Vector3(2.4, 1.4, 1.2)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_trunk"]
-height = 3.5
-radius = 0.55
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bark"]
-albedo_color = Color(0.38, 0.25, 0.16, 1)
-roughness = 0.9
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
-material = SubResource("StandardMaterial3D_bark")
-top_radius = 0.45
-bottom_radius = 0.6
-height = 3.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leaves"]
-albedo_color = Color(0.18, 0.48, 0.18, 1)
-roughness = 0.85
-
-[sub_resource type="BoxMesh" id="BoxMesh_foliage"]
-material = SubResource("StandardMaterial3D_leaves")
-size = Vector3(2.4, 2.2, 2.4)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_rock"]
-radius = 1.1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
-albedo_color = Color(0.42, 0.4, 0.38, 1)
-metallic = 0.6
-roughness = 0.8
-emission_enabled = true
-emission = Color(0.6, 0.35, 0.15, 1)
-emission_energy_multiplier = 0.5
-
-[sub_resource type="SphereMesh" id="SphereMesh_rock"]
-material = SubResource("StandardMaterial3D_rock")
-radius = 1.0
-height = 1.6
+[sub_resource type="BoxMesh" id="BoxMesh_tg2gn"]
+size = Vector3(40, 0.4, 40)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
 height = 1.8
@@ -81,87 +42,58 @@ emission_energy_multiplier = 0.4
 material = SubResource("StandardMaterial3D_hero")
 height = 1.8
 
-[node name="TickSandboxTown" type="Node3D" unique_id=625007240]
+[node name="TickSandboxTown" type="Node3D" unique_id=188585409]
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=2135069065]
-navigation_mesh = SubResource("NavigationMesh_bdsda")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1315257986]
+environment = SubResource("Environment_wp4xb")
 
-[node name="TownSquareFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=159887669]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=497286560]
+transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
+shadow_enabled = true
 
-[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/TownSquareFloor" unique_id=468279913]
-shape = SubResource("BoxShape3D_givye")
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=613478285]
+navigation_mesh = SubResource("NavigationMesh_676wc")
 
-[node name="SpawnPoints" type="Node3D" parent="." unique_id=1935474680]
+[node name="GroundFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1214917516]
 
-[node name="PlayerSpawn" type="Marker3D" parent="SpawnPoints" unique_id=2063288909]
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="NavigationRegion3D/GroundFloor" unique_id=1867094817]
+shape = SubResource("BoxShape3D_jfgrk")
+
+[node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=254733143]
+mesh = SubResource("BoxMesh_tg2gn")
+
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1242856969]
+
+[node name="PlayerSpawn" type="Marker3D" parent="SpawnPoints" unique_id=1540735047]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="BankBooth" type="StaticBody3D" parent="." unique_id=1117501100 groups=["bank_station", "interactable"] instance=ExtResource("1_k5ua7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
-collision_layer = 4
+[node name="TickServer" type="Node" parent="." unique_id=1286386305]
+script = ExtResource("1_oycmp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BankBooth" unique_id=259852952]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
-shape = SubResource("BoxShape3D_booth")
+[node name="CameraHost3D" type="Node3D" parent="." unique_id=324513929]
+script = ExtResource("2_n6mxc")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BankBooth" unique_id=1101314134]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
-mesh = SubResource("BoxMesh_counter")
-
-[node name="HarvestTree_01" type="StaticBody3D" parent="." unique_id=241456034 groups=["interactable", "tree_resource"] instance=ExtResource("2_3yxqv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
-collision_layer = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HarvestTree_01" unique_id=1262436773]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
-shape = SubResource("CylinderShape3D_trunk")
-
-[node name="TrunkMesh" type="MeshInstance3D" parent="HarvestTree_01" unique_id=833953287]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
-mesh = SubResource("CylinderMesh_trunk")
-
-[node name="FoliageMesh" type="MeshInstance3D" parent="HarvestTree_01" unique_id=1505768653]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
-mesh = SubResource("BoxMesh_foliage")
-
-[node name="MineRock_01" type="StaticBody3D" parent="." unique_id=641898396 groups=["interactable", "metal_source", "ore_vein"] instance=ExtResource("3_ww4gj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 5)
-collision_layer = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MineRock_01" unique_id=244375820]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-shape = SubResource("SphereShape3D_rock")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MineRock_01" unique_id=2067770971]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("SphereMesh_rock")
-
-[node name="TickServer" type="Node" parent="." unique_id=1873377196]
-script = ExtResource("4_xha8s")
-
-[node name="CameraHost3D" type="Node3D" parent="." unique_id=455599318]
-script = ExtResource("5_l0m0d")
-
-[node name="VirtualIsometricCamera" type="Node3D" parent="CameraHost3D" unique_id=1968535709]
-script = ExtResource("6_rrfrf")
+[node name="VirtualIsometricCamera" type="Node3D" parent="CameraHost3D" unique_id=1687155672]
+script = ExtResource("3_qcmi8")
 priority = 10
+target_path = NodePath("../../PlayerCharacter")
 
-[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=912228691 instance=ExtResource("7_wp4xb")]
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=1442344556 instance=ExtResource("4_k5ua7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 2
 collision_mask = 13
-script = ExtResource("8_676wc")
+script = ExtResource("5_3yxqv")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=2033642459]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=708888147]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_hero")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=511572585]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=2091508462]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 mesh = SubResource("CapsuleMesh_hero")
 
-[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=828165688]
-script = ExtResource("9_jfgrk")
+[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=1222542646]
+script = ExtResource("6_ww4gj")
 
-[node name="ClickToMoveMover3D" type="Node" parent="PlayerCharacter" unique_id=305784756]
-script = ExtResource("10_tg2gn")
+[node name="ClickToMoveMover3D" type="Node" parent="PlayerCharacter" unique_id=1685710568]
+script = ExtResource("7_xha8s")

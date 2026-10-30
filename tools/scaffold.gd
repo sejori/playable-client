@@ -153,6 +153,14 @@ func _build_arena_pattern() -> Node3D:
 	floor_box.size = Vector3(48, 0.4, 72)
 	floor_col.shape = floor_box
 	floor_body.add_child(floor_col)
+
+	var floor_mesh := MeshInstance3D.new()
+	floor_mesh.name = "GroundMesh"
+	var box_mesh := BoxMesh.new()
+	box_mesh.size = floor_box.size
+	floor_mesh.mesh = box_mesh
+	floor_body.add_child(floor_mesh)
+
 	nav_region.add_child(floor_body)
 
 	# Generic Player Spawn
@@ -174,6 +182,7 @@ func _build_arena_pattern() -> Node3D:
 	follow_cam.name = "VirtualFollowCamera"
 	follow_cam.priority = 10
 	follow_cam.distance = 9.0
+	follow_cam.target_path = NodePath("../../PlayerCharacter")
 	cam_host.add_child(follow_cam)
 
 	# Player Character
@@ -215,6 +224,14 @@ func _build_town_square_pattern() -> Node3D:
 	g_box.size = Vector3(40, 0.4, 40)
 	g_col.shape = g_box
 	ground.add_child(g_col)
+
+	var g_mesh := MeshInstance3D.new()
+	g_mesh.name = "GroundMesh"
+	var box_mesh := BoxMesh.new()
+	box_mesh.size = g_box.size
+	g_mesh.mesh = box_mesh
+	ground.add_child(g_mesh)
+
 	nav_region.add_child(ground)
 
 	# Generic Player Spawn
@@ -240,6 +257,7 @@ func _build_town_square_pattern() -> Node3D:
 	iso_cam.name = "VirtualIsometricCamera"
 	iso_cam.priority = 10
 	iso_cam.distance = 18.0
+	iso_cam.target_path = NodePath("../../PlayerCharacter")
 	cam_host.add_child(iso_cam)
 
 	# Player Character with ClickToMove mover
@@ -320,6 +338,7 @@ func _build_voxel_plot_pattern() -> Node3D:
 	var fpv_cam := VirtualFPVCamera3DScript.new()
 	fpv_cam.name = "VirtualFPVCamera"
 	fpv_cam.priority = 10
+	fpv_cam.target_path = NodePath("../../PlayerCharacter")
 	cam_host.add_child(fpv_cam)
 
 	# Player Character with VoxelMover
@@ -385,6 +404,7 @@ func _build_hex_board_pattern() -> Node3D:
 	if knight_scene != null:
 		var knight := knight_scene.instantiate() as CharacterBody3D
 		knight.name = "KnightPawn_Blue"
+		knight.add_to_group("player_character")
 		knight.position = HexGridMathScript.axial_to_world(0, 0, 2.0) + Vector3(0.0, 0.5, 0.0)
 		root.add_child(knight)
 
@@ -397,6 +417,7 @@ func _build_hex_board_pattern() -> Node3D:
 	table_cam.name = "VirtualTabletopCamera"
 	table_cam.priority = 10
 	table_cam.elevation = 18.0
+	table_cam.target_path = NodePath("../../KnightPawn_Blue")
 	cam_host.add_child(table_cam)
 
 	return root
@@ -429,6 +450,14 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	f_box.size = Vector3(48, 0.4, 72)
 	f_col.shape = f_box
 	floor_body.add_child(f_col)
+
+	var f_mesh := MeshInstance3D.new()
+	f_mesh.name = "GroundMesh"
+	var box_mesh := BoxMesh.new()
+	box_mesh.size = f_box.size
+	f_mesh.mesh = box_mesh
+	floor_body.add_child(f_mesh)
+
 	nav_region.add_child(floor_body)
 
 	# Generic Player Spawn
@@ -449,6 +478,7 @@ func _build_three_lane_fps_pattern() -> Node3D:
 	var fpv_cam := VirtualFPVCamera3DScript.new()
 	fpv_cam.name = "VirtualFPVCamera"
 	fpv_cam.priority = 10
+	fpv_cam.target_path = NodePath("../../PlayerCharacter")
 	cam_host.add_child(fpv_cam)
 
 	# Player Character with FPSMover3D
@@ -502,6 +532,14 @@ func _build_circuit_track_pattern() -> Node3D:
 	f_box.size = Vector3(60, 0.4, 60)
 	f_col.shape = f_box
 	floor_body.add_child(f_col)
+
+	var f_mesh := MeshInstance3D.new()
+	f_mesh.name = "GroundMesh"
+	var box_mesh := BoxMesh.new()
+	box_mesh.size = f_box.size
+	f_mesh.mesh = box_mesh
+	floor_body.add_child(f_mesh)
+
 	nav_region.add_child(floor_body)
 
 	# Generic Player Spawn
@@ -522,6 +560,7 @@ func _build_circuit_track_pattern() -> Node3D:
 	var chase_cam := VirtualChaseCamera3DScript.new()
 	chase_cam.name = "VirtualChaseCamera"
 	chase_cam.priority = 10
+	chase_cam.target_path = NodePath("../../PlayerCharacter")
 	cam_host.add_child(chase_cam)
 
 	# Collector Cart Vehicle
