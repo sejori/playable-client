@@ -10,7 +10,7 @@ signal runtime_config_updated(config: Dictionary)
 
 var is_headless_server: bool = false
 var is_sandboxed_pck: bool = true
-var active_realm_id: String = "default_prison_rig"
+var active_realm_id: String = ""
 var runtime_override_config: Dictionary = {}
 
 func _ready() -> void:
@@ -21,7 +21,8 @@ func _ready() -> void:
 			is_headless_server = true
 		elif arg.begins_with("--realm="):
 			active_realm_id = arg.trim_prefix("--realm=")
-	_ensure_realm_sandbox_dir(active_realm_id)
+	if not active_realm_id.is_empty():
+		_ensure_realm_sandbox_dir(active_realm_id)
 	var mode_str := "HEADLESS_SERVER" if is_headless_server else "UNIVERSAL_CLIENT"
 	boot_mode_resolved.emit(mode_str)
 
