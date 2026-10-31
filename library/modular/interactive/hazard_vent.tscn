@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
+size = Vector3(2.2, 1.6, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+roughness = 0.7
+metallic = 0.4
+emission_enabled = true
+emission = Color(0.85, 0.35, 0.05, 1)
+emission_energy_multiplier = 1.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vent"]
+material = SubResource("StandardMaterial3D_vent")
+top_radius = 1.0
+bottom_radius = 1.2
+height = 1.6
+
+[node name="HazardVent" type="StaticBody3D" groups=["interactable", "metal_source"]]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_vent")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_vent")

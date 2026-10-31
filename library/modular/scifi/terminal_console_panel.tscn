@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_console"]
+size = Vector3(1.4, 1.2, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_console"]
+albedo_color = Color(0.15, 0.16, 0.18, 1)
+roughness = 0.4
+metallic = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_screen"]
+albedo_color = Color(0.05, 0.1, 0.15, 1)
+emission_enabled = true
+emission = Color(0.1, 0.7, 0.9, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_console"]
+material = SubResource("StandardMaterial3D_console")
+size = Vector3(1.4, 1.2, 0.8)
+
+[node name="TerminalConsolePanel" type="StaticBody3D" groups=["interactable", "terminal"]]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_console")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_console")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.4)
+light_color = Color(0.1, 0.75, 0.95, 1)
+light_energy = 1.5
+omni_range = 3.5

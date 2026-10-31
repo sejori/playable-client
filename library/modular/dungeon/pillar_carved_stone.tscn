@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pillar"]
+height = 5.0
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
+albedo_color = Color(0.3, 0.28, 0.27, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("StandardMaterial3D_pillar")
+top_radius = 0.6
+bottom_radius = 0.7
+height = 5.0
+
+[node name="PillarCarvedStone" type="StaticBody3D" groups=["architecture", "pillar"]]
+collision_layer = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+shape = SubResource("CylinderShape3D_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_pillar")

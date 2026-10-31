@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0.0",
+  "catalog_id": "playable_system_modular",
+  "name": "Playable System Modular Asset Catalog",
+  "license": "CC0-1.0",
+  "assets": [
+    {
+      "id": "arch_wall_stone_4x3",
+      "name": "Stone Wall Segment 4x3",
+      "category": "architecture",
+      "tags": ["wall", "stone", "dungeon", "cathedral", "boundary", "cover", "perimeter"],
+      "path": "res://library/modular/dungeon/wall_stone_4x3.tscn",
+      "aabb": { "size": [4.0, 3.0, 0.6], "offset": [0.0, 1.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_wall_archway_4x3",
+      "name": "Stone Archway Doorway 4x3",
+      "category": "architecture",
+      "tags": ["archway", "doorway", "entrance", "portal", "passage", "gothic", "cathedral"],
+      "path": "res://library/modular/dungeon/wall_archway_4x3.tscn",
+      "aabb": { "size": [4.0, 3.0, 0.8], "offset": [0.0, 1.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_pillar_monolith",
+      "name": "Monolithic Stone Pillar",
+      "category": "architecture",
+      "tags": ["pillar", "monolith", "column", "stone", "heavy", "cover", "gothic", "cathedral", "seal"],
+      "path": "res://library/modular/dungeon/pillar_monolith.tscn",
+      "aabb": { "size": [1.2, 6.0, 1.2], "offset": [0.0, 3.0, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_pillar_carved_stone",
+      "name": "Carved Classical Stone Column",
+      "category": "architecture",
+      "tags": ["pillar", "column", "carved", "statue", "ruins", "temple", "monument"],
+      "path": "res://library/modular/dungeon/pillar_carved_stone.tscn",
+      "aabb": { "size": [1.2, 5.0, 1.2], "offset": [0.0, 2.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_floor_tile_4x4",
+      "name": "Modular Floor Paver 4x4",
+      "category": "architecture",
+      "tags": ["floor", "paver", "ground", "obsidian", "tile", "walkable", "path"],
+      "path": "res://library/modular/dungeon/floor_tile_4x4.tscn",
+      "aabb": { "size": [4.0, 0.4, 4.0], "offset": [0.0, 0.0, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_stairs_stone_4x2",
+      "name": "Stone Staircase Riser 4x2",
+      "category": "architecture",
+      "tags": ["stairs", "steps", "riser", "verticality", "slope", "ramp", "elevation"],
+      "path": "res://library/modular/dungeon/stairs_stone_4x2.tscn",
+      "aabb": { "size": [4.0, 2.0, 4.0], "offset": [0.0, 1.0, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_raised_platform_8x8",
+      "name": "Raised Platform Dais 8x8",
+      "category": "architecture",
+      "tags": ["platform", "dais", "pedestal", "boss_arena", "stage", "elevated", "sanctuary"],
+      "path": "res://library/modular/dungeon/raised_platform_8x8.tscn",
+      "aabb": { "size": [8.0, 1.2, 8.0], "offset": [0.0, 0.6, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_bunker_wall_steel_4x3",
+      "name": "Steel Bunker Barricade Wall 4x3",
+      "category": "architecture",
+      "tags": ["scifi", "steel", "metal", "bunker", "industrial", "barrier", "wall"],
+      "path": "res://library/modular/scifi/bunker_wall_steel_4x3.tscn",
+      "aabb": { "size": [4.0, 3.0, 0.5], "offset": [0.0, 1.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_cover_barrier_half_2x1",
+      "name": "Tactical Waist-High Cover 2x1",
+      "category": "architecture",
+      "tags": ["cover", "tactical", "half_wall", "barricade", "fps", "combat"],
+      "path": "res://library/modular/scifi/cover_barrier_half_2x1.tscn",
+      "aabb": { "size": [2.0, 1.1, 0.4], "offset": [0.0, 0.55, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "arch_ramp_riser_4x2",
+      "name": "Industrial Ramp Riser 4x2",
+      "category": "architecture",
+      "tags": ["ramp", "slope", "riser", "scifi", "industrial", "bridge"],
+      "path": "res://library/modular/scifi/ramp_riser_4x2.tscn",
+      "aabb": { "size": [4.0, 2.0, 4.0], "offset": [0.0, 1.0, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "hazard_lava_vent_01",
+      "name": "Lava Hazard Eruption Vent",
+      "category": "hazard",
+      "tags": ["hazard", "lava", "fire", "vent", "volcanic", "damage_over_time", "flame"],
+      "path": "res://library/modular/interactive/hazard_vent.tscn",
+      "aabb": { "size": [2.2, 1.6, 2.2], "offset": [0.0, 0.8, 0.0] },
+      "collision": true,
+      "custom_params": { "damage_per_sec": 30.0, "hazard_radius": 3.0 }
+    },
+    {
+      "id": "hazard_forcefield_door",
+      "name": "Energy Forcefield Barrier Door",
+      "category": "hazard",
+      "tags": ["barrier", "forcefield", "laser", "gate", "door", "energy", "hazard"],
+      "path": "res://library/modular/interactive/barrier_forcefield_door.tscn",
+      "aabb": { "size": [4.0, 3.2, 0.4], "offset": [0.0, 1.6, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_objective_shrine",
+      "name": "Ancient Seal Altar Shrine",
+      "category": "interactable",
+      "tags": ["objective", "shrine", "altar", "seal", "quest", "rune", "sacred"],
+      "path": "res://library/modular/interactive/objective_shrine.tscn",
+      "aabb": { "size": [2.4, 2.4, 2.4], "offset": [0.0, 1.2, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_chest_cache",
+      "name": "Loot Treasure Chest",
+      "category": "interactable",
+      "tags": ["loot", "chest", "treasure", "reward", "gold", "pickup", "cache"],
+      "path": "res://library/modular/interactive/chest_cache.tscn",
+      "aabb": { "size": [1.4, 1.0, 1.0], "offset": [0.0, 0.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_terminal_console",
+      "name": "Sci-Fi Mainframe Terminal",
+      "category": "interactable",
+      "tags": ["terminal", "console", "computer", "hack", "scifi", "control", "switch"],
+      "path": "res://library/modular/scifi/terminal_console_panel.tscn",
+      "aabb": { "size": [1.4, 1.2, 0.8], "offset": [0.0, 0.6, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_pickup_health_pad",
+      "name": "Health Recovery Pad",
+      "category": "interactable",
+      "tags": ["health", "recovery", "heal", "pad", "station", "restoration"],
+      "path": "res://library/modular/interactive/pickup_health_pad.tscn",
+      "aabb": { "size": [2.0, 0.2, 2.0], "offset": [0.0, 0.1, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_harvest_tree_oak",
+      "name": "Harvestable Oak Tree",
+      "category": "interactable",
+      "tags": ["tree", "wood", "chopping", "resource", "sandbox", "nature", "gathering"],
+      "path": "res://library/sandbox/harvest_tree_oak.tscn",
+      "aabb": { "size": [2.5, 5.0, 2.5], "offset": [0.0, 2.5, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_mine_rock_iron",
+      "name": "Mining Iron Rock Vein",
+      "category": "interactable",
+      "tags": ["mining", "rock", "iron", "ore", "resource", "sandbox", "gathering"],
+      "path": "res://library/sandbox/mine_rock_iron.tscn",
+      "aabb": { "size": [2.0, 1.8, 2.0], "offset": [0.0, 0.9, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "interact_speed_boost_pad",
+      "name": "Neon Speed Boost Pad",
+      "category": "interactable",
+      "tags": ["boost", "speed", "accelerator", "neon", "racing", "tycoon"],
+      "path": "res://library/tycoon/speed_boost_pad.tscn",
+      "aabb": { "size": [3.0, 0.2, 4.0], "offset": [0.0, 0.1, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "light_torch_brazier",
+      "name": "Standing Iron Torch Brazier",
+      "category": "lighting",
+      "tags": ["light", "torch", "brazier", "fire", "omni", "warm", "atmosphere", "prop"],
+      "path": "res://library/modular/interactive/omni_torch_brazier.tscn",
+      "aabb": { "size": [1.0, 2.3, 1.0], "offset": [0.0, 1.15, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "char_hero_humanoid",
+      "name": "Hero Humanoid Avatar",
+      "category": "character",
+      "tags": ["player", "hero", "avatar", "character", "humanoid"],
+      "path": "res://library/characters/hero_humanoid.tscn",
+      "aabb": { "size": [0.8, 1.8, 0.8], "offset": [0.0, 0.9, 0.0] },
+      "collision": true
+    },
+    {
+      "id": "char_golem_brute",
+      "name": "Monolithic Golem Brute Boss",
+      "category": "character",
+      "tags": ["boss", "golem", "brute", "enemy", "monolithic", "guardian", "monster"],
+      "path": "res://library/characters/golem_brute.tscn",
+      "aabb": { "size": [2.4, 3.5, 2.0], "offset": [0.0, 1.75, 0.0] },
+      "collision": true
+    }
+  ]
+}

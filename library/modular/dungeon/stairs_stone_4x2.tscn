@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stairs"]
+size = Vector3(4.0, 2.0, 4.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stairs"]
+albedo_color = Color(0.25, 0.23, 0.22, 1)
+roughness = 0.85
+
+[sub_resource type="PrismMesh" id="PrismMesh_stairs"]
+material = SubResource("StandardMaterial3D_stairs")
+left_to_right = 0.0
+size = Vector3(4.0, 2.0, 4.0)
+
+[node name="StairsStone4x2" type="StaticBody3D" groups=["architecture", "stairs"]]
+collision_layer = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("BoxShape3D_stairs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+mesh = SubResource("PrismMesh_stairs")
