@@ -1,0 +1,143 @@
+{
+  "target_scene": "res://scenes/zones/cartridge_06_collector_tycoon.tscn",
+  "output_path": "res://scenes/zones/cartridge_06_collector_tycoon.tscn",
+  "append": false,
+  "substrate": {
+    "type": "flat_arena"
+  },
+  "palette": {
+    "sky_top": "#0d061a",
+    "sky_horizon": "#3b1254",
+    "floor_albedo": "#1b1429",
+    "sun_energy": 1.5,
+    "sun_color": "#ff77cc",
+    "fog_density": 0.015,
+    "fog_albedo": "#220833"
+  },
+  "entities": [
+    {
+      "asset_id": "pad_speed_boost",
+      "position": [0.0, 0.0, 3.0]
+    },
+    {
+      "asset_id": "pad_speed_boost",
+      "position": [4.0, 0.0, -1.0]
+    },
+    {
+      "asset_id": "pad_speed_boost",
+      "position": [-4.0, 0.0, -1.0]
+    },
+    {
+      "asset_id": "pad_jump_scifi",
+      "position": [5.0, 0.0, 4.0]
+    },
+    {
+      "asset_id": "pad_jump_scifi",
+      "position": [-5.0, 0.0, 4.0]
+    },
+    {
+      "asset_id": "gate_score_multiplier",
+      "position": [0.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "gate_score_multiplier",
+      "position": [4.0, 0.0, -4.0]
+    },
+    {
+      "asset_id": "gate_score_multiplier",
+      "position": [-4.0, 0.0, -4.0]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [0.0, 0.5, 1.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [2.0, 0.5, 1.0]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [-2.0, 0.5, 1.0]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [4.0, 0.5, -2.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [-4.0, 0.5, -2.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [2.0, 0.5, -3.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [-2.0, 0.5, -3.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [0.0, 0.5, -2.0]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [0.0, 0.5, 4.5]
+    },
+    {
+      "asset_id": "collectible_coin_gold",
+      "position": [0.0, 0.5, -5.5]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [4.0, 0.5, 1.5]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [-4.0, 0.5, 1.5]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [4.0, 0.5, -5.5]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [-4.0, 0.5, -5.5]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [5.0, 1.5, 6.0]
+    },
+    {
+      "asset_id": "collectible_gem_ruby",
+      "position": [-5.0, 1.5, 6.0]
+    },
+    {
+      "asset_id": "arch_raised_platform_8x8",
+      "position": [0.0, 0.0, -9.0]
+    },
+    {
+      "asset_id": "arch_stairs_stone_4x2",
+      "position": [0.0, 0.0, -5.0]
+    },
+    {
+      "asset_id": "interact_objective_shrine",
+      "position": [0.0, 1.2, -9.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-4.0, 0.0, -9.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [4.0, 0.0, -9.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-3.0, 0.0, 3.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [3.0, 0.0, 3.0]
+    }
+  ]
+}

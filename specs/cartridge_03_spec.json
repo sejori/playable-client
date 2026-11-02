@@ -1,0 +1,55 @@
+{
+  "target_scene": "res://scenes/zones/cartridge_03_voxel_survival.tscn",
+  "output_path": "res://scenes/zones/cartridge_03_voxel_survival.tscn",
+  "append": false,
+  "substrate": {
+    "type": "voxel_terraced"
+  },
+  "palette": {
+    "sky_top": "#102848",
+    "sky_horizon": "#386890",
+    "floor_albedo": "#285828",
+    "sun_energy": 1.5,
+    "sun_color": "#fffaee",
+    "fog_density": 0.010,
+    "fog_albedo": "#284460"
+  },
+  "entities": [
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [-4.0, 1.0, 2.0]
+    },
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [4.0, 1.0, -2.0]
+    },
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [-3.0, 0.0, -4.0]
+    },
+    {
+      "asset_id": "nature_iron_rock",
+      "position": [3.0, 0.0, 3.0]
+    },
+    {
+      "asset_id": "nature_iron_rock",
+      "position": [-4.0, 1.0, -4.0]
+    },
+    {
+      "asset_id": "interact_chest_cache",
+      "position": [-2.0, 0.0, 3.0]
+    },
+    {
+      "asset_id": "interact_objective_shrine",
+      "position": [0.0, 0.0, 2.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-2.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [2.0, 0.0, 0.0]
+    }
+  ]
+}

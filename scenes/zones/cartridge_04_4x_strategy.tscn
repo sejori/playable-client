@@ -6,21 +6,18 @@
 [ext_resource type="PackedScene" path="res://library/strategy/hex_forest.tscn" id="4_kubt7"]
 [ext_resource type="PackedScene" path="res://library/strategy/hex_plains.tscn" id="5_v3rov"]
 [ext_resource type="PackedScene" path="res://library/strategy/hex_water.tscn" id="6_fuf6b"]
-[ext_resource type="PackedScene" path="res://library/strategy/unit_pawn_knight.tscn" id="7_kaict"]
+[ext_resource type="Script" path="res://library/modular/ModularEntityTraits.gd" id="7_v3rov"]
 [ext_resource type="Script" path="res://scripts/camera/CameraHost3D.gd" id="8_hr3ls"]
 [ext_resource type="Script" path="res://scripts/camera/VirtualTabletopCamera3D.gd" id="9_eljxn"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/raised_platform_8x8.tscn" id="10_13aw8"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/floor_tile_4x4.tscn" id="11_dn46y"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/wall_archway_4x3.tscn" id="12_7ybuk"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_monolith.tscn" id="13_rhslg"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_carved_stone.tscn" id="14_r4gdf"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/stairs_stone_4x2.tscn" id="15_0hn0w"]
-[ext_resource type="PackedScene" path="res://library/modular/interactive/hazard_vent.tscn" id="16_sip4v"]
+[ext_resource type="PackedScene" path="res://library/modular/strategy/unit_knight.tscn" id="9_fuf6b"]
 [ext_resource type="PackedScene" path="res://library/modular/interactive/objective_shrine.tscn" id="17_s2v7c"]
-[ext_resource type="PackedScene" path="res://library/modular/interactive/chest_cache.tscn" id="18_ssabf"]
 [ext_resource type="PackedScene" path="res://library/modular/interactive/omni_torch_brazier.tscn" id="19_44cgx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_4rfei"]
+sky_top_color = Color(0.043137256, 0.09803922, 0.17254902, 1)
+sky_horizon_color = Color(0.11764706, 0.24313726, 0.38431373, 1)
+ground_bottom_color = Color(0.08235294, 0.17019607, 0.2690196, 1)
+ground_horizon_color = Color(0.11764706, 0.24313726, 0.38431373, 1)
 
 [sub_resource type="Sky" id="Sky_13aw8"]
 sky_material = SubResource("ProceduralSkyMaterial_4rfei")
@@ -29,259 +26,20 @@ sky_material = SubResource("ProceduralSkyMaterial_4rfei")
 background_mode = 2
 sky = SubResource("Sky_13aw8")
 ambient_light_source = 3
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_hex"]
-height = 0.5
-radius = 2.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
-albedo_color = Color(0.48, 0.46, 0.44, 1)
-roughness = 0.9
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_hex"]
-material = SubResource("StandardMaterial3D_rock")
-top_radius = 2.0
-bottom_radius = 2.0
-height = 0.5
-radial_segments = 6
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_peak"]
-albedo_color = Color(0.85, 0.88, 0.92, 1)
-roughness = 0.8
-
-[sub_resource type="PrismMesh" id="PrismMesh_peak"]
-material = SubResource("StandardMaterial3D_peak")
-size = Vector3(1.6, 2.2, 1.6)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_istjt"]
-height = 0.5
-radius = 2.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass"]
-albedo_color = Color(0.28, 0.54, 0.22, 1)
-roughness = 0.9
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_2ndy4"]
-material = SubResource("StandardMaterial3D_grass")
-top_radius = 2.0
-bottom_radius = 2.0
-height = 0.5
-radial_segments = 6
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pine"]
-albedo_color = Color(0.12, 0.38, 0.16, 1)
-roughness = 0.85
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_tree"]
-material = SubResource("StandardMaterial3D_pine")
-top_radius = 0.1
-bottom_radius = 0.7
-height = 1.6
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_xx77b"]
-height = 0.5
-radius = 2.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_plains"]
-albedo_color = Color(0.35, 0.65, 0.28, 1)
-roughness = 0.9
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_oadn3"]
-material = SubResource("StandardMaterial3D_plains")
-top_radius = 2.0
-bottom_radius = 2.0
-height = 0.5
-radial_segments = 6
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8afxg"]
-height = 0.5
-radius = 2.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_water"]
-transparency = 1
-albedo_color = Color(0.18, 0.45, 0.85, 0.8)
-roughness = 0.15
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_c1lac"]
-material = SubResource("StandardMaterial3D_water")
-top_radius = 2.0
-bottom_radius = 2.0
-height = 0.5
-radial_segments = 6
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_unit"]
-radius = 0.65
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
-albedo_color = Color(0.2, 0.6, 0.95, 1)
-emission_enabled = true
-emission = Color(0.15, 0.5, 0.9, 1)
-emission_energy_multiplier = 1.2
-
-[sub_resource type="TorusMesh" id="TorusMesh_ring"]
-material = SubResource("StandardMaterial3D_ring")
-inner_radius = 0.55
-outer_radius = 0.75
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
-albedo_color = Color(0.9, 0.9, 0.92, 1)
-roughness = 0.4
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
-material = SubResource("StandardMaterial3D_stone")
-top_radius = 0.35
-bottom_radius = 0.55
-height = 1.6
-
-[sub_resource type="SphereMesh" id="SphereMesh_head"]
-material = SubResource("StandardMaterial3D_stone")
-radius = 0.4
-height = 0.8
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
-size = Vector3(8, 1.2, 8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
-albedo_color = Color(0.18, 0.17, 0.16, 1)
-metallic = 0.1
-roughness = 0.85
-
-[sub_resource type="BoxMesh" id="BoxMesh_platform"]
-material = SubResource("StandardMaterial3D_platform")
-size = Vector3(8, 1.2, 8)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(4, 0.4, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.25, 0.26, 0.28, 1)
-roughness = 0.85
-
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-material = SubResource("StandardMaterial3D_floor")
-size = Vector3(4, 0.4, 4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_post_left"]
-size = Vector3(0.8, 3.2, 0.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_post_right"]
-size = Vector3(0.8, 3.2, 0.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_lintel"]
-size = Vector3(4, 0.8, 0.6)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stpnl"]
-albedo_color = Color(0.38, 0.36, 0.35, 1)
-roughness = 0.88
-
-[sub_resource type="BoxMesh" id="BoxMesh_arch"]
-material = SubResource("StandardMaterial3D_stpnl")
-size = Vector3(4, 3.2, 0.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
-size = Vector3(1.2, 6, 1.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
-albedo_color = Color(0.35, 0.33, 0.31, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
-material = SubResource("StandardMaterial3D_pillar")
-size = Vector3(1.2, 6, 1.2)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_pillar"]
-height = 5.0
-radius = 0.6
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jap5x"]
-albedo_color = Color(0.3, 0.28, 0.27, 1)
-roughness = 0.85
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
-material = SubResource("StandardMaterial3D_jap5x")
-top_radius = 0.6
-bottom_radius = 0.7
-height = 5.0
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_stairs"]
-size = Vector3(4, 2, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stairs"]
-albedo_color = Color(0.25, 0.23, 0.22, 1)
-roughness = 0.85
-
-[sub_resource type="PrismMesh" id="PrismMesh_stairs"]
-material = SubResource("StandardMaterial3D_stairs")
-left_to_right = 0.0
-size = Vector3(4, 2, 4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
-size = Vector3(2.2, 1.6, 2.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
-albedo_color = Color(0.2, 0.2, 0.22, 1)
-metallic = 0.4
-roughness = 0.7
-emission_enabled = true
-emission = Color(0.85, 0.35, 0.05, 1)
-emission_energy_multiplier = 1.4
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_vent"]
-material = SubResource("StandardMaterial3D_vent")
-top_radius = 1.0
-bottom_radius = 1.2
-height = 1.6
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_shrine"]
-height = 2.4
-radius = 1.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shrine"]
-albedo_color = Color(0.12, 0.11, 0.13, 1)
-roughness = 0.6
-emission_enabled = true
-emission = Color(0.8, 0.2, 0.05, 1)
-emission_energy_multiplier = 1.8
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_shrine"]
-material = SubResource("StandardMaterial3D_shrine")
-top_radius = 0.9
-bottom_radius = 1.3
-height = 2.4
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_chest"]
-size = Vector3(1.4, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chest"]
-albedo_color = Color(0.35, 0.22, 0.12, 1)
-metallic = 0.3
-roughness = 0.7
-
-[sub_resource type="BoxMesh" id="BoxMesh_chest"]
-material = SubResource("StandardMaterial3D_chest")
-size = Vector3(1.4, 1, 1)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_brazier"]
-height = 2.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron"]
-albedo_color = Color(0.2, 0.2, 0.22, 1)
-metallic = 0.7
-roughness = 0.6
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_brazier"]
-material = SubResource("StandardMaterial3D_iron")
-top_radius = 0.6
-bottom_radius = 0.4
-height = 2.2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.07058824, 0.1254902, 0.20784314, 1)
 
 [node name="StrategyHexBoard" type="Node3D" unique_id=666021139]
+metadata/hex_substrate = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1382058607]
 environment = SubResource("Environment_dn46y")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=847491284]
 transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
+light_color = Color(0.8156863, 0.89411765, 1, 1)
+light_energy = 1.3
 shadow_enabled = true
 
 [node name="TurnManager" type="Node" parent="." unique_id=1716695597]
@@ -290,276 +48,6 @@ script = ExtResource("1_03f88")
 [node name="CommandCardHand" type="Node" parent="." unique_id=1398032299]
 script = ExtResource("2_x2rv6")
 
-[node name="HexTiles" type="Node3D" parent="." unique_id=1827184128]
-
-[node name="Hex_-2_0" type="StaticBody3D" parent="HexTiles" unique_id=267075455 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_0" unique_id=410176399]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_0" unique_id=1896845569]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_0" unique_id=812172079]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="Hex_-2_1" type="StaticBody3D" parent="HexTiles" unique_id=270133090 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, 3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_1" unique_id=152331895]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_istjt")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=982166573]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_2ndy4")
-
-[node name="Tree1" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=955339462]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, -0.3)
-mesh = SubResource("CylinderMesh_tree")
-
-[node name="Tree2" type="MeshInstance3D" parent="HexTiles/Hex_-2_1" unique_id=592438004]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.05, 0.4)
-mesh = SubResource("CylinderMesh_tree")
-
-[node name="Hex_-2_2" type="StaticBody3D" parent="HexTiles" unique_id=830895498 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-2_2" unique_id=1736737923]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_xx77b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-2_2" unique_id=39280736]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_oadn3")
-
-[node name="Hex_-1_-1" type="StaticBody3D" parent="HexTiles" unique_id=821760881 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, -3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_-1" unique_id=60378419]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_-1_-1" unique_id=1694543026]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_-1_-1" unique_id=1778645260]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="Hex_-1_0" type="StaticBody3D" parent="HexTiles" unique_id=718916285 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_0" unique_id=320233185]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_0" unique_id=1454736243]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_-1_1" type="StaticBody3D" parent="HexTiles" unique_id=34315500 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, 3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_1" unique_id=895863545]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_xx77b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_1" unique_id=393336885]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_oadn3")
-
-[node name="Hex_-1_2" type="StaticBody3D" parent="HexTiles" unique_id=950886720 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_-1_2" unique_id=2091285802]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_-1_2" unique_id=1945476322]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_0_-2" type="StaticBody3D" parent="HexTiles" unique_id=1968027707 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, -6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_-2" unique_id=1471383309]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_-2" unique_id=580810824]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_-2" unique_id=1087927952]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="Hex_0_-1" type="StaticBody3D" parent="HexTiles" unique_id=696973883 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, -3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_-1" unique_id=120335554]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_-1" unique_id=426846914]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_0_0" type="StaticBody3D" parent="HexTiles" unique_id=1807960093 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_0" unique_id=853988806]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_xx77b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_0" unique_id=1997165565]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_oadn3")
-
-[node name="Hex_0_1" type="StaticBody3D" parent="HexTiles" unique_id=1372470151 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, 3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_1" unique_id=2136908427]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_0_1" unique_id=960531402]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_0_2" type="StaticBody3D" parent="HexTiles" unique_id=931028313 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_0_2" unique_id=2090257005]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_2" unique_id=1145828690]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_0_2" unique_id=936665319]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="Hex_1_-2" type="StaticBody3D" parent="HexTiles" unique_id=358907018 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_-2" unique_id=23805877]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_-2" unique_id=356816532]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_1_-1" type="StaticBody3D" parent="HexTiles" unique_id=1842966884 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, -3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_-1" unique_id=323192431]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_xx77b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_-1" unique_id=95012138]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_oadn3")
-
-[node name="Hex_1_0" type="StaticBody3D" parent="HexTiles" unique_id=2131783742 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_0" unique_id=963637016]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_8afxg")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_1_0" unique_id=1179858586]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_c1lac")
-
-[node name="Hex_1_1" type="StaticBody3D" parent="HexTiles" unique_id=1606973488 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, 3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_1_1" unique_id=26914780]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_1_1" unique_id=596699105]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_1_1" unique_id=279950698]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="Hex_2_-2" type="StaticBody3D" parent="HexTiles" unique_id=2095407595 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, -6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_-2" unique_id=638781989]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_xx77b")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="HexTiles/Hex_2_-2" unique_id=1801973104]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_oadn3")
-
-[node name="Hex_2_-1" type="StaticBody3D" parent="HexTiles" unique_id=1502903679 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, -3)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_-1" unique_id=476679696]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_istjt")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=1233322681]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_2ndy4")
-
-[node name="Tree1" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=1978605143]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, -0.3)
-mesh = SubResource("CylinderMesh_tree")
-
-[node name="Tree2" type="MeshInstance3D" parent="HexTiles/Hex_2_-1" unique_id=1515169553]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.05, 0.4)
-mesh = SubResource("CylinderMesh_tree")
-
-[node name="Hex_2_0" type="StaticBody3D" parent="HexTiles" unique_id=1301073656 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HexTiles/Hex_2_0" unique_id=475706355]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("CylinderShape3D_hex")
-
-[node name="BaseMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_0" unique_id=273360940]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_hex")
-
-[node name="PeakMesh" type="MeshInstance3D" parent="HexTiles/Hex_2_0" unique_id=1012931636]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
-mesh = SubResource("PrismMesh_peak")
-
-[node name="KnightPawn_Blue" type="CharacterBody3D" parent="." unique_id=1100188227 groups=["tactical_unit"] instance=ExtResource("7_kaict")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-collision_layer = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="KnightPawn_Blue" unique_id=1942808270]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CylinderShape3D_unit")
-
-[node name="TeamRing" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=608888793]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-mesh = SubResource("TorusMesh_ring")
-
-[node name="BodyMesh" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=16611839]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
-mesh = SubResource("CylinderMesh_body")
-
-[node name="HeadMesh" type="MeshInstance3D" parent="KnightPawn_Blue" unique_id=1379774274]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0)
-mesh = SubResource("SphereMesh_head")
-
 [node name="CameraHost3D" type="Node3D" parent="." unique_id=2069882992]
 script = ExtResource("8_hr3ls")
 
@@ -567,300 +55,639 @@ script = ExtResource("8_hr3ls")
 script = ExtResource("9_eljxn")
 elevation = 18.0
 priority = 10
-target_path = NodePath("../../KnightPawn_Blue")
 
 [node name="Entities" type="Node3D" parent="." unique_id=2041285340]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=141926774]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=1369896824]
 
-[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=1954368501 groups=["architecture", "platform"] instance=ExtResource("10_13aw8")]
-metadata/entity_tag = "command_platform_center"
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=1317250553]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=1959379915]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=1091316002]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=2018371782]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=1432188980 groups=["architecture", "platform"] instance=ExtResource("10_13aw8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -10)
-metadata/entity_tag = "command_platform_west"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=1049161462]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=1036619727]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=144082342 groups=["architecture", "platform"] instance=ExtResource("10_13aw8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -10)
-metadata/entity_tag = "command_platform_east"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=482209014]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=774176031]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="FloorTile4x4" type="StaticBody3D" parent="Entities/Architecture" unique_id=572248782 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/FloorTile4x4" unique_id=2128884462]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/FloorTile4x4" unique_id=1255978196]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=918955932 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, 0, 5.63)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=582388594]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=1916047830]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1596365338 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0, 5.63)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=2120592754]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=119533044]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=1835137037 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 0)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=787038932]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=487217383]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Architecture" unique_id=1498935680 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0, -5.63)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@7" unique_id=1444458194]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@7" unique_id=1634217194]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Architecture" unique_id=1811067234 instance=ExtResource("11_dn46y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, 0, -5.63)
-metadata/entity_tag = "hex_field_ring"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@8" unique_id=494271317]
-shape = SubResource("BoxShape3D_floor")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@8" unique_id=1478397889]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="WallArchway4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=998552490 instance=ExtResource("12_7ybuk")]
-transform = Transform3D(-0.60181516, 0, -0.7986354, 0, 1, 0, 0.7986354, 0, -0.60181516, -8, 1.5, -6)
-metadata/entity_tag = "tactical_archway_west"
-
-[node name="ColPostLeft" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=1470411863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.6, 0)
-shape = SubResource("BoxShape3D_post_left")
-
-[node name="ColPostRight" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=356385028]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.6, 0)
-shape = SubResource("BoxShape3D_post_right")
-
-[node name="ColLintel" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=546019672]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
-shape = SubResource("BoxShape3D_lintel")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/WallArchway4x3" unique_id=1106319111]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-mesh = SubResource("BoxMesh_arch")
-
-[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Architecture" unique_id=2041948647 instance=ExtResource("12_7ybuk")]
-transform = Transform3D(-0.6018151, 0, 0.7986355, 0, 1, 0, -0.7986355, 0, -0.6018151, 8, 1.5, -6)
-metadata/entity_tag = "tactical_archway_east"
-
-[node name="ColPostLeft" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=725757782]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.6, 0)
-shape = SubResource("BoxShape3D_post_left")
-
-[node name="ColPostRight" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=26802333]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.6, 0)
-shape = SubResource("BoxShape3D_post_right")
-
-[node name="ColLintel" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=179200986]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
-shape = SubResource("BoxShape3D_lintel")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=14912307]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-mesh = SubResource("BoxMesh_arch")
-
-[node name="PillarMonolith" type="StaticBody3D" parent="Entities/Architecture" unique_id=54180983 instance=ExtResource("13_rhslg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -6)
-metadata/entity_tag = "boundary_marker_west"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarMonolith" unique_id=452494128]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("BoxShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarMonolith" unique_id=1685140672]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-mesh = SubResource("BoxMesh_pillar")
-
-[node name="@StaticBody3D@10" type="StaticBody3D" parent="Entities/Architecture" unique_id=539134700 instance=ExtResource("13_rhslg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 4, -6)
-metadata/entity_tag = "boundary_marker_east"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@10" unique_id=456738306]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("BoxShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@10" unique_id=308611211]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-mesh = SubResource("BoxMesh_pillar")
-
-[node name="PillarCarvedStone" type="StaticBody3D" parent="Entities/Architecture" unique_id=1513169923 groups=["architecture", "pillar"] instance=ExtResource("14_r4gdf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 2, 6)
-metadata/entity_tag = "boundary_marker_southwest"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=1416458993]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-shape = SubResource("CylinderShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=919060478]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_pillar")
-
-[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=1747723303 groups=["architecture", "stairs"] instance=ExtResource("15_0hn0w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 5.5)
-metadata/entity_tag = "platform_ramp_south"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/StairsStone4x2" unique_id=1960523638]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_stairs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/StairsStone4x2" unique_id=1026173788]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("PrismMesh_stairs")
-
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=1626244373]
-
-[node name="HazardVent" type="StaticBody3D" parent="Entities/Hazards" unique_id=23097724 groups=["interactable", "metal_source"] instance=ExtResource("16_sip4v")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -6.5)
-collision_layer = 4
-metadata/entity_tag = "contested_hazard_tile"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Hazards/HazardVent" unique_id=443967092]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-shape = SubResource("BoxShape3D_vent")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Hazards/HazardVent" unique_id=817997151]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("CylinderMesh_vent")
-
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=2037778515]
-
-[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=1075744892 groups=["interactable", "objective", "seal"] instance=ExtResource("17_s2v7c")]
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=1394118671 groups=["interactable", "objective", "seal"] instance=ExtResource("17_s2v7c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
-metadata/entity_tag = "primary_capture_objective"
+metadata/entity_traits = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Channel Ancient Altar",
+"start_node": "altar_seal",
+"type": "dialogue_trigger"
+}, {
+"bob_amp": 0.08,
+"bob_speed": 1.5,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=134929889]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-shape = SubResource("CylinderShape3D_shrine")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=1253964704]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Channel Ancient Altar",
+"start_node": "altar_seal",
+"type": "dialogue_trigger"
+}, {
+"bob_amp": 0.08,
+"bob_speed": 1.5,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=1980310782]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("CylinderMesh_shrine")
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=919948728]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=1159794805]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-light_color = Color(1, 0.35, 0.1, 1)
-light_energy = 2.2
-omni_range = 6.0
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=487588883 groups=["lighting", "prop", "torch"] instance=ExtResource("19_44cgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, -6)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="@StaticBody3D@11" type="StaticBody3D" parent="Entities/Interactables" unique_id=617458166 groups=["interactable", "objective", "seal"] instance=ExtResource("17_s2v7c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.5, -10)
-collision_layer = 4
-metadata/entity_tag = "secondary_objective_west"
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1619545998]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/@StaticBody3D@11" unique_id=171074367]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-shape = SubResource("CylinderShape3D_shrine")
+[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Lighting" unique_id=297498962 groups=["lighting", "prop", "torch"] instance=ExtResource("19_44cgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, -6)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/@StaticBody3D@11" unique_id=1971199296]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("CylinderMesh_shrine")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@7" unique_id=1126140878]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Interactables/@StaticBody3D@11" unique_id=682454480]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-light_color = Color(1, 0.35, 0.1, 1)
-light_energy = 2.2
-omni_range = 6.0
+[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Lighting" unique_id=1174599227 groups=["lighting", "prop", "torch"] instance=ExtResource("19_44cgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 6)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="@StaticBody3D@12" type="StaticBody3D" parent="Entities/Interactables" unique_id=730895892 groups=["interactable", "objective", "seal"] instance=ExtResource("17_s2v7c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.5, -10)
-collision_layer = 4
-metadata/entity_tag = "secondary_objective_east"
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@8" unique_id=812176856]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/@StaticBody3D@12" unique_id=1608799223]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-shape = SubResource("CylinderShape3D_shrine")
+[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Lighting" unique_id=1939559211 groups=["lighting", "prop", "torch"] instance=ExtResource("19_44cgx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 6)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/@StaticBody3D@12" unique_id=682025164]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("CylinderMesh_shrine")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=1265636450]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Interactables/@StaticBody3D@12" unique_id=887931044]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-light_color = Color(1, 0.35, 0.1, 1)
-light_energy = 2.2
-omni_range = 6.0
+[node name="Characters" type="Node3D" parent="Entities" unique_id=1206303233]
 
-[node name="ChestCache" type="StaticBody3D" parent="Entities/Interactables" unique_id=777955046 groups=["chest", "interactable", "loot"] instance=ExtResource("18_ssabf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0.5, 0)
-collision_layer = 4
-metadata/entity_tag = "field_pickup_cache"
+[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=1203816210 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.5, 3)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ChestCache" unique_id=625866734]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_chest")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=1552081209]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ChestCache" unique_id=1386070008]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_chest")
+[node name="@CharacterBody3D@2" type="CharacterBody3D" parent="Entities/Characters" unique_id=153535374 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 4)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=376457847]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@2" unique_id=1611736597]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1010588222 groups=["lighting", "prop", "torch"] instance=ExtResource("19_44cgx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, -4)
-metadata/entity_tag = "atmosphere_brazier"
+[node name="@CharacterBody3D@3" type="CharacterBody3D" parent="Entities/Characters" unique_id=1530870408 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.5, 3)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=418248533]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-shape = SubResource("CylinderShape3D_brazier")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@3" unique_id=978680178]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Blue Vanguard",
+"faction": "blue_army",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"role": "ally",
+"type": "combat_unit"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1535133516]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("CylinderMesh_brazier")
+[node name="@CharacterBody3D@4" type="CharacterBody3D" parent="Entities/Characters" unique_id=1185054432 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0.5, -3)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1991325253]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-light_color = Color(1, 0.55, 0.15, 1)
-light_energy = 2.5
-shadow_enabled = true
-omni_range = 8.0
-omni_attenuation = 1.2
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@4" unique_id=1338671276]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="@CharacterBody3D@5" type="CharacterBody3D" parent="Entities/Characters" unique_id=1029776349 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -4)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@5" unique_id=1775268666]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="@CharacterBody3D@6" type="CharacterBody3D" parent="Entities/Characters" unique_id=1181835883 groups=["combat_unit", "tactical_unit"] instance=ExtResource("9_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.5, -3)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@6" unique_id=278487300]
+script = ExtResource("7_v3rov")
+traits_config = [{
+"attack_damage": 25.0,
+"attack_range": 2.5,
+"display_name": "Crimson Raider",
+"faction": "hostile",
+"max_hp": 150.0,
+"move_speed": 4.0,
+"projectile_color": "#ff3322",
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1039283585]
+
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=1015748801]
+
+[node name="HexGrid" type="Node3D" parent="Entities/Substrate" unique_id=1158530239]
+
+[node name="HexTile_-4_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1538241384 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.856406, 0.35, 0)
+metadata/hex_q = -4
+metadata/hex_r = 0
+metadata/biome = "mountain"
+
+[node name="HexTile_-4_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1908662686 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.124355, -0.15, 3)
+metadata/hex_q = -4
+metadata/hex_r = 1
+metadata/biome = "water"
+
+[node name="HexTile_-4_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=941555063 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.392304, 0.35, 6)
+metadata/hex_q = -4
+metadata/hex_r = 2
+metadata/biome = "mountain"
+
+[node name="HexTile_-4_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=651505739 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6602545, 0, 9)
+metadata/hex_q = -4
+metadata/hex_r = 3
+metadata/biome = "plains"
+
+[node name="HexTile_-4_4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=624391191 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0.35, 12)
+metadata/hex_q = -4
+metadata/hex_r = 4
+metadata/biome = "mountain"
+
+[node name="HexTile_-3_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=784297892 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.124355, 0.35, -3)
+metadata/hex_q = -3
+metadata/hex_r = -1
+metadata/biome = "mountain"
+
+[node name="HexTile_-3_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=707049375 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.392304, 0, 0)
+metadata/hex_q = -3
+metadata/hex_r = 0
+metadata/biome = "plains"
+
+[node name="HexTile_-3_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1076932483 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6602545, 0, 3)
+metadata/hex_q = -3
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_-3_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1858769165 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0, 6)
+metadata/hex_q = -3
+metadata/hex_r = 2
+metadata/biome = "forest"
+
+[node name="HexTile_-3_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=882971025 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, 9)
+metadata/hex_q = -3
+metadata/hex_r = 3
+metadata/biome = "plains"
+
+[node name="HexTile_-3_4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=913137131 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 12)
+metadata/hex_q = -3
+metadata/hex_r = 4
+metadata/biome = "plains"
+
+[node name="HexTile_-2_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=714679495 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.392304, 0.35, -6)
+metadata/hex_q = -2
+metadata/hex_r = -2
+metadata/biome = "mountain"
+
+[node name="HexTile_-2_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=997703334 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6602545, 0, -3)
+metadata/hex_q = -2
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_-2_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1298822630 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0, 0)
+metadata/hex_q = -2
+metadata/hex_r = 0
+metadata/biome = "forest"
+
+[node name="HexTile_-2_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1724399209 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, 3)
+metadata/hex_q = -2
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_-2_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1758155741 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 6)
+metadata/hex_q = -2
+metadata/hex_r = 2
+metadata/biome = "plains"
+
+[node name="HexTile_-2_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=456388391 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, 9)
+metadata/hex_q = -2
+metadata/hex_r = 3
+metadata/biome = "plains"
+
+[node name="HexTile_-2_4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1070306020 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 12)
+metadata/hex_q = -2
+metadata/hex_r = 4
+metadata/biome = "mountain"
+
+[node name="HexTile_-1_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1861870163 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6602545, 0.35, -9)
+metadata/hex_q = -1
+metadata/hex_r = -3
+metadata/biome = "mountain"
+
+[node name="HexTile_-1_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=2063125268 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0, -6)
+metadata/hex_q = -1
+metadata/hex_r = -2
+metadata/biome = "forest"
+
+[node name="HexTile_-1_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1230153027 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, -3)
+metadata/hex_q = -1
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_-1_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1399152451 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, 0)
+metadata/hex_q = -1
+metadata/hex_r = 0
+metadata/biome = "plains"
+
+[node name="HexTile_-1_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=299353722 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, 3)
+metadata/hex_q = -1
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_-1_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=568229241 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 6)
+metadata/hex_q = -1
+metadata/hex_r = 2
+metadata/biome = "water"
+
+[node name="HexTile_-1_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1470690818 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, 9)
+metadata/hex_q = -1
+metadata/hex_r = 3
+metadata/biome = "plains"
+
+[node name="HexTile_-1_4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=2058064303 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 12)
+metadata/hex_q = -1
+metadata/hex_r = 4
+metadata/biome = "plains"
+
+[node name="HexTile_0_-4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1897973753 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.928203, 0.35, -12)
+metadata/hex_q = 0
+metadata/hex_r = -4
+metadata/biome = "mountain"
+
+[node name="HexTile_0_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1677374407 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.196152, 0, -9)
+metadata/hex_q = 0
+metadata/hex_r = -3
+metadata/biome = "plains"
+
+[node name="HexTile_0_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=248830931 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, -6)
+metadata/hex_q = 0
+metadata/hex_r = -2
+metadata/biome = "plains"
+
+[node name="HexTile_0_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=671812474 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, -3)
+metadata/hex_q = 0
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_0_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=818698387 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+metadata/hex_q = 0
+metadata/hex_r = 0
+metadata/biome = "plains"
+
+[node name="HexTile_0_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1793179269 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, 3)
+metadata/hex_q = 0
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_0_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1550178923 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 6)
+metadata/hex_q = 0
+metadata/hex_r = 2
+metadata/biome = "plains"
+
+[node name="HexTile_0_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1178496423 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, 9)
+metadata/hex_q = 0
+metadata/hex_r = 3
+metadata/biome = "plains"
+
+[node name="HexTile_0_4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1807421771 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.35, 12)
+metadata/hex_q = 0
+metadata/hex_r = 4
+metadata/biome = "mountain"
+
+[node name="HexTile_1_-4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=402184633 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4641016, 0, -12)
+metadata/hex_q = 1
+metadata/hex_r = -4
+metadata/biome = "plains"
+
+[node name="HexTile_1_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1872775573 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7320508, 0, -9)
+metadata/hex_q = 1
+metadata/hex_r = -3
+metadata/biome = "plains"
+
+[node name="HexTile_1_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=898648812 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -6)
+metadata/hex_q = 1
+metadata/hex_r = -2
+metadata/biome = "water"
+
+[node name="HexTile_1_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=930668914 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, -3)
+metadata/hex_q = 1
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_1_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1518539043 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, 0)
+metadata/hex_q = 1
+metadata/hex_r = 0
+metadata/biome = "plains"
+
+[node name="HexTile_1_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1666913924 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, 3)
+metadata/hex_q = 1
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_1_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1493160507 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0, 6)
+metadata/hex_q = 1
+metadata/hex_r = 2
+metadata/biome = "forest"
+
+[node name="HexTile_1_3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1981089375 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0.35, 9)
+metadata/hex_q = 1
+metadata/hex_r = 3
+metadata/biome = "mountain"
+
+[node name="HexTile_2_-4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=228145118 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -12)
+metadata/hex_q = 2
+metadata/hex_r = -4
+metadata/biome = "mountain"
+
+[node name="HexTile_2_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1509973387 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7320508, 0, -9)
+metadata/hex_q = 2
+metadata/hex_r = -3
+metadata/biome = "plains"
+
+[node name="HexTile_2_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=2127182332 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, -6)
+metadata/hex_q = 2
+metadata/hex_r = -2
+metadata/biome = "plains"
+
+[node name="HexTile_2_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=2087769916 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, -3)
+metadata/hex_q = 2
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_2_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1916394520 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0, 0)
+metadata/hex_q = 2
+metadata/hex_r = 0
+metadata/biome = "forest"
+
+[node name="HexTile_2_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1463761256 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0, 3)
+metadata/hex_q = 2
+metadata/hex_r = 1
+metadata/biome = "plains"
+
+[node name="HexTile_2_2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1850912723 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.35, 6)
+metadata/hex_q = 2
+metadata/hex_r = 2
+metadata/biome = "mountain"
+
+[node name="HexTile_3_-4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=480990498 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4641016, 0, -12)
+metadata/hex_q = 3
+metadata/hex_r = -4
+metadata/biome = "plains"
+
+[node name="HexTile_3_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=567622916 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.196152, 0, -9)
+metadata/hex_q = 3
+metadata/hex_r = -3
+metadata/biome = "plains"
+
+[node name="HexTile_3_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1556938138 groups=["hex_tile"] instance=ExtResource("4_kubt7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0, -6)
+metadata/hex_q = 3
+metadata/hex_r = -2
+metadata/biome = "forest"
+
+[node name="HexTile_3_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1862702481 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0, -3)
+metadata/hex_q = 3
+metadata/hex_r = -1
+metadata/biome = "plains"
+
+[node name="HexTile_3_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=925776412 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0, 0)
+metadata/hex_q = 3
+metadata/hex_r = 0
+metadata/biome = "plains"
+
+[node name="HexTile_3_1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=180372965 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, 0.35, 3)
+metadata/hex_q = 3
+metadata/hex_r = 1
+metadata/biome = "mountain"
+
+[node name="HexTile_4_-4" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1563947641 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.928203, 0.35, -12)
+metadata/hex_q = 4
+metadata/hex_r = -4
+metadata/biome = "mountain"
+
+[node name="HexTile_4_-3" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1184079305 groups=["hex_tile"] instance=ExtResource("5_v3rov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.6602545, 0, -9)
+metadata/hex_q = 4
+metadata/hex_r = -3
+metadata/biome = "plains"
+
+[node name="HexTile_4_-2" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=575930179 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.392304, 0.35, -6)
+metadata/hex_q = 4
+metadata/hex_r = -2
+metadata/biome = "mountain"
+
+[node name="HexTile_4_-1" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=2111385057 groups=["hex_tile"] instance=ExtResource("6_fuf6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.124355, -0.15, -3)
+metadata/hex_q = 4
+metadata/hex_r = -1
+metadata/biome = "water"
+
+[node name="HexTile_4_0" type="StaticBody3D" parent="Entities/Substrate/HexGrid" unique_id=1365575322 groups=["hex_tile"] instance=ExtResource("3_rv4bh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.856406, 0.35, 0)
+metadata/hex_q = 4
+metadata/hex_r = 0
+metadata/biome = "mountain"

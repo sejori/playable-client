@@ -198,6 +198,22 @@ func _setup_combat_unit(cfg: Dictionary) -> void:
 	parent.set_meta("role", _combat_role)
 	parent.set_meta("faction", _combat_faction)
 
+	# Visually distinguish hostile units (e.g. Crimson Raiders, Cyber Troopers) from Blue Army
+	if _combat_faction == "hostile" and _combat_role != "boss":
+		var crimson_mat := StandardMaterial3D.new()
+		crimson_mat.albedo_color = Color(0.95, 0.18, 0.15)
+		crimson_mat.emission_enabled = true
+		crimson_mat.emission = Color(1.0, 0.2, 0.1)
+		crimson_mat.emission_energy_multiplier = 2.0
+
+		var team_ring := parent.find_child("TeamRing", true, false) as MeshInstance3D
+		if team_ring != null:
+			team_ring.set_surface_override_material(0, crimson_mat)
+
+		var body_mesh := parent.find_child("BodyMesh", true, false) as MeshInstance3D
+		if body_mesh != null and team_ring == null:
+			body_mesh.set_surface_override_material(0, crimson_mat)
+
 func apply_damage(amount: float) -> void:
 	if not _has_combat_unit or _is_defeated:
 		return
@@ -531,7 +547,7 @@ func _fire_energy_projectile(target: Node3D) -> void:
 	tw.tween_property(proj, "global_position", target_pos, flight_time)
 	tw.tween_callback(func():
 		if is_instance_valid(target):
-			ModularEntityTraits.damage_entity(target, dmg)
+			damage_entity(target, dmg)
 		if is_instance_valid(proj):
 			proj.queue_free()
 	)
@@ -574,7 +590,7 @@ func _trigger_boss_shockwave() -> void:
 			if c is Node3D and is_instance_valid(c):
 				var n := c as Node3D
 				if center.distance_to(n.global_position) <= 8.0:
-					ModularEntityTraits.damage_entity(n, dmg)
+					damage_entity(n, dmg)
 		if is_instance_valid(ring):
 			ring.queue_free()
 	)
@@ -666,7 +682,7 @@ func _process_hazard_emitter(delta: float) -> void:
 			if c is Node3D and c != parent and is_instance_valid(c):
 				var n := c as Node3D
 				if center.distance_to(n.global_position) <= _hazard_radius:
-					ModularEntityTraits.damage_entity(n, dmg)
+					damage_entity(n, dmg)
 
 func _process_impulse_pad(_delta: float) -> void:
 	var now := Time.get_ticks_msec()
@@ -867,7 +883,7 @@ static func _scan_and_attach_traits_recursive(node: Node) -> void:
 				})
 
 		if not traits_to_attach.is_empty():
-			var trait_comp := ModularEntityTraits.new()
+			var trait_comp: Node3D = (load("res://library/modular/ModularEntityTraits.gd") as GDScript).new() as Node3D
 			trait_comp.name = "ModularEntityTraits"
 			trait_comp.traits_config = traits_to_attach
 			node.add_child(trait_comp)
@@ -891,14 +907,13 @@ func _spawn_floating_label(text: String, color: Color, local_offset: Vector3 = V
 	lbl.font_size = 36
 	lbl.outline_size = 8
 	lbl.outline_modulate = Color.BLACK
-	lbl.global_position = parent.global_position + local_offset
-
 	var container: Node = get_tree().current_scene
 	if container == null:
 		container = parent.get_parent()
 	if container == null:
 		return
 	container.add_child(lbl)
+	lbl.global_position = parent.global_position + local_offset
 
 	var tw := lbl.create_tween()
 	tw.tween_property(lbl, "global_position:y", lbl.global_position.y + 1.2, 0.9)

@@ -7,6 +7,7 @@ extends Node
 
 const FALLBACK_SCENE: String = "res://scenes/zones/fire_prison_rig.tscn"
 const CONTRACTS_PATH: String = "res://specs/interface_contracts.json"
+const ModularEntityTraitsScript := preload("res://library/modular/ModularEntityTraits.gd")
 
 func _ready() -> void:
 	var target_scene := resolve_target_scene()
@@ -87,8 +88,26 @@ func _boot_scene(scene_path: String) -> void:
 func _mount_zone(zone_instance: Node) -> void:
 	_ensure_environment_and_lighting(zone_instance)
 	_ensure_active_camera(zone_instance)
-	ModularEntityTraits.ensure_scene_traits(zone_instance)
+	ModularEntityTraitsScript.ensure_scene_traits(zone_instance)
 	_ensure_reactive_overlay(zone_instance)
+	if is_showcase_demo_mode():
+		_ensure_showcase_agent(zone_instance)
+
+static func is_showcase_demo_mode() -> bool:
+	var all_args: PackedStringArray = OS.get_cmdline_args()
+	all_args.append_array(OS.get_cmdline_user_args())
+	for arg in all_args:
+		if arg == "--showcase-demo" or arg == "--write-movie" or arg.begins_with("--write-movie="):
+			return true
+	return false
+
+static func _ensure_showcase_agent(zone_instance: Node) -> void:
+	if zone_instance.get_node_or_null("AutonomousShowcaseAgent3D") == null:
+		var agent_script: Variant = load("res://scripts/core/AutonomousShowcaseAgent3D.gd")
+		if agent_script != null:
+			var agent: Node = agent_script.new()
+			agent.name = "AutonomousShowcaseAgent3D"
+			zone_instance.add_child(agent)
 
 static func _ensure_reactive_overlay(zone_instance: Node) -> void:
 	if zone_instance.get_node_or_null("SceneReactiveOverlay") == null:
