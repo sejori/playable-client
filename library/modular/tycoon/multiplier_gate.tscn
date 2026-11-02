@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://library/tycoon/MultiplierGate.gd" id="1_gate"]
 
@@ -14,7 +14,20 @@ emission_energy_multiplier = 1.5
 
 [sub_resource type="BoxMesh" id="BoxMesh_portal"]
 material = SubResource("StandardMaterial3D_portal")
-size = Vector3(3.6, 3.2, 0.2)
+size = Vector3(3.4, 3.0, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frame"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+material = SubResource("StandardMaterial3D_frame")
+size = Vector3(0.4, 3.5, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arch"]
+material = SubResource("StandardMaterial3D_frame")
+size = Vector3(4.2, 0.4, 0.6)
 
 [node name="MultiplierGate" type="Area3D" groups=["hazard", "interactable", "multiplier_gate"]]
 collision_layer = 4
@@ -26,5 +39,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 shape = SubResource("BoxShape3D_gate")
 
 [node name="PortalMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 mesh = SubResource("BoxMesh_portal")
+
+[node name="LeftPillar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 1.75, 0)
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="RightPillar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 1.75, 0)
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="TopArch" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+mesh = SubResource("BoxMesh_arch")

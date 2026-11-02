@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://library/modular/ModularBossController.gd" id="1_boss"]
 
@@ -6,16 +6,41 @@
 height = 3.6
 radius = 1.4
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_golem"]
-albedo_color = Color(0.32, 0.22, 0.18, 1)
-roughness = 0.8
-emission_enabled = true
-emission = Color(0.9, 0.3, 0.05, 1)
-emission_energy_multiplier = 0.8
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
+albedo_color = Color(0.22, 0.2, 0.2, 1)
+roughness = 0.85
+metallic = 0.2
 
-[sub_resource type="BoxMesh" id="BoxMesh_golem"]
-material = SubResource("StandardMaterial3D_golem")
-size = Vector3(2.4, 3.6, 2.0)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_magma"]
+albedo_color = Color(1, 0.25, 0.05, 1)
+roughness = 0.2
+emission_enabled = true
+emission = Color(1, 0.35, 0.05, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(1.8, 1.8, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_core"]
+material = SubResource("StandardMaterial3D_magma")
+size = Vector3(0.8, 0.8, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(0.9, 0.7, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shoulder"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(1.0, 1.0, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(0.7, 1.6, 0.7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_leg"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(0.8, 1.1, 0.9)
 
 [node name="GolemBrute" type="CharacterBody3D" groups=["boss_target", "combat_unit"]]
 collision_layer = 3
@@ -26,6 +51,38 @@ script = ExtResource("1_boss")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 shape = SubResource("CylinderShape3D_golem")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
-mesh = SubResource("BoxMesh_golem")
+[node name="TorsoMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("BoxMesh_torso")
+
+[node name="CoreGlowMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0.65)
+mesh = SubResource("BoxMesh_core")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0.15)
+mesh = SubResource("BoxMesh_head")
+
+[node name="LeftShoulderMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -1.3, 2.7, 0)
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="RightShoulderMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 1.3, 2.7, 0)
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="LeftArmMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, 1.4, 0)
+mesh = SubResource("BoxMesh_arm")
+
+[node name="RightArmMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35, 1.4, 0)
+mesh = SubResource("BoxMesh_arm")
+
+[node name="LeftLegMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.55, 0)
+mesh = SubResource("BoxMesh_leg")
+
+[node name="RightLegMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.55, 0)
+mesh = SubResource("BoxMesh_leg")
