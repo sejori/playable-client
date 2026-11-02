@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_booth"]
+size = Vector3(2.4, 1.4, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.48, 0.32, 0.18, 1)
+roughness = 0.75
+
+[sub_resource type="BoxMesh" id="BoxMesh_counter"]
+material = SubResource("StandardMaterial3D_wood")
+size = Vector3(2.4, 1.4, 1.2)
+
+[node name="BankBooth" type="StaticBody3D" groups=["bank_station", "interactable"]]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("BoxShape3D_booth")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("BoxMesh_counter")

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gem"]
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ruby"]
+albedo_color = Color(0.95, 0.1, 0.25, 1)
+roughness = 0.15
+metallic = 0.2
+emission_enabled = true
+emission = Color(0.9, 0.1, 0.2, 1)
+emission_energy_multiplier = 1.4
+
+[sub_resource type="PrismMesh" id="PrismMesh_crystal"]
+material = SubResource("StandardMaterial3D_ruby")
+size = Vector3(0.6, 0.8, 0.6)
+
+[node name="GemCrystalRuby" type="Area3D" groups=["collectible", "gem_token", "interactable"]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_gem")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("PrismMesh_crystal")

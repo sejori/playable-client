@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="1_char"]
+[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="2_mover"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_knight"]
+radius = 0.5
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_armor"]
+albedo_color = Color(0.72, 0.76, 0.82, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+material = SubResource("StandardMaterial3D_armor")
+radius = 0.45
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_visor"]
+albedo_color = Color(0.15, 0.55, 0.95, 1)
+emission_enabled = true
+emission = Color(0.2, 0.65, 1.0, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+material = SubResource("StandardMaterial3D_visor")
+size = Vector3(0.5, 0.15, 0.3)
+
+[node name="PlayerKnight" type="CharacterBody3D" groups=["combat_unit", "player"]]
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1_char")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_knight")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_body")
+
+[node name="VisorMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.3)
+mesh = SubResource("BoxMesh_visor")
+
+[node name="ActionMover3D" type="Node" parent="."]
+script = ExtResource("2_mover")
