@@ -447,6 +447,11 @@ func _apply_voxel_terraced_substrate(scene_root: Node3D, substrate_group: Node3D
 			block.scale = Vector3(step_size, 1.0, step_size)
 			block.position = Vector3(wx, target_y - 0.5, wz)
 
+			# Clear scene_file_path and child owners so PackedScene serializes mesh and materials directly
+			block.scene_file_path = ""
+			for c in block.get_children():
+				c.owner = null
+
 			var mesh_nodes := block.find_children("", "MeshInstance3D", true, false)
 			for mn in mesh_nodes:
 				(mn as MeshInstance3D).set_surface_override_material(0, block_mat)
@@ -571,6 +576,11 @@ func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, subs
 			tile.set_meta("hex_q", q)
 			tile.set_meta("hex_r", r)
 			tile.set_meta("biome", biome_name)
+
+			# Clear scene_file_path and child owners so PackedScene serializes mesh and biome materials directly
+			tile.scene_file_path = ""
+			for c in tile.get_children():
+				c.owner = null
 
 			var meshes := tile.find_children("", "MeshInstance3D", true, false)
 			for m in meshes:
@@ -873,4 +883,15 @@ func _build_default_substrate() -> Node3D:
 func _set_owner_recursive(node: Node, scene_owner: Node) -> void:
 	for child in node.get_children():
 		child.owner = scene_owner
-		_set_owner_recursive(child, scene_owner)
+		if child.scene_file_path != "":
+			# Child is an instanced PackedScene. Internal nodes already have owner == child.
+			# Only set owner = scene_owner on newly added dynamic nodes (like ModularEntityTraits).
+			_set_owner_for_dynamic_children(child, scene_owner)
+		else:
+			_set_owner_recursive(child, scene_owner)
+
+func _set_owner_for_dynamic_children(node: Node, scene_owner: Node) -> void:
+	for child in node.get_children():
+		if child.owner == null or child.owner == scene_owner:
+			child.owner = scene_owner
+			_set_owner_for_dynamic_children(child, scene_owner)

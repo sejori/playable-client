@@ -737,86 +737,142 @@ static func ensure_scene_traits(zone_root: Node) -> void:
 static func _scan_and_attach_traits_recursive(node: Node) -> void:
 	if node is Node3D and node.name != "ModularEntityTraits":
 		var has_traits_child: bool = node.has_node("ModularEntityTraits")
-		if not has_traits_child:
-			var traits_to_attach: Array = []
-			if node.has_meta("entity_traits"):
-				var raw_traits: Variant = node.get_meta("entity_traits")
-				if raw_traits is Array:
-					traits_to_attach = (raw_traits as Array).duplicate(true)
+		if has_traits_child:
+			return
 
-			if traits_to_attach.is_empty():
-				var n_name := node.name.to_lower()
-				if node.is_in_group("harvestable") or n_name.contains("tree") or n_name.contains("rock"):
-					var res_name := "Oak Log" if n_name.contains("tree") else "Iron Ore"
-					traits_to_attach.append({
-						"type": "harvestable",
-						"resource_name": res_name,
-						"max_charges": 5,
-						"tick_interval_sec": 0.6,
-						"respawn_sec": 8.0
-					})
-				elif node.is_in_group("coin_token") or n_name.contains("coin"):
-					traits_to_attach.append({
-						"type": "collectible",
-						"item_name": "Gold Coin",
-						"score_value": 10,
-						"magnet_radius": 3.5
-					})
-					traits_to_attach.append({
-						"type": "ambient_motion",
-						"spin_deg_sec": 90.0,
-						"bob_amp": 0.15,
-						"bob_speed": 3.0
-					})
-				elif node.is_in_group("gem_token") or n_name.contains("gem"):
-					traits_to_attach.append({
-						"type": "collectible",
-						"item_name": "Ruby Gem",
-						"score_value": 50,
-						"magnet_radius": 4.0
-					})
-					traits_to_attach.append({
-						"type": "ambient_motion",
-						"spin_deg_sec": 60.0,
-						"bob_amp": 0.2,
-						"bob_speed": 2.5,
-						"pulse_emission": true
-					})
-				elif node.is_in_group("jump_pad") or n_name.contains("jump_pad"):
-					traits_to_attach.append({
-						"type": "impulse_pad",
-						"upward_velocity": 12.0,
-						"forward_boost": 4.0
-					})
-					traits_to_attach.append({
-						"type": "ambient_motion",
-						"pulse_emission": true
-					})
-				elif node.is_in_group("boost_pad") or n_name.contains("boost_pad"):
-					traits_to_attach.append({
-						"type": "impulse_pad",
-						"upward_velocity": 0.0,
-						"forward_boost": 18.0
-					})
-					traits_to_attach.append({
-						"type": "ambient_motion",
-						"pulse_emission": true
-					})
-				elif node.is_in_group("hazard") or n_name.contains("hazard_vent") or n_name.contains("lava_vent"):
-					traits_to_attach.append({
-						"type": "hazard_emitter",
-						"cycle_sec": 4.0,
-						"radius": 3.0,
-						"damage_per_sec": 25.0,
-						"telegraph_color": "#ff3300"
-					})
+		var traits_to_attach: Array = []
+		if node.has_meta("entity_traits"):
+			var raw_traits: Variant = node.get_meta("entity_traits")
+			if raw_traits is Array:
+				traits_to_attach = (raw_traits as Array).duplicate(true)
 
-			if not traits_to_attach.is_empty():
-				var trait_comp := ModularEntityTraits.new()
-				trait_comp.name = "ModularEntityTraits"
-				trait_comp.traits_config = traits_to_attach
-				node.add_child(trait_comp)
-				node.set_meta("entity_traits", traits_to_attach)
+		if traits_to_attach.is_empty():
+			var n_name := node.name.to_lower()
+			if node.name == "PlayerCharacter" or node.is_in_group("player"):
+				traits_to_attach.append({
+					"type": "combat_unit",
+					"role": "player",
+					"faction": "player",
+					"display_name": "Player Hero",
+					"max_hp": 100.0,
+					"move_speed": 6.0
+				})
+			elif node.is_in_group("boss_target") or n_name.contains("golem"):
+				traits_to_attach.append({
+					"type": "combat_unit",
+					"role": "boss",
+					"faction": "hostile",
+					"display_name": "Golem Brute",
+					"max_hp": 2400.0,
+					"attack_damage": 45.0,
+					"attack_range": 4.0,
+					"move_speed": 3.2
+				})
+			elif node.is_in_group("tactical_unit") or n_name.contains("unit_knight"):
+				traits_to_attach.append({
+					"type": "combat_unit",
+					"role": "ally",
+					"faction": "blue_army",
+					"display_name": "Tactical Knight",
+					"max_hp": 120.0,
+					"attack_damage": 25.0,
+					"attack_range": 2.0,
+					"move_speed": 4.0
+				})
+			elif node.is_in_group("multiplier_gate") or n_name.contains("multiplier_gate"):
+				traits_to_attach.append({
+					"type": "impulse_pad",
+					"multiplier": 2.0
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"pulse_emission": true
+				})
+			elif n_name.contains("shrine"):
+				traits_to_attach.append({
+					"type": "dialogue_trigger",
+					"prompt_label": "Channel Ancient Altar",
+					"dialogue_path": "res://dialogues/prison_break.dialogue",
+					"start_node": "altar_seal"
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"bob_amp": 0.08,
+					"bob_speed": 1.5,
+					"pulse_emission": true
+				})
+			elif node.is_in_group("harvestable") or n_name.contains("tree") or n_name.contains("rock"):
+				var res_name := "Oak Log" if n_name.contains("tree") else "Iron Ore"
+				traits_to_attach.append({
+					"type": "harvestable",
+					"resource_name": res_name,
+					"max_charges": 5,
+					"tick_interval_sec": 0.6,
+					"respawn_sec": 8.0
+				})
+			elif node.is_in_group("coin_token") or n_name.contains("coin"):
+				traits_to_attach.append({
+					"type": "collectible",
+					"item_name": "Gold Coin",
+					"score_value": 10,
+					"magnet_radius": 3.5
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"spin_deg_sec": 90.0,
+					"bob_amp": 0.15,
+					"bob_speed": 3.0
+				})
+			elif node.is_in_group("gem_token") or n_name.contains("gem"):
+				traits_to_attach.append({
+					"type": "collectible",
+					"item_name": "Ruby Gem",
+					"score_value": 50,
+					"magnet_radius": 4.0
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"spin_deg_sec": 60.0,
+					"bob_amp": 0.2,
+					"bob_speed": 2.5,
+					"pulse_emission": true
+				})
+			elif node.is_in_group("jump_pad") or n_name.contains("jump_pad"):
+				traits_to_attach.append({
+					"type": "impulse_pad",
+					"upward_velocity": 12.0,
+					"forward_boost": 4.0
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"pulse_emission": true
+				})
+			elif node.is_in_group("boost_pad") or n_name.contains("boost_pad"):
+				traits_to_attach.append({
+					"type": "impulse_pad",
+					"upward_velocity": 0.0,
+					"forward_boost": 18.0
+				})
+				traits_to_attach.append({
+					"type": "ambient_motion",
+					"pulse_emission": true
+				})
+			elif node.is_in_group("hazard") or n_name.contains("hazard_vent") or n_name.contains("lava_vent"):
+				traits_to_attach.append({
+					"type": "hazard_emitter",
+					"cycle_sec": 4.0,
+					"radius": 3.0,
+					"damage_per_sec": 25.0,
+					"telegraph_color": "#ff3300"
+				})
+
+		if not traits_to_attach.is_empty():
+			var trait_comp := ModularEntityTraits.new()
+			trait_comp.name = "ModularEntityTraits"
+			trait_comp.traits_config = traits_to_attach
+			node.add_child(trait_comp)
+			node.set_meta("entity_traits", traits_to_attach)
+			return
 
 	for child in node.get_children():
 		_scan_and_attach_traits_recursive(child)
