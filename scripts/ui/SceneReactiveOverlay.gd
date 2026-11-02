@@ -644,7 +644,7 @@ func _find_player_node() -> Node:
 # 3. 3D World Nameplates
 # -----------------------------------------------------------------------------
 func _ensure_world_nameplates() -> void:
-	var groups := ["combat_unit", "harvestable", "dialogue_trigger", "objective", "impulse_pad"]
+	var groups := ["combat_unit", "harvestable", "dialogue_trigger", "objective", "impulse_pad", "jump_pad", "boost_pad", "multiplier_gate"]
 	for g: String in groups:
 		var nodes: Array[Node] = get_tree().get_nodes_in_group(g)
 		for node: Node in nodes:
@@ -706,7 +706,7 @@ func _calculate_entity_height(node: Node3D) -> float:
 	return 1.6
 
 func _update_world_nameplates() -> void:
-	var groups := ["combat_unit", "harvestable", "dialogue_trigger", "objective", "impulse_pad"]
+	var groups := ["combat_unit", "harvestable", "dialogue_trigger", "objective", "impulse_pad", "jump_pad", "boost_pad", "multiplier_gate"]
 	var visited: Dictionary = {}
 
 	for g: String in groups:
@@ -756,20 +756,41 @@ func _update_world_nameplates() -> void:
 					nameplate.modulate = Color(0.20, 0.95, 0.40) # emerald green
 					continue
 
-				# 3. impulse_pad with multiplier > 1.0
-				var mult: float = float(n3d.get_meta("multiplier", 1.0))
-				if mult <= 1.0 and n3d.has_meta("traits_controller"):
-					var tc: Variant = n3d.get_meta("traits_controller")
-					if tc != null and tc.get("_impulse_multiplier") != null:
-						mult = float(tc.get("_impulse_multiplier"))
-				if mult <= 1.0 and (n3d.is_in_group("multiplier_gate") or n3d.name.to_lower().contains("multiplier_gate")):
-					mult = 2.0
+				# 3. impulse_pad
+				if n3d.is_in_group("impulse_pad") or n3d.is_in_group("multiplier_gate") or n3d.is_in_group("jump_pad") or n3d.is_in_group("boost_pad"):
+					var mult: float = float(n3d.get_meta("multiplier", 1.0))
+					var up_vel: float = float(n3d.get_meta("upward_velocity", 0.0))
+					var fwd_boost: float = float(n3d.get_meta("forward_boost", 0.0))
 
-				if mult > 1.0:
-					nameplate.visible = true
-					nameplate.text = "x%d MULTIPLIER" % int(mult)
-					nameplate.modulate = Color(0.95, 0.20, 1.0) # neon magenta
-					continue
+					if n3d.has_meta("traits_controller"):
+						var tc: Variant = n3d.get_meta("traits_controller")
+						if tc != null:
+							if tc.get("_impulse_multiplier") != null:
+								mult = float(tc.get("_impulse_multiplier"))
+							if tc.get("_impulse_upward_velocity") != null:
+								up_vel = float(tc.get("_impulse_upward_velocity"))
+							if tc.get("_impulse_forward_boost") != null:
+								fwd_boost = float(tc.get("_impulse_forward_boost"))
+
+					var nl := n3d.name.to_lower()
+					if mult <= 1.0 and (n3d.is_in_group("multiplier_gate") or nl.contains("multiplier_gate")):
+						mult = 2.0
+
+					if mult > 1.0:
+						nameplate.visible = true
+						nameplate.text = "x%d MULTIPLIER" % int(mult)
+						nameplate.modulate = Color(0.95, 0.25, 1.0) # neon magenta
+						continue
+					elif up_vel > 0.0 or n3d.is_in_group("jump_pad") or nl.contains("jump"):
+						nameplate.visible = true
+						nameplate.text = "[ JUMP PAD ]"
+						nameplate.modulate = Color(0.20, 0.90, 1.0) # bright cyan
+						continue
+					elif fwd_boost > 0.0 or n3d.is_in_group("boost_pad") or nl.contains("boost"):
+						nameplate.visible = true
+						nameplate.text = ">> SPEED BOOST >>"
+						nameplate.modulate = Color(1.0, 0.65, 0.15) # neon orange
+						continue
 
 				# 4. dialogue_trigger / objective
 				if n3d.is_in_group("dialogue_trigger") or n3d.is_in_group("objective"):
@@ -853,14 +874,14 @@ func parse_dialogue_file(path: String) -> Dictionary:
 func _update_dialogue_balloon(delta: float) -> void:
 	var should_show := false
 	var target_path := DEFAULT_DIALOGUE_PATH
-	var target_node_name := "start_encounter"
+	var target_node_name := _determine_opening_dialogue_node()
 	var trigger_prompt := ""
 
 	# 1. Opening encounter (0.5s to 4.5s)
 	if _elapsed_time >= 0.5 and _elapsed_time <= 4.5:
 		should_show = true
 		target_path = DEFAULT_DIALOGUE_PATH
-		target_node_name = "start_encounter"
+		target_node_name = _determine_opening_dialogue_node()
 
 	# 2. Check nearby dialogue_trigger (< 4.5m)
 	var player := _find_player_node()
@@ -905,6 +926,32 @@ func _update_dialogue_balloon(delta: float) -> void:
 			_dialogue_balloon_panel.visible = false
 			_active_dialogue_node_key = ""
 
+func _determine_opening_dialogue_node() -> String:
+	var cached_nodes := _load_and_cache_dialogue(DEFAULT_DIALOGUE_PATH)
+	if cached_nodes.has("start_encounter"):
+		var raw_se: Variant = cached_nodes["start_encounter"]
+		if raw_se is Dictionary:
+			var se_dict: Dictionary = raw_se as Dictionary
+			var text: String = str(se_dict.get("text", "")).strip_edges()
+			if not text.is_empty() and text != "Be ready, danger awaits in this realm!":
+				return "start_encounter"
+
+	if _find_boss_node() != null:
+		return "start_encounter"
+
+	var sc := get_tree().current_scene
+	if sc != null:
+		if sc.has_meta("hex_substrate") or not get_tree().get_nodes_in_group("hex_grid").is_empty() or sc.find_children("", "TurnManager", true, false).size() > 0:
+			return "tactical_command"
+		if sc.has_meta("voxel_substrate") or not sc.find_children("", "VoxelWorldGenerator", true, false).is_empty() or not get_tree().get_nodes_in_group("voxel").is_empty():
+			return "voxel_frontier"
+		if not get_tree().get_nodes_in_group("collectible").is_empty() or not get_tree().get_nodes_in_group("impulse_pad").is_empty() or sc.has_meta("score_multiplier"):
+			return "collector_trial"
+		if not get_tree().get_nodes_in_group("harvestable").is_empty() or sc.has_meta("scattered_grove"):
+			return "harvest_sanctuary"
+
+	return "start_encounter"
+
 func _set_active_dialogue_node(path: String, node_title: String, prompt_fallback: String) -> void:
 	var key := path + "::" + node_title
 	if _active_dialogue_node_key == key:
@@ -917,6 +964,10 @@ func _set_active_dialogue_node(path: String, node_title: String, prompt_fallback
 		var raw_node: Variant = cached_nodes[node_title]
 		if raw_node is Dictionary:
 			node_info = raw_node as Dictionary
+	elif not prompt_fallback.is_empty():
+		pass
+	elif not cached_nodes.is_empty() and cached_nodes.has("start_encounter"):
+		node_info = cached_nodes["start_encounter"] as Dictionary
 	elif not cached_nodes.is_empty():
 		var first_key: Variant = cached_nodes.keys()[0]
 		node_info = cached_nodes[first_key] as Dictionary

@@ -2,3 +2,38 @@
 Scout: Be ready, danger awaits in this realm!
 - Engage Boss (3000 HP)
 => END
+
+~ altar_seal
+Ancient Shrine: The runes resonate with arcane power. Channel the seal to claim the sanctuary.
+- Channel Ancient Seal
+=> END
+
+~ terminal_access
+Mainframe AI: Defense grid online. Override security locks and clear hostile targets.
+- Override Security Protocol
+=> END
+
+~ bank_vault
+Vault Keeper: Deposit your harvested resources to fortify the outpost treasury.
+- Open Bank Vault
+=> END
+
+~ tactical_command
+Commander: Tactical hex grid deployed. Advance your armored knights and seize the high ground!
+- Command Units (3 AP)
+=> END
+
+~ voxel_frontier
+Pioneer: Terraced frontier charted. Harvest timber and stone to shape the realm!
+- Survey Frontier
+=> END
+
+~ harvest_sanctuary
+Caretaker: Resource nodes are rich here. Harvest oak logs and iron ore on every tick!
+- Gather Resources
+=> END
+
+~ collector_trial
+Announcer: Speed trial active! Hit the multiplier gates and boost pads to maximize your score!
+- Start Trial Run
+=> END
