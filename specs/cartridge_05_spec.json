@@ -1,0 +1,123 @@
+{
+  "target_scene": "res://scenes/zones/cartridge_05_arena_fps.tscn",
+  "output_path": "res://scenes/zones/cartridge_05_arena_fps.tscn",
+  "append": false,
+  "substrate": {
+    "type": "flat_arena"
+  },
+  "palette": {
+    "sky_top": "#060b16",
+    "sky_horizon": "#12284c",
+    "floor_albedo": "#1a202c",
+    "sun_energy": 1.4,
+    "sun_color": "#88c0ff",
+    "fog_density": 0.016,
+    "fog_albedo": "#0d1a30"
+  },
+  "entities": [
+    {
+      "asset_id": "arch_bunker_wall_steel_4x3",
+      "position": [-5.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "arch_bunker_wall_steel_4x3",
+      "position": [5.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "arch_cover_barrier_half_2x1",
+      "position": [-2.5, 0.0, -2.0]
+    },
+    {
+      "asset_id": "arch_cover_barrier_half_2x1",
+      "position": [2.5, 0.0, -2.0]
+    },
+    {
+      "asset_id": "arch_cover_barrier_half_2x1",
+      "position": [-2.5, 0.0, 2.0]
+    },
+    {
+      "asset_id": "arch_cover_barrier_half_2x1",
+      "position": [2.5, 0.0, 2.0]
+    },
+    {
+      "asset_id": "arch_ramp_riser_4x2",
+      "position": [-4.0, 0.0, 6.0]
+    },
+    {
+      "asset_id": "arch_ramp_riser_4x2",
+      "position": [4.0, 0.0, 6.0]
+    },
+    {
+      "asset_id": "pad_jump_scifi",
+      "position": [-6.0, 0.0, 2.0]
+    },
+    {
+      "asset_id": "pad_jump_scifi",
+      "position": [6.0, 0.0, 2.0]
+    },
+    {
+      "asset_id": "pickup_fps_health",
+      "position": [-3.0, 0.0, 4.0]
+    },
+    {
+      "asset_id": "pickup_fps_health",
+      "position": [3.0, 0.0, 4.0]
+    },
+    {
+      "asset_id": "interact_terminal_console",
+      "position": [0.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "hazard_forcefield_door",
+      "position": [0.0, 0.0, -9.0]
+    },
+    {
+      "asset_id": "char_unit_knight",
+      "position": [-4.0, 0.0, -4.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "minion",
+          "faction": "hostile",
+          "display_name": "Cyber Trooper",
+          "max_hp": 200.0,
+          "attack_damage": 22.0,
+          "attack_range": 5.0,
+          "move_speed": 4.5
+        }
+      ]
+    },
+    {
+      "asset_id": "char_unit_knight",
+      "position": [4.0, 0.0, -4.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "minion",
+          "faction": "hostile",
+          "display_name": "Cyber Trooper",
+          "max_hp": 200.0,
+          "attack_damage": 22.0,
+          "attack_range": 5.0,
+          "move_speed": 4.5
+        }
+      ]
+    },
+    {
+      "asset_id": "char_golem_brute",
+      "position": [0.0, 0.0, -7.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "boss",
+          "faction": "hostile",
+          "display_name": "Mech Overlord",
+          "max_hp": 1800.0,
+          "attack_damage": 40.0,
+          "attack_range": 4.5,
+          "move_speed": 3.2
+        }
+      ]
+    }
+  ]
+}

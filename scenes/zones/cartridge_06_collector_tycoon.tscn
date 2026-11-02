@@ -4,18 +4,23 @@
 [ext_resource type="Script" path="res://scripts/camera/VirtualChaseCamera3D.gd" id="2_2vplk"]
 [ext_resource type="PackedScene" path="res://library/tycoon/collector_cart_vehicle.tscn" id="3_jaqie"]
 [ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="4_7mrkw"]
-[ext_resource type="Script" path="res://scripts/movement/VelocityRider3D.gd" id="5_ko87f"]
 [ext_resource type="PackedScene" path="res://library/modular/dungeon/raised_platform_8x8.tscn" id="6_j3wet"]
+[ext_resource type="PackedScene" path="res://library/modular/tycoon/boost_pad.tscn" id="7_ldyny"]
 [ext_resource type="PackedScene" path="res://library/modular/dungeon/stairs_stone_4x2.tscn" id="7_vob5l"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/wall_stone_4x3.tscn" id="8_ldyny"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_monolith.tscn" id="9_3nbw6"]
-[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_carved_stone.tscn" id="10_gfbki"]
-[ext_resource type="PackedScene" path="res://library/modular/interactive/hazard_vent.tscn" id="11_pr1lt"]
+[ext_resource type="Script" path="res://library/modular/ModularEntityTraits.gd" id="8_3nbw6"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/jump_pad.tscn" id="9_gfbki"]
+[ext_resource type="PackedScene" path="res://library/modular/tycoon/multiplier_gate.tscn" id="10_pr1lt"]
+[ext_resource type="Script" path="res://library/tycoon/MultiplierGate.gd" id="11_b43nw"]
 [ext_resource type="PackedScene" path="res://library/modular/interactive/objective_shrine.tscn" id="12_b43nw"]
-[ext_resource type="PackedScene" path="res://library/modular/interactive/chest_cache.tscn" id="13_uw5g6"]
+[ext_resource type="PackedScene" path="res://library/modular/tycoon/coin_token_gold.tscn" id="12_uw5g6"]
+[ext_resource type="PackedScene" path="res://library/modular/tycoon/gem_crystal_ruby.tscn" id="13_erek5"]
 [ext_resource type="PackedScene" path="res://library/modular/interactive/omni_torch_brazier.tscn" id="14_erek5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7hsep"]
+sky_top_color = Color(0.050980393, 0.023529412, 0.101960786, 1)
+sky_horizon_color = Color(0.23137255, 0.07058824, 0.32941177, 1)
+ground_bottom_color = Color(0.16196078, 0.049411766, 0.23058824, 1)
+ground_horizon_color = Color(0.23137255, 0.07058824, 0.32941177, 1)
 
 [sub_resource type="Sky" id="Sky_w70xq"]
 sky_material = SubResource("ProceduralSkyMaterial_7hsep")
@@ -25,8 +30,8 @@ background_mode = 2
 sky = SubResource("Sky_w70xq")
 ambient_light_source = 3
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.012
-volumetric_fog_albedo = Color(0.22745098, 0.16470589, 0.101960786, 1)
+volumetric_fog_density = 0.015
+volumetric_fog_albedo = Color(0.13333334, 0.03137255, 0.2, 1)
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_gumdr"]
 vertices = PackedVector3Array(-30, 0, -30, -30, 0, 30, 30, 0, 30, 30, 0, -30)
@@ -36,140 +41,14 @@ agent_radius = 0.8
 [sub_resource type="BoxShape3D" id="BoxShape3D_j3wet"]
 size = Vector3(60, 0.4, 60)
 
-[sub_resource type="BoxMesh" id="BoxMesh_vob5l"]
-size = Vector3(60, 0.4, 60)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_cart"]
-size = Vector3(1.8, 1.2, 2.8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cart"]
-albedo_color = Color(0.9, 0.2, 0.2, 1)
-metallic = 0.7
-roughness = 0.4
-
-[sub_resource type="BoxMesh" id="BoxMesh_cart"]
-material = SubResource("StandardMaterial3D_cart")
-size = Vector3(1.8, 1, 2.8)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
-size = Vector3(8, 1.2, 8)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
-albedo_color = Color(0.18, 0.17, 0.16, 1)
-metallic = 0.1
-roughness = 0.85
-
-[sub_resource type="BoxMesh" id="BoxMesh_platform"]
-material = SubResource("StandardMaterial3D_platform")
-size = Vector3(8, 1.2, 8)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_stairs"]
-size = Vector3(4, 2, 4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stairs"]
-albedo_color = Color(0.25, 0.23, 0.22, 1)
-roughness = 0.85
-
-[sub_resource type="PrismMesh" id="PrismMesh_stairs"]
-material = SubResource("StandardMaterial3D_stairs")
-left_to_right = 0.0
-size = Vector3(4, 2, 4)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
-size = Vector3(4, 3, 0.6)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.22, 0.2, 0.19, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall"]
-material = SubResource("StandardMaterial3D_wall")
-size = Vector3(4, 3, 0.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
-size = Vector3(1.2, 6, 1.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
-albedo_color = Color(0.35, 0.33, 0.31, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
-material = SubResource("StandardMaterial3D_pillar")
-size = Vector3(1.2, 6, 1.2)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_pillar"]
-height = 5.0
-radius = 0.6
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_emh2n"]
-albedo_color = Color(0.3, 0.28, 0.27, 1)
+albedo_color = Color(0.105882354, 0.078431375, 0.16078432, 1)
+metallic = 0.15
 roughness = 0.85
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+[sub_resource type="BoxMesh" id="BoxMesh_vob5l"]
 material = SubResource("StandardMaterial3D_emh2n")
-top_radius = 0.6
-bottom_radius = 0.7
-height = 5.0
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
-size = Vector3(2.2, 1.6, 2.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
-albedo_color = Color(0.2, 0.2, 0.22, 1)
-metallic = 0.4
-roughness = 0.7
-emission_enabled = true
-emission = Color(0.85, 0.35, 0.05, 1)
-emission_energy_multiplier = 1.4
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_vent"]
-material = SubResource("StandardMaterial3D_vent")
-top_radius = 1.0
-bottom_radius = 1.2
-height = 1.6
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_shrine"]
-height = 2.4
-radius = 1.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shrine"]
-albedo_color = Color(0.12, 0.11, 0.13, 1)
-roughness = 0.6
-emission_enabled = true
-emission = Color(0.8, 0.2, 0.05, 1)
-emission_energy_multiplier = 1.8
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_shrine"]
-material = SubResource("StandardMaterial3D_shrine")
-top_radius = 0.9
-bottom_radius = 1.3
-height = 2.4
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_chest"]
-size = Vector3(1.4, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chest"]
-albedo_color = Color(0.35, 0.22, 0.12, 1)
-metallic = 0.3
-roughness = 0.7
-
-[sub_resource type="BoxMesh" id="BoxMesh_chest"]
-material = SubResource("StandardMaterial3D_chest")
-size = Vector3(1.4, 1, 1)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_brazier"]
-height = 2.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron"]
-albedo_color = Color(0.2, 0.2, 0.22, 1)
-metallic = 0.7
-roughness = 0.6
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_brazier"]
-material = SubResource("StandardMaterial3D_iron")
-top_radius = 0.6
-bottom_radius = 0.4
-height = 2.2
+size = Vector3(48, 0.4, 48)
 
 [node name="CollectorTycoonCircuit" type="Node3D" unique_id=1675344561]
 
@@ -178,7 +57,7 @@ environment = SubResource("Environment_102g1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=815844927]
 transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
-light_color = Color(1, 0.9019608, 0.6901961, 1)
+light_color = Color(1, 0.46666667, 0.8, 1)
 light_energy = 1.5
 shadow_enabled = true
 
@@ -192,6 +71,7 @@ shape = SubResource("BoxShape3D_j3wet")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=1847208396]
 mesh = SubResource("BoxMesh_vob5l")
+surface_material_override/0 = SubResource("StandardMaterial3D_emh2n")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=2085864118]
 
@@ -212,304 +92,789 @@ collision_layer = 2
 collision_mask = 13
 script = ExtResource("4_7mrkw")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=283244863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_cart")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=2078600540]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_cart")
-
-[node name="VelocityRider3D" type="Node" parent="PlayerCharacter" unique_id=1345964910]
-script = ExtResource("5_ko87f")
-
 [node name="Entities" type="Node3D" parent="." unique_id=283918657]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=1589020831]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=771127434]
 
-[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=581237584 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
-metadata/entity_tag = "hub_platform"
+[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=467364122 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=1572384199]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
+[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=98866951 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=1942487383]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=170584906]
 
-[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=1271902407 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -12)
-metadata/entity_tag = "tier1_platform"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=1791749246]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=593081189]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=2056980725 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -20)
-metadata/entity_tag = "tier2_platform"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=255991254]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=903261417]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=1373611024 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -28)
-metadata/entity_tag = "peak_platform"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=1295759711]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-shape = SubResource("BoxShape3D_platform")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=584327864]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-mesh = SubResource("BoxMesh_platform")
-
-[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=764583386 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -8)
-metadata/entity_tag = "ascent_01"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/StairsStone4x2" unique_id=1385892365]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_stairs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/StairsStone4x2" unique_id=1365418341]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("PrismMesh_stairs")
-
-[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1592970606 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, -16)
-metadata/entity_tag = "ascent_02"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=2085729248]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_stairs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=568793777]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("PrismMesh_stairs")
-
-[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=173618428 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, -24)
-metadata/entity_tag = "ascent_03"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=1906931030]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_stairs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=1591903029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("PrismMesh_stairs")
-
-[node name="WallStone4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=475459287 groups=["architecture", "wall"] instance=ExtResource("8_ldyny")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, 0)
-metadata/entity_tag = "boundary_west"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/WallStone4x3" unique_id=1624154098]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/WallStone4x3" unique_id=2072405509]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="@StaticBody3D@11" type="StaticBody3D" parent="Entities/Architecture" unique_id=1088014270 groups=["architecture", "wall"] instance=ExtResource("8_ldyny")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.5, 0)
-metadata/entity_tag = "boundary_east"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@11" unique_id=1368888153]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@11" unique_id=599874851]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="PillarMonolith" type="StaticBody3D" parent="Entities/Architecture" unique_id=1024418224 instance=ExtResource("9_3nbw6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 4, -6)
-metadata/entity_tag = "gate_pillar_west"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarMonolith" unique_id=1028016716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("BoxShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarMonolith" unique_id=1624470439]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-mesh = SubResource("BoxMesh_pillar")
-
-[node name="@StaticBody3D@12" type="StaticBody3D" parent="Entities/Architecture" unique_id=161394665 instance=ExtResource("9_3nbw6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4, -6)
-metadata/entity_tag = "gate_pillar_east"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@12" unique_id=892850117]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-shape = SubResource("BoxShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@12" unique_id=1517943025]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-mesh = SubResource("BoxMesh_pillar")
-
-[node name="PillarCarvedStone" type="StaticBody3D" parent="Entities/Architecture" unique_id=49476611 groups=["architecture", "pillar"] instance=ExtResource("10_gfbki")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 4)
-metadata/entity_tag = "hub_pillar_west"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=2002880866]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-shape = SubResource("CylinderShape3D_pillar")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=1143903299]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("CylinderMesh_pillar")
-
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=468494157]
-
-[node name="HazardVent" type="StaticBody3D" parent="Entities/Hazards" unique_id=1477138215 groups=["interactable", "metal_source"] instance=ExtResource("11_pr1lt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -6)
+[node name="BoostPad" type="Area3D" parent="Entities/Hazards" unique_id=1714244128 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 collision_layer = 4
-metadata/entity_tag = "traversal_hazard"
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Hazards/HazardVent" unique_id=737754481]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-shape = SubResource("BoxShape3D_vent")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BoostPad" unique_id=1646553438]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Hazards/HazardVent" unique_id=377113513]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("CylinderMesh_vent")
-
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=560999511]
-
-[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=954194647 groups=["interactable", "objective", "seal"] instance=ExtResource("12_b43nw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -30)
+[node name="@Area3D@2" type="Area3D" parent="Entities/Hazards" unique_id=1294390653 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1)
 collision_layer = 4
-metadata/entity_tag = "radiant_shrine"
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=108434073]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-shape = SubResource("CylinderShape3D_shrine")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@2" unique_id=645843465]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=463489286]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("CylinderMesh_shrine")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=695295864]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-light_color = Color(1, 0.35, 0.1, 1)
-light_energy = 2.2
-omni_range = 6.0
-
-[node name="ChestCache" type="StaticBody3D" parent="Entities/Interactables" unique_id=446299471 groups=["chest", "interactable", "loot"] instance=ExtResource("13_uw5g6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 3)
+[node name="@Area3D@3" type="Area3D" parent="Entities/Hazards" unique_id=1733706528 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1)
 collision_layer = 4
-metadata/entity_tag = "loot_hub"
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ChestCache" unique_id=175880632]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_chest")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@3" unique_id=2044974791]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"forward_boost": 18.0,
+"type": "impulse_pad",
+"upward_velocity": 0.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ChestCache" unique_id=1493481630]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_chest")
-
-[node name="@StaticBody3D@10" type="StaticBody3D" parent="Entities/Interactables" unique_id=1428223590 groups=["chest", "interactable", "loot"] instance=ExtResource("13_uw5g6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3.5, -20)
+[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=410680142 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
 collision_layer = 4
-metadata/entity_tag = "loot_tier2"
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/@StaticBody3D@10" unique_id=1138762587]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_chest")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=1579966505]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/@StaticBody3D@10" unique_id=739831837]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_chest")
+[node name="@Area3D@4" type="Area3D" parent="Entities/Hazards" unique_id=1657946022 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 4)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=34399947]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@4" unique_id=1252878829]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=871164075 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, -3)
-metadata/entity_tag = "checkpoint_hub"
+[node name="MultiplierGate" type="Area3D" parent="Entities/Hazards" unique_id=725943614 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("11_b43nw")
+metadata/entity_traits = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=657625237]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-shape = SubResource("CylinderShape3D_brazier")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/MultiplierGate" unique_id=232716601]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=261319095]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("CylinderMesh_brazier")
+[node name="@Area3D@5" type="Area3D" parent="Entities/Hazards" unique_id=1045312299 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("11_b43nw")
+metadata/entity_traits = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=300229939]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-light_color = Color(1, 0.55, 0.15, 1)
-light_energy = 2.5
-shadow_enabled = true
-omni_range = 8.0
-omni_attenuation = 1.2
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@5" unique_id=761043529]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Lighting" unique_id=1589128432 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -12)
-metadata/entity_tag = "checkpoint_tier1"
+[node name="@Area3D@6" type="Area3D" parent="Entities/Hazards" unique_id=1826594449 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("11_b43nw")
+metadata/entity_traits = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/@StaticBody3D@7" unique_id=154756446]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-shape = SubResource("CylinderShape3D_brazier")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@6" unique_id=246006617]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"multiplier": 2.0,
+"type": "impulse_pad"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/@StaticBody3D@7" unique_id=706081378]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("CylinderMesh_brazier")
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=999326666]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/@StaticBody3D@7" unique_id=609511124]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-light_color = Color(1, 0.55, 0.15, 1)
-light_energy = 2.5
-shadow_enabled = true
-omni_range = 8.0
-omni_attenuation = 1.2
+[node name="CoinTokenGold" type="Area3D" parent="Entities/Interactables" unique_id=1629169145 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Lighting" unique_id=661016495 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3.5, -20)
-metadata/entity_tag = "checkpoint_tier2"
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/CoinTokenGold" unique_id=720874057]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/@StaticBody3D@8" unique_id=1058494010]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-shape = SubResource("CylinderShape3D_brazier")
+[node name="@Area3D@7" type="Area3D" parent="Entities/Interactables" unique_id=817040336 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/@StaticBody3D@8" unique_id=1112467677]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("CylinderMesh_brazier")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@7" unique_id=1458809784]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/@StaticBody3D@8" unique_id=2011387418]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-light_color = Color(1, 0.55, 0.15, 1)
-light_energy = 2.5
-shadow_enabled = true
-omni_range = 8.0
-omni_attenuation = 1.2
+[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=1216345654 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Lighting" unique_id=1567295305 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 5, -28)
-metadata/entity_tag = "checkpoint_peak"
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=2124865527]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=1044851661]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-shape = SubResource("CylinderShape3D_brazier")
+[node name="@Area3D@9" type="Area3D" parent="Entities/Interactables" unique_id=602077250 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=1522872207]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("CylinderMesh_brazier")
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@9" unique_id=310216611]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=155044414]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
-light_color = Color(1, 0.55, 0.15, 1)
-light_energy = 2.5
-shadow_enabled = true
-omni_range = 8.0
-omni_attenuation = 1.2
+[node name="@Area3D@10" type="Area3D" parent="Entities/Interactables" unique_id=772301024 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@10" unique_id=1921371824]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@11" type="Area3D" parent="Entities/Interactables" unique_id=1150759509 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@11" unique_id=801159592]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@12" type="Area3D" parent="Entities/Interactables" unique_id=529964705 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@12" unique_id=1098963096]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@13" type="Area3D" parent="Entities/Interactables" unique_id=1914685947 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@13" unique_id=1016207883]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@14" type="Area3D" parent="Entities/Interactables" unique_id=1837079819 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@14" unique_id=1109092284]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@15" type="Area3D" parent="Entities/Interactables" unique_id=1739747226 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@15" unique_id=193133352]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Gold Coin",
+"magnet_radius": 3.5,
+"score_value": 10.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.15,
+"bob_speed": 3.0,
+"spin_deg_sec": 90.0,
+"type": "ambient_motion"
+}]
+
+[node name="GemCrystalRuby" type="Area3D" parent="Entities/Interactables" unique_id=97347911 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/GemCrystalRuby" unique_id=1944584309]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@16" type="Area3D" parent="Entities/Interactables" unique_id=1334243586 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 1.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@16" unique_id=68126863]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@17" type="Area3D" parent="Entities/Interactables" unique_id=541297071 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@17" unique_id=1501091644]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@18" type="Area3D" parent="Entities/Interactables" unique_id=1646228850 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -5.5)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@18" unique_id=308625616]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@19" type="Area3D" parent="Entities/Interactables" unique_id=1685787835 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.5, 6)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@19" unique_id=1472779345]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@20" type="Area3D" parent="Entities/Interactables" unique_id=624929384 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 6)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@20" unique_id=347583349]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"item_name": "Ruby Gem",
+"magnet_radius": 4.0,
+"score_value": 50.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.2,
+"bob_speed": 2.5,
+"pulse_emission": true,
+"spin_deg_sec": 60.0,
+"type": "ambient_motion"
+}]
+
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=34487900 groups=["interactable", "objective", "seal"] instance=ExtResource("12_b43nw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
+collision_layer = 4
+metadata/entity_traits = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Channel Ancient Altar",
+"start_node": "altar_seal",
+"type": "dialogue_trigger"
+}, {
+"bob_amp": 0.08,
+"bob_speed": 1.5,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=904490661]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Channel Ancient Altar",
+"start_node": "altar_seal",
+"type": "dialogue_trigger"
+}, {
+"bob_amp": 0.08,
+"bob_speed": 1.5,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=1727384429]
+
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1268195267 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -9)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=853623942]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="@StaticBody3D@21" type="StaticBody3D" parent="Entities/Lighting" unique_id=344936351 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -9)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@21" unique_id=1684863187]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="@StaticBody3D@22" type="StaticBody3D" parent="Entities/Lighting" unique_id=953714612 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 3)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@22" unique_id=1825770451]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="@StaticBody3D@23" type="StaticBody3D" parent="Entities/Lighting" unique_id=275777992 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+metadata/entity_traits = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@23" unique_id=933057510]
+script = ExtResource("8_3nbw6")
+traits_config = [{
+"flicker_light": true,
+"type": "ambient_motion"
+}]
+
+[node name="Characters" type="Node3D" parent="Entities" unique_id=818633046]
+
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1901164325]
+
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=64319142]

@@ -1,0 +1,65 @@
+{
+  "target_scene": "res://scenes/zones/cartridge_02_tick_sandbox.tscn",
+  "output_path": "res://scenes/zones/cartridge_02_tick_sandbox.tscn",
+  "append": false,
+  "substrate": {
+    "type": "scattered_grove",
+    "density": 16,
+    "clearing_radius": 6.0
+  },
+  "palette": {
+    "sky_top": "#0c2438",
+    "sky_horizon": "#2b5c4f",
+    "floor_albedo": "#243b28",
+    "sun_energy": 1.4,
+    "sun_color": "#fff2dd",
+    "fog_density": 0.012,
+    "fog_albedo": "#1e3b30"
+  },
+  "entities": [
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [-3.5, 0.0, 2.5]
+    },
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [3.5, 0.0, 2.5]
+    },
+    {
+      "asset_id": "nature_oak_tree",
+      "position": [-4.5, 0.0, -2.5]
+    },
+    {
+      "asset_id": "nature_iron_rock",
+      "position": [3.5, 0.0, -2.5]
+    },
+    {
+      "asset_id": "nature_iron_rock",
+      "position": [0.0, 0.0, -4.0]
+    },
+    {
+      "asset_id": "interact_bank_booth",
+      "position": [0.0, 0.0, 5.5]
+    },
+    {
+      "asset_id": "interact_chest_cache",
+      "position": [-2.5, 0.0, 5.5]
+    },
+    {
+      "asset_id": "interact_objective_shrine",
+      "position": [0.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-3.0, 0.0, 5.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [3.0, 0.0, 5.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [0.0, 0.0, -6.0]
+    }
+  ]
+}

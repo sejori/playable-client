@@ -1,0 +1,137 @@
+{
+  "target_scene": "res://scenes/zones/cartridge_01_action_rpg.tscn",
+  "output_path": "res://scenes/zones/cartridge_01_action_rpg.tscn",
+  "append": false,
+  "substrate": {
+    "type": "flat_arena",
+    "has_liquid": true,
+    "liquid_color": "#ff3300",
+    "liquid_level": -0.8
+  },
+  "palette": {
+    "sky_top": "#0f0814",
+    "sky_horizon": "#4a1508",
+    "floor_albedo": "#1e1820",
+    "sun_energy": 1.2,
+    "sun_color": "#ff8844",
+    "fog_density": 0.018,
+    "fog_albedo": "#331108"
+  },
+  "entities": [
+    {
+      "asset_id": "arch_raised_platform_8x8",
+      "position": [0.0, 0.0, -8.0]
+    },
+    {
+      "asset_id": "arch_stairs_stone_4x2",
+      "position": [0.0, 0.0, -3.0]
+    },
+    {
+      "asset_id": "char_golem_brute",
+      "position": [0.0, 1.2, -8.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "boss",
+          "faction": "hostile",
+          "display_name": "Obsidian Golem",
+          "max_hp": 2400.0,
+          "attack_damage": 45.0,
+          "attack_range": 4.5,
+          "move_speed": 3.0
+        }
+      ]
+    },
+    {
+      "asset_id": "char_unit_knight",
+      "position": [-5.0, 0.0, -4.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "minion",
+          "faction": "hostile",
+          "display_name": "Obsidian Sentinel",
+          "max_hp": 180.0,
+          "attack_damage": 18.0,
+          "attack_range": 3.0,
+          "move_speed": 3.8
+        }
+      ]
+    },
+    {
+      "asset_id": "char_unit_knight",
+      "position": [5.0, 0.0, -4.0],
+      "traits": [
+        {
+          "type": "combat_unit",
+          "role": "minion",
+          "faction": "hostile",
+          "display_name": "Obsidian Sentinel",
+          "max_hp": 180.0,
+          "attack_damage": 18.0,
+          "attack_range": 3.0,
+          "move_speed": 3.8
+        }
+      ]
+    },
+    {
+      "asset_id": "hazard_lava_vent_01",
+      "position": [-4.0, 0.0, 2.0]
+    },
+    {
+      "asset_id": "hazard_lava_vent_01",
+      "position": [4.0, 0.0, 2.0]
+    },
+    {
+      "asset_id": "interact_objective_shrine",
+      "position": [0.0, 1.2, -10.0]
+    },
+    {
+      "asset_id": "arch_pillar_monolith",
+      "position": [-8.0, 0.0, -8.0]
+    },
+    {
+      "asset_id": "arch_pillar_monolith",
+      "position": [8.0, 0.0, -8.0]
+    },
+    {
+      "asset_id": "arch_pillar_monolith",
+      "position": [-8.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "arch_pillar_monolith",
+      "position": [8.0, 0.0, 0.0]
+    },
+    {
+      "asset_id": "arch_wall_archway_4x3",
+      "position": [-6.0, 0.0, -12.0],
+      "rotation_y_deg": 0.0
+    },
+    {
+      "asset_id": "arch_wall_archway_4x3",
+      "position": [6.0, 0.0, -12.0],
+      "rotation_y_deg": 0.0
+    },
+    {
+      "asset_id": "arch_wall_archway_4x3",
+      "position": [0.0, 0.0, -14.0],
+      "rotation_y_deg": 0.0
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-4.0, 0.0, -8.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [4.0, 0.0, -8.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [-4.0, 0.0, 4.0]
+    },
+    {
+      "asset_id": "light_torch_brazier",
+      "position": [4.0, 0.0, 4.0]
+    }
+  ]
+}

@@ -376,6 +376,17 @@ func _apply_flat_arena_substrate(scene_root: Node3D, substrate_group: Node3D, su
 		substrate_group.add_child(liquid_plane)
 
 func _apply_voxel_terraced_substrate(scene_root: Node3D, substrate_group: Node3D, _substrate: Dictionary) -> void:
+	# Clean up legacy VoxelPlotTerrain if present (from old cartridge_03)
+	var legacy_voxel := scene_root.find_child("VoxelPlotTerrain", true, false)
+	if legacy_voxel != null:
+		legacy_voxel.get_parent().remove_child(legacy_voxel)
+		legacy_voxel.free()
+
+	# Ensure PlayerCharacter is positioned cleanly at ground level
+	var player_char := scene_root.find_child("PlayerCharacter", true, false) as Node3D
+	if player_char != null:
+		player_char.position = Vector3(0.0, 1.2, 0.0)
+
 	var terrace_root := Node3D.new()
 	terrace_root.name = "VoxelTerrace"
 	substrate_group.add_child(terrace_root)
@@ -485,6 +496,12 @@ func _apply_voxel_terraced_substrate(scene_root: Node3D, substrate_group: Node3D
 	scene_root.set_meta("voxel_substrate", true)
 
 func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, substrate: Dictionary) -> void:
+	# Clean up legacy HexTiles if present (from old cartridge_04)
+	var legacy_hex := scene_root.find_child("HexTiles", true, false)
+	if legacy_hex != null:
+		legacy_hex.get_parent().remove_child(legacy_hex)
+		legacy_hex.free()
+
 	var hex_grid_root := Node3D.new()
 	hex_grid_root.name = "HexGrid"
 	substrate_group.add_child(hex_grid_root)
@@ -492,10 +509,18 @@ func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, subs
 	var grid_radius: int = int(substrate.get("radius", 4))
 	var hex_radius: float = float(substrate.get("hex_radius", 2.0))
 
+	# Load rich biome prefabs if available
+	var plains_prefab_path := "res://library/strategy/hex_plains.tscn"
+	var forest_prefab_path := "res://library/strategy/hex_forest.tscn"
+	var mountain_prefab_path := "res://library/strategy/hex_mountain.tscn"
+	var water_prefab_path := "res://library/strategy/hex_water.tscn"
 	var tile_prefab_path := "res://library/modular/strategy/hex_tile_base.tscn"
-	var tile_prefab: PackedScene = null
-	if ResourceLoader.exists(tile_prefab_path):
-		tile_prefab = load(tile_prefab_path) as PackedScene
+
+	var plains_prefab: PackedScene = load(plains_prefab_path) as PackedScene if ResourceLoader.exists(plains_prefab_path) else null
+	var forest_prefab: PackedScene = load(forest_prefab_path) as PackedScene if ResourceLoader.exists(forest_prefab_path) else null
+	var mountain_prefab: PackedScene = load(mountain_prefab_path) as PackedScene if ResourceLoader.exists(mountain_prefab_path) else null
+	var water_prefab: PackedScene = load(water_prefab_path) as PackedScene if ResourceLoader.exists(water_prefab_path) else null
+	var tile_prefab: PackedScene = load(tile_prefab_path) as PackedScene if ResourceLoader.exists(tile_prefab_path) else null
 
 	# Biome materials
 	var plains_mat := StandardMaterial3D.new()
@@ -547,44 +572,68 @@ func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, subs
 				elevation_y = 0.0
 
 			var tile: Node3D = null
-			if tile_prefab != null:
-				tile = tile_prefab.instantiate() as Node3D
-			else:
-				var sb := StaticBody3D.new()
-				sb.collision_layer = 1
-				var col := CollisionShape3D.new()
-				var cs := CylinderShape3D.new()
-				cs.radius = hex_radius
-				cs.height = 0.5
-				col.shape = cs
-				col.position.y = 0.25
-				sb.add_child(col)
+			var used_rich_prefab := false
 
-				var mi := MeshInstance3D.new()
-				var cm := CylinderMesh.new()
-				cm.radial_segments = 6
-				cm.top_radius = hex_radius
-				cm.bottom_radius = hex_radius
-				cm.height = 0.5
-				mi.mesh = cm
-				mi.position.y = 0.25
-				sb.add_child(mi)
-				tile = sb
+			match biome_name:
+				"forest":
+					if forest_prefab != null:
+						tile = forest_prefab.instantiate() as Node3D
+						used_rich_prefab = true
+				"mountain":
+					if mountain_prefab != null:
+						tile = mountain_prefab.instantiate() as Node3D
+						used_rich_prefab = true
+				"water":
+					if water_prefab != null:
+						tile = water_prefab.instantiate() as Node3D
+						used_rich_prefab = true
+				_:
+					if plains_prefab != null:
+						tile = plains_prefab.instantiate() as Node3D
+						used_rich_prefab = true
+
+			if tile == null:
+				if tile_prefab != null:
+					tile = tile_prefab.instantiate() as Node3D
+				else:
+					var sb := StaticBody3D.new()
+					sb.collision_layer = 1
+					var col := CollisionShape3D.new()
+					var cs := CylinderShape3D.new()
+					cs.radius = hex_radius
+					cs.height = 0.5
+					col.shape = cs
+					col.position.y = 0.25
+					sb.add_child(col)
+
+					var mi := MeshInstance3D.new()
+					var cm := CylinderMesh.new()
+					cm.radial_segments = 6
+					cm.top_radius = hex_radius
+					cm.bottom_radius = hex_radius
+					cm.height = 0.5
+					mi.mesh = cm
+					mi.position.y = 0.25
+					sb.add_child(mi)
+					tile = sb
 
 			tile.name = "HexTile_%d_%d" % [q, r]
 			tile.position = Vector3(wx, elevation_y, wz)
 			tile.set_meta("hex_q", q)
 			tile.set_meta("hex_r", r)
 			tile.set_meta("biome", biome_name)
+			if not tile.is_in_group("hex_tile"):
+				tile.add_to_group("hex_tile")
 
-			# Clear scene_file_path and child owners so PackedScene serializes mesh and biome materials directly
-			tile.scene_file_path = ""
-			for c in tile.get_children():
-				c.owner = null
+			if not used_rich_prefab:
+				# Clear scene_file_path and child owners so PackedScene serializes mesh and biome materials directly
+				tile.scene_file_path = ""
+				for c in tile.get_children():
+					c.owner = null
 
-			var meshes := tile.find_children("", "MeshInstance3D", true, false)
-			for m in meshes:
-				(m as MeshInstance3D).set_surface_override_material(0, biome_mat)
+				var meshes := tile.find_children("", "MeshInstance3D", true, false)
+				for m in meshes:
+					(m as MeshInstance3D).set_surface_override_material(0, biome_mat)
 
 			hex_grid_root.add_child(tile)
 

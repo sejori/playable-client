@@ -4,11 +4,23 @@
 [ext_resource type="Script" path="res://scripts/camera/VirtualFPVCamera3D.gd" id="2_o14de"]
 [ext_resource type="PackedScene" path="res://library/characters/hero_humanoid.tscn" id="3_mwln2"]
 [ext_resource type="Script" path="res://scripts/movement/ModularCharacter3D.gd" id="4_is8sa"]
-[ext_resource type="Script" path="res://scripts/movement/ActionMover3D.gd" id="5_ulgam"]
-[ext_resource type="Script" path="res://scripts/movement/FPSMover3D.gd" id="6_y827u"]
-[ext_resource type="PackedScene" path="res://library/fps/fps_viewmodel_blaster.tscn" id="7_8gql5"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/bunker_wall_steel_4x3.tscn" id="5_n0ula"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/cover_barrier_half_2x1.tscn" id="6_jf2iq"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/ramp_riser_4x2.tscn" id="7_ur8ve"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/jump_pad.tscn" id="8_s3b53"]
+[ext_resource type="Script" path="res://library/modular/ModularEntityTraits.gd" id="9_vl8tq"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/barrier_forcefield_door.tscn" id="10_qtn6x"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/pickup_health.tscn" id="11_iyb14"]
+[ext_resource type="PackedScene" path="res://library/modular/scifi/terminal_console_panel.tscn" id="12_wugnw"]
+[ext_resource type="PackedScene" path="res://library/modular/strategy/unit_knight.tscn" id="13_th3u7"]
+[ext_resource type="PackedScene" path="res://library/modular/characters/golem_brute.tscn" id="14_47c0o"]
+[ext_resource type="Script" path="res://library/modular/ModularBossController.gd" id="15_q8lns"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eyaga"]
+sky_top_color = Color(0.023529412, 0.043137256, 0.08627451, 1)
+sky_horizon_color = Color(0.07058824, 0.15686275, 0.29803923, 1)
+ground_bottom_color = Color(0.049411766, 0.10980392, 0.20862746, 1)
+ground_horizon_color = Color(0.07058824, 0.15686275, 0.29803923, 1)
 
 [sub_resource type="Sky" id="Sky_n0ula"]
 sky_material = SubResource("ProceduralSkyMaterial_eyaga")
@@ -17,6 +29,9 @@ sky_material = SubResource("ProceduralSkyMaterial_eyaga")
 background_mode = 2
 sky = SubResource("Sky_n0ula")
 ambient_light_source = 3
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.016
+volumetric_fog_albedo = Color(0.050980393, 0.101960786, 0.1882353, 1)
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_ur8ve"]
 vertices = PackedVector3Array(-24, 0, -36, -24, 0, 36, 24, 0, 36, 24, 0, -36)
@@ -25,8 +40,14 @@ polygons = [PackedInt32Array(0, 1, 2, 3)]
 [sub_resource type="BoxShape3D" id="BoxShape3D_s3b53"]
 size = Vector3(48, 0.4, 72)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xn38b"]
+albedo_color = Color(0.101960786, 0.1254902, 0.17254902, 1)
+metallic = 0.15
+roughness = 0.85
+
 [sub_resource type="BoxMesh" id="BoxMesh_vl8tq"]
-size = Vector3(48, 0.4, 72)
+material = SubResource("StandardMaterial3D_xn38b")
+size = Vector3(48, 0.4, 48)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
 height = 1.8
@@ -42,27 +63,6 @@ emission_energy_multiplier = 0.4
 material = SubResource("StandardMaterial3D_hero")
 height = 1.8
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blaster"]
-albedo_color = Color(0.2, 0.22, 0.26, 1)
-metallic = 0.9
-roughness = 0.4
-
-[sub_resource type="BoxMesh" id="BoxMesh_body"]
-material = SubResource("StandardMaterial3D_blaster")
-size = Vector3(0.12, 0.18, 0.6)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
-albedo_color = Color(0.2, 0.8, 1, 1)
-emission_enabled = true
-emission = Color(0.2, 0.85, 1, 1)
-emission_energy_multiplier = 2.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_barrel"]
-material = SubResource("StandardMaterial3D_glow")
-top_radius = 0.04
-bottom_radius = 0.04
-height = 0.35
-
 [node name="ArenaFpsThreeLane" type="Node3D" unique_id=1223818449]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=254001895]
@@ -70,6 +70,8 @@ environment = SubResource("Environment_jf2iq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=908194157]
 transform = Transform3D(0.8660254, -0.35355338, 0.35355338, 0, 0.70710677, 0.70710677, -0.5, -0.6123724, 0.6123724, 0, 0, 0)
+light_color = Color(0.53333336, 0.7529412, 1, 1)
+light_energy = 1.4
 shadow_enabled = true
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=548081265]
@@ -82,6 +84,7 @@ shape = SubResource("BoxShape3D_s3b53")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=284164383]
 mesh = SubResource("BoxMesh_vl8tq")
+surface_material_override/0 = SubResource("StandardMaterial3D_xn38b")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=1317099955]
 
@@ -110,18 +113,283 @@ shape = SubResource("CapsuleShape3D_hero")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 mesh = SubResource("CapsuleMesh_hero")
 
-[node name="ActionMover3D" type="Node" parent="PlayerCharacter" unique_id=1723276284]
-script = ExtResource("5_ulgam")
+[node name="Entities" type="Node3D" parent="." unique_id=272727700]
 
-[node name="FPSMover3D" type="Node" parent="PlayerCharacter" unique_id=1080432051]
-script = ExtResource("6_y827u")
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=1567779058]
 
-[node name="FPSViewmodelBlaster" type="Node3D" parent="PlayerCharacter" unique_id=992731896 instance=ExtResource("7_8gql5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.2, -0.45)
+[node name="BunkerWallSteel4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=211912104 instance=ExtResource("5_n0ula")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
 
-[node name="BlasterBody" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=553281230]
-mesh = SubResource("BoxMesh_body")
+[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=452704523 instance=ExtResource("5_n0ula")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
-[node name="BlasterBarrel" type="MeshInstance3D" parent="PlayerCharacter/FPSViewmodelBlaster" unique_id=425421630]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.04, -0.3)
-mesh = SubResource("CylinderMesh_barrel")
+[node name="CoverBarrierHalf2x1" type="StaticBody3D" parent="Entities/Architecture" unique_id=1102376305 instance=ExtResource("6_jf2iq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2)
+
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=547614910 instance=ExtResource("6_jf2iq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2)
+
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=719526050 instance=ExtResource("6_jf2iq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 2)
+
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1945310975 instance=ExtResource("6_jf2iq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2)
+
+[node name="RampRiser4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=919183411 instance=ExtResource("7_ur8ve")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
+
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=560755661 instance=ExtResource("7_ur8ve")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=1001588837]
+
+[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=1912451387 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 2)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=2146245946]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@7" type="Area3D" parent="Entities/Hazards" unique_id=1099692500 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@7" unique_id=407300547]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"forward_boost": 4.0,
+"type": "impulse_pad",
+"upward_velocity": 12.0
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="BarrierForcefieldDoor" type="StaticBody3D" parent="Entities/Hazards" unique_id=621441242 groups=["barrier", "door", "hazard"] instance=ExtResource("10_qtn6x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
+metadata/entity_traits = [{
+"cycle_sec": 5.0,
+"damage_per_sec": 20.0,
+"radius": 2.0,
+"telegraph_color": "#ff6600",
+"type": "hazard_emitter"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BarrierForcefieldDoor" unique_id=749564851]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"cycle_sec": 5.0,
+"damage_per_sec": 20.0,
+"radius": 2.0,
+"telegraph_color": "#ff6600",
+"type": "hazard_emitter"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=2137290314]
+
+[node name="PickupHealth" type="Area3D" parent="Entities/Interactables" unique_id=958382185 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 4)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Health Pack",
+"magnet_radius": 2.5,
+"score_value": 25.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.1,
+"bob_speed": 2.0,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/PickupHealth" unique_id=747193284]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"item_name": "Health Pack",
+"magnet_radius": 2.5,
+"score_value": 25.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.1,
+"bob_speed": 2.0,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=588843499 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+collision_layer = 4
+collision_mask = 2
+metadata/entity_traits = [{
+"item_name": "Health Pack",
+"magnet_radius": 2.5,
+"score_value": 25.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.1,
+"bob_speed": 2.0,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=460224729]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"item_name": "Health Pack",
+"magnet_radius": 2.5,
+"score_value": 25.0,
+"type": "collectible"
+}, {
+"bob_amp": 0.1,
+"bob_speed": 2.0,
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="TerminalConsolePanel" type="StaticBody3D" parent="Entities/Interactables" unique_id=291960105 groups=["interactable", "terminal"] instance=ExtResource("12_wugnw")]
+collision_layer = 4
+metadata/entity_traits = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Access Mainframe",
+"start_node": "terminal_access",
+"type": "dialogue_trigger"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/TerminalConsolePanel" unique_id=1275650647]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"dialogue_path": "res://dialogues/prison_break.dialogue",
+"prompt_label": "Access Mainframe",
+"start_node": "terminal_access",
+"type": "dialogue_trigger"
+}, {
+"pulse_emission": true,
+"type": "ambient_motion"
+}]
+
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=702259863]
+
+[node name="Characters" type="Node3D" parent="Entities" unique_id=1248674925]
+
+[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=92235081 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 22.0,
+"attack_range": 5.0,
+"display_name": "Cyber Trooper",
+"faction": "hostile",
+"max_hp": 200.0,
+"move_speed": 4.5,
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=1089390390]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"attack_damage": 22.0,
+"attack_range": 5.0,
+"display_name": "Cyber Trooper",
+"faction": "hostile",
+"max_hp": 200.0,
+"move_speed": 4.5,
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="@CharacterBody3D@9" type="CharacterBody3D" parent="Entities/Characters" unique_id=711242240 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+collision_layer = 2
+metadata/entity_traits = [{
+"attack_damage": 22.0,
+"attack_range": 5.0,
+"display_name": "Cyber Trooper",
+"faction": "hostile",
+"max_hp": 200.0,
+"move_speed": 4.5,
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@9" unique_id=714475514]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"attack_damage": 22.0,
+"attack_range": 5.0,
+"display_name": "Cyber Trooper",
+"faction": "hostile",
+"max_hp": 200.0,
+"move_speed": 4.5,
+"role": "minion",
+"type": "combat_unit"
+}]
+
+[node name="GolemBrute" type="CharacterBody3D" parent="Entities/Characters" unique_id=408846256 groups=["boss_target", "combat_unit"] instance=ExtResource("14_47c0o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("15_q8lns")
+metadata/entity_traits = [{
+"attack_damage": 40.0,
+"attack_range": 4.5,
+"display_name": "Mech Overlord",
+"faction": "hostile",
+"max_hp": 1800.0,
+"move_speed": 3.2,
+"role": "boss",
+"type": "combat_unit"
+}]
+
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/GolemBrute" unique_id=1921084092]
+script = ExtResource("9_vl8tq")
+traits_config = [{
+"attack_damage": 40.0,
+"attack_range": 4.5,
+"display_name": "Mech Overlord",
+"faction": "hostile",
+"max_hp": 1800.0,
+"move_speed": 3.2,
+"role": "boss",
+"type": "combat_unit"
+}]
+
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1050206778]
+
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=544156470]
