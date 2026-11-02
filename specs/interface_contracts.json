@@ -42,5 +42,5 @@
   ],
   "root_node_type": "Node3D",
   "sprint_id": "sprint_mock_autonomous",
-  "target_scene": "res://scenes/zones/breakwater_penitentiary.tscn"
+  "target_scene": "res://scenes/zones/fire_prison_rig.tscn"
 }

@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scripts/zones/fire_prison_controller.gd" id="1_script"]
+
 [ext_resource type="Script" path="res://scenes/ui/controls/TouchControlsOverlay.gd" id="2_lobyy"]
 [ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchLookZone.tscn" id="3_6lkqa"]
 [ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchControlsOverlay.tscn" id="3_touch"]
@@ -242,6 +244,7 @@ bottom_radius = 0.4
 height = 2.2
 
 [node name="FirePrisonRig" type="Node3D" unique_id=1598711610]
+script = ExtResource("1_script")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1324286897]
 navigation_mesh = SubResource("NavigationMesh_rig")

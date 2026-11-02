@@ -16,15 +16,22 @@ static func resolve_target_scene() -> String:
 	# 1. Check command line arguments for --scene=<path>
 	var all_args: PackedStringArray = OS.get_cmdline_args()
 	all_args.append_array(OS.get_cmdline_user_args())
-	for arg in all_args:
+	for i in range(all_args.size()):
+		var arg := all_args[i]
+		var raw_scene := ""
 		if arg.begins_with("--scene="):
-			var raw_scene := arg.trim_prefix("--scene=").strip_edges()
-			if not raw_scene.is_empty():
-				if raw_scene.begins_with("res://"):
-					return raw_scene
-				elif not raw_scene.begins_with("user://") and not raw_scene.begins_with("/"):
-					return "res://" + raw_scene.trim_prefix("./")
+			raw_scene = arg.trim_prefix("--scene=").strip_edges()
+		elif arg.begins_with("scene="):
+			raw_scene = arg.trim_prefix("scene=").strip_edges()
+		elif arg == "--scene" and i + 1 < all_args.size():
+			raw_scene = all_args[i + 1].strip_edges()
+
+		if not raw_scene.is_empty():
+			if raw_scene.begins_with("res://"):
 				return raw_scene
+			elif not raw_scene.begins_with("user://") and not raw_scene.begins_with("/"):
+				return "res://" + raw_scene.trim_prefix("./")
+			return raw_scene
 
 	# 2. Check specs/interface_contracts.json -> target_scene
 	if FileAccess.file_exists(CONTRACTS_PATH):
@@ -67,7 +74,7 @@ func _boot_scene(scene_path: String) -> void:
 
 	if packed != null:
 		var instance := packed.instantiate()
-		_ensure_active_camera(instance)
+		_mount_zone(instance)
 		var current_root := get_tree().current_scene
 		get_tree().root.add_child(instance)
 		get_tree().current_scene = instance
@@ -76,6 +83,38 @@ func _boot_scene(scene_path: String) -> void:
 		queue_free()
 	else:
 		push_error("SceneLoader: Fatal: Failed to load target scene and fallback scene.")
+
+func _mount_zone(zone_instance: Node) -> void:
+	_ensure_environment_and_lighting(zone_instance)
+	_ensure_active_camera(zone_instance)
+
+static func _ensure_environment_and_lighting(zone_instance: Node) -> void:
+	var existing_envs := zone_instance.find_children("", "WorldEnvironment", true, false)
+	if existing_envs.is_empty():
+		var env_node := WorldEnvironment.new()
+		env_node.name = "InjectedWorldEnvironment"
+		var env := Environment.new()
+		env.background_mode = Environment.BG_SKY
+		var sky := Sky.new()
+		var sky_mat := ProceduralSkyMaterial.new()
+		sky.sky_material = sky_mat
+		env.sky = sky
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+		env.ambient_light_energy = 1.0
+		env.glow_enabled = true
+		env.volumetric_fog_enabled = true
+		env.volumetric_fog_density = 0.015
+		env_node.environment = env
+		zone_instance.add_child(env_node)
+
+	var existing_lights := zone_instance.find_children("", "DirectionalLight3D", true, false)
+	if existing_lights.is_empty():
+		var sun := DirectionalLight3D.new()
+		sun.name = "InjectedDirectionalLight3D"
+		sun.rotation_degrees = Vector3(-45.0, 30.0, 0.0)
+		sun.light_energy = 1.4
+		sun.shadow_enabled = true
+		zone_instance.add_child(sun)
 
 static func _ensure_active_camera(root: Node) -> void:
 	var existing_cams := root.find_children("", "Camera3D", true, false)
