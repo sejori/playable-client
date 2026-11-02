@@ -94,6 +94,7 @@ func compose_from_manifest(spec: Dictionary) -> int:
 		var category_groups: Array[Node3D] = [arch_group, hazard_group, interact_group, light_group, char_group]
 		for grp in category_groups:
 			for child in grp.get_children():
+				grp.remove_child(child)
 				child.free()
 
 	# Instantiate entities
@@ -157,7 +158,7 @@ func compose_from_manifest(spec: Dictionary) -> int:
 
 		# Rotation: Support both "rotation_degrees": [rx, ry, rz] and "rotation_y_deg": ry
 		if ent_dict.has("rotation_degrees"):
-			var rot_arr = ent_dict["rotation_degrees"]
+			var rot_arr: Variant = ent_dict["rotation_degrees"]
 			if rot_arr is Array and rot_arr.size() >= 3:
 				inst.rotation_degrees = Vector3(float(rot_arr[0]), float(rot_arr[1]), float(rot_arr[2]))
 		elif ent_dict.has("rotation_y_deg"):
@@ -260,8 +261,8 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 		var env: Environment = env_node.environment
 
 		# Sky colors: Support sky_top / sky_top_color / sky_top_hex and sky_horizon / sky_bottom_color / sky_bottom_hex
-		var sky_top_val = palette.get("sky_top", palette.get("sky_top_color", palette.get("sky_top_hex", null)))
-		var sky_horiz_val = palette.get("sky_horizon", palette.get("sky_bottom_color", palette.get("sky_bottom_hex", null)))
+		var sky_top_val: Variant = palette.get("sky_top", palette.get("sky_top_color", palette.get("sky_top_hex", null)))
+		var sky_horiz_val: Variant = palette.get("sky_horizon", palette.get("sky_bottom_color", palette.get("sky_bottom_hex", null)))
 		if sky_top_val != null or sky_horiz_val != null:
 			if env.sky == null:
 				env.sky = Sky.new()
@@ -278,12 +279,12 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 					sky_mat.ground_horizon_color = horiz_col
 
 		# Fog: Support both fog_density / volumetric_fog_density and fog_albedo / volumetric_fog_color
-		var fog_dens = palette.get("volumetric_fog_density", palette.get("fog_density", null))
+		var fog_dens: Variant = palette.get("volumetric_fog_density", palette.get("fog_density", null))
 		if fog_dens != null:
 			env.volumetric_fog_enabled = true
 			env.volumetric_fog_density = float(fog_dens)
 
-		var fog_col = palette.get("volumetric_fog_color", palette.get("fog_albedo", null))
+		var fog_col: Variant = palette.get("volumetric_fog_color", palette.get("fog_albedo", null))
 		if fog_col != null:
 			env.volumetric_fog_enabled = true
 			env.volumetric_fog_albedo = _parse_color(fog_col, Color(0.5, 0.2, 0.1, 1.0))
@@ -296,11 +297,11 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 			sun = lights[0] as DirectionalLight3D
 
 	if sun != null:
-		var sun_energy = palette.get("sun_energy", palette.get("sun_light_energy", null))
+		var sun_energy: Variant = palette.get("sun_energy", palette.get("sun_light_energy", null))
 		if sun_energy != null:
 			sun.light_energy = float(sun_energy)
 
-		var sun_color = palette.get("sun_color", palette.get("sun_light_color", null))
+		var sun_color: Variant = palette.get("sun_color", palette.get("sun_light_color", null))
 		if sun_color != null:
 			sun.light_color = _parse_color(sun_color, Color.WHITE)
 
@@ -429,7 +430,7 @@ func _build_default_substrate() -> Node3D:
 	var cam_host_script_path := "res://scripts/camera/CameraHost3D.gd"
 	var cam_host: Node3D = null
 	if ResourceLoader.exists(cam_host_script_path):
-		var cam_host_script = load(cam_host_script_path)
+		var cam_host_script: Variant = load(cam_host_script_path)
 		cam_host = cam_host_script.new()
 	else:
 		cam_host = Camera3D.new()
@@ -438,8 +439,8 @@ func _build_default_substrate() -> Node3D:
 
 	var follow_cam_path := "res://scripts/camera/VirtualFollowCamera3D.gd"
 	if ResourceLoader.exists(follow_cam_path):
-		var follow_script = load(follow_cam_path)
-		var vcam = follow_script.new()
+		var follow_script: Variant = load(follow_cam_path)
+		var vcam: Node3D = follow_script.new()
 		vcam.name = "VirtualFollowCamera"
 		vcam.priority = 10
 		vcam.distance = 9.0
