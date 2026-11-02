@@ -88,6 +88,15 @@ func _mount_zone(zone_instance: Node) -> void:
 	_ensure_environment_and_lighting(zone_instance)
 	_ensure_active_camera(zone_instance)
 	ModularEntityTraits.ensure_scene_traits(zone_instance)
+	_ensure_reactive_overlay(zone_instance)
+
+static func _ensure_reactive_overlay(zone_instance: Node) -> void:
+	if zone_instance.get_node_or_null("SceneReactiveOverlay") == null:
+		var overlay_script: Variant = load("res://scripts/ui/SceneReactiveOverlay.gd")
+		if overlay_script != null:
+			var overlay: CanvasLayer = overlay_script.new()
+			overlay.name = "SceneReactiveOverlay"
+			zone_instance.add_child(overlay)
 
 static func _ensure_environment_and_lighting(zone_instance: Node) -> void:
 	var existing_envs := zone_instance.find_children("", "WorldEnvironment", true, false)
