@@ -3,6 +3,7 @@ extends SceneTree
 ## Headless Scene Compositor (Layer 6.5)
 ## Reads a declarative JSON composition spec, instantiates modular prefabs
 ## from the asset library, sets transforms/materials, updates navigation,
+## generates procedural substrates, attaches composable entity traits,
 ## and packs the resulting 3D zone to disk.
 ##
 ## Usage:
@@ -84,7 +85,7 @@ func compose_from_manifest(spec: Dictionary) -> int:
 	# replace sub-containers so repeated calls replace rather than stack duplicate bodies.
 	var should_append: bool = bool(spec.get("append", false))
 	if not should_append:
-		for group_name in ["Architecture", "Hazards", "Interactables", "Lighting", "Characters", "Nature"]:
+		for group_name in ["Architecture", "Hazards", "Interactables", "Lighting", "Characters", "Nature", "Substrate"]:
 			var old_grp: Node = entities_root.get_node_or_null(group_name)
 			if old_grp != null:
 				entities_root.remove_child(old_grp)
@@ -97,6 +98,11 @@ func compose_from_manifest(spec: Dictionary) -> int:
 	var light_group := _get_or_create_subgroup(entities_root, "Lighting")
 	var char_group := _get_or_create_subgroup(entities_root, "Characters")
 	var nature_group := _get_or_create_subgroup(entities_root, "Nature")
+	var substrate_group := _get_or_create_subgroup(entities_root, "Substrate")
+
+	# Support Declarative "substrate" Block (Phase 3)
+	if spec.has("substrate") and spec["substrate"] is Dictionary:
+		_apply_substrate(scene_root, spec["substrate"] as Dictionary)
 
 	# Instantiate entities
 	var entities: Array = spec.get("entities", [])
@@ -177,6 +183,45 @@ func compose_from_manifest(spec: Dictionary) -> int:
 		if ent_dict.has("params") and ent_dict["params"] is Dictionary:
 			inst.set_meta("custom_params", ent_dict["params"])
 
+		# Attach Composable Entity Traits (Phase 3)
+		# Merge asset_entry default_traits with ent_dict traits (where ent_dict overrides by type)
+		var default_traits_raw: Variant = asset_entry.get("default_traits", [])
+		var custom_traits_raw: Variant = ent_dict.get("traits", [])
+		var default_traits: Array = (default_traits_raw as Array).duplicate(true) if default_traits_raw is Array else []
+		var custom_traits: Array = (custom_traits_raw as Array).duplicate(true) if custom_traits_raw is Array else []
+
+		var merged_traits: Array = []
+		var custom_types: Dictionary = {}
+		for ct in custom_traits:
+			if ct is Dictionary and (ct as Dictionary).has("type"):
+				custom_types[str((ct as Dictionary)["type"]).strip_edges().to_lower()] = ct
+
+		for dt in default_traits:
+			if dt is Dictionary and (dt as Dictionary).has("type"):
+				var t_type: String = str((dt as Dictionary)["type"]).strip_edges().to_lower()
+				if custom_types.has(t_type):
+					var dt_copy: Dictionary = (dt as Dictionary).duplicate(true)
+					var ct_dict: Dictionary = custom_types[t_type] as Dictionary
+					for k in ct_dict:
+						dt_copy[k] = ct_dict[k]
+					merged_traits.append(dt_copy)
+					custom_types.erase(t_type)
+				else:
+					merged_traits.append((dt as Dictionary).duplicate(true))
+
+		for ct_type in custom_types:
+			merged_traits.append((custom_types[ct_type] as Dictionary).duplicate(true))
+
+		if not merged_traits.is_empty():
+			var traits_script_path := "res://library/modular/ModularEntityTraits.gd"
+			if ResourceLoader.exists(traits_script_path):
+				var traits_script: Variant = load(traits_script_path)
+				var trait_node: Node3D = traits_script.new()
+				trait_node.name = "ModularEntityTraits"
+				trait_node.set("traits_config", merged_traits)
+				inst.add_child(trait_node)
+				inst.set_meta("entity_traits", merged_traits)
+
 		# Routing to sub-group by category
 		var category: String = ent_dict.get("category", "")
 		if category.is_empty() and asset_cache.has(asset_id):
@@ -193,6 +238,8 @@ func compose_from_manifest(spec: Dictionary) -> int:
 				char_group.add_child(inst)
 			"nature":
 				nature_group.add_child(inst)
+			"substrate":
+				substrate_group.add_child(inst)
 			_:
 				arch_group.add_child(inst)
 
@@ -253,6 +300,390 @@ func _parse_color(val: Variant, default_color: Color) -> Color:
 			return Color.from_string(s, default_color)
 	return default_color
 
+# -----------------------------------------------------------------------------
+# Procedural Substrate Generators (Phase 3)
+# -----------------------------------------------------------------------------
+func _apply_substrate(scene_root: Node3D, substrate: Dictionary) -> void:
+	var sub_type: String = str(substrate.get("type", "flat_arena")).strip_edges().to_lower()
+	var entities_root := scene_root.get_node_or_null("Entities") as Node3D
+	if entities_root == null:
+		entities_root = Node3D.new()
+		entities_root.name = "Entities"
+		scene_root.add_child(entities_root)
+
+	var substrate_group := _get_or_create_subgroup(entities_root, "Substrate")
+
+	match sub_type:
+		"flat_arena":
+			_apply_flat_arena_substrate(scene_root, substrate_group, substrate)
+		"voxel_terraced":
+			_apply_voxel_terraced_substrate(scene_root, substrate_group, substrate)
+		"hex_grid":
+			_apply_hex_grid_substrate(scene_root, substrate_group, substrate)
+		"scattered_grove":
+			_apply_scattered_grove_substrate(scene_root, substrate_group, substrate)
+		_:
+			push_warning("[Compositor] Unknown substrate type: '%s'. Defaulting to flat_arena." % sub_type)
+			_apply_flat_arena_substrate(scene_root, substrate_group, substrate)
+
+func _apply_flat_arena_substrate(scene_root: Node3D, substrate_group: Node3D, substrate: Dictionary) -> void:
+	var floor_size: float = float(substrate.get("size", 48.0))
+
+	# Update existing GroundFloor if present
+	var ground_floor := scene_root.find_child("GroundFloor", true, false) as StaticBody3D
+	if ground_floor != null:
+		var col := ground_floor.find_child("CollisionShape3D", true, false) as CollisionShape3D
+		if col != null and col.shape is BoxShape3D:
+			(col.shape as BoxShape3D).size = Vector3(floor_size, 0.4, floor_size)
+
+		var mesh_inst: MeshInstance3D = null
+		var meshes := ground_floor.find_children("", "MeshInstance3D", true, false)
+		if not meshes.is_empty():
+			mesh_inst = meshes[0] as MeshInstance3D
+		if mesh_inst != null and mesh_inst.mesh is BoxMesh:
+			(mesh_inst.mesh as BoxMesh).size = Vector3(floor_size, 0.4, floor_size)
+
+		if substrate.has("floor_color") or substrate.has("floor_albedo"):
+			var raw_col: Variant = substrate.get("floor_color", substrate.get("floor_albedo", null))
+			if raw_col != null and mesh_inst != null:
+				var f_mat := StandardMaterial3D.new()
+				f_mat.albedo_color = _parse_color(raw_col, Color(0.2, 0.22, 0.24, 1.0))
+				f_mat.roughness = 0.85
+				f_mat.metallic = 0.15
+				mesh_inst.set_surface_override_material(0, f_mat)
+
+	# Optional glowing liquid / lava sub-plane
+	if substrate.has("liquid_color") or substrate.has("liquid_level"):
+		var liquid_col := _parse_color(substrate.get("liquid_color", "#ff4400"), Color(1.0, 0.27, 0.0))
+		var liquid_y: float = float(substrate.get("liquid_level", -0.5))
+		var liquid_size: float = floor_size * 1.5
+
+		var liquid_plane := MeshInstance3D.new()
+		liquid_plane.name = "LiquidSubPlane"
+		var pm := PlaneMesh.new()
+		pm.size = Vector2(liquid_size, liquid_size)
+		liquid_plane.mesh = pm
+
+		var l_mat := StandardMaterial3D.new()
+		l_mat.albedo_color = liquid_col
+		l_mat.emission_enabled = true
+		l_mat.emission = liquid_col
+		l_mat.emission_energy_multiplier = 3.0
+		l_mat.roughness = 0.15
+		liquid_plane.set_surface_override_material(0, l_mat)
+
+		liquid_plane.position = Vector3(0.0, liquid_y, 0.0)
+		substrate_group.add_child(liquid_plane)
+
+func _apply_voxel_terraced_substrate(scene_root: Node3D, substrate_group: Node3D, _substrate: Dictionary) -> void:
+	var terrace_root := Node3D.new()
+	terrace_root.name = "VoxelTerrace"
+	substrate_group.add_child(terrace_root)
+
+	var block_prefab_path := "res://library/modular/voxel/voxel_block_base.tscn"
+	var block_prefab: PackedScene = null
+	if ResourceLoader.exists(block_prefab_path):
+		block_prefab = load(block_prefab_path) as PackedScene
+
+	# Materials for terraced tiers
+	var grass_mat := StandardMaterial3D.new()
+	grass_mat.albedo_color = Color(0.22, 0.65, 0.26)
+	grass_mat.roughness = 0.85
+
+	var dirt_mat := StandardMaterial3D.new()
+	dirt_mat.albedo_color = Color(0.46, 0.32, 0.18)
+	dirt_mat.roughness = 0.9
+
+	var stone_mat := StandardMaterial3D.new()
+	stone_mat.albedo_color = Color(0.40, 0.42, 0.45)
+	stone_mat.roughness = 0.8
+
+	# Multi-elevation terraced hills around a walkable center
+	var step_size := 2.0
+	for x_step in range(-7, 8):
+		for z_step in range(-7, 8):
+			var wx: float = float(x_step) * step_size
+			var wz: float = float(z_step) * step_size
+			var dist: float = sqrt(wx * wx + wz * wz)
+
+			if dist <= 4.0:
+				continue
+
+			var target_y: float = 0.0
+			var block_mat: StandardMaterial3D = grass_mat
+
+			if dist > 4.0 and dist <= 7.0:
+				target_y = 1.0
+				block_mat = grass_mat
+			elif dist > 7.0 and dist <= 10.5:
+				target_y = 2.0
+				block_mat = dirt_mat
+			elif dist > 10.5:
+				target_y = 3.0
+				block_mat = stone_mat
+
+			var block: Node3D = null
+			if block_prefab != null:
+				block = block_prefab.instantiate() as Node3D
+			else:
+				var sb := StaticBody3D.new()
+				sb.collision_layer = 1
+				var col := CollisionShape3D.new()
+				var bs := BoxShape3D.new()
+				bs.size = Vector3(step_size, 1.0, step_size)
+				col.shape = bs
+				col.position.y = 0.5
+				sb.add_child(col)
+
+				var mi := MeshInstance3D.new()
+				var bm := BoxMesh.new()
+				bm.size = bs.size
+				mi.mesh = bm
+				mi.position.y = 0.5
+				sb.add_child(mi)
+				block = sb
+
+			block.name = "Voxel_%d_%d" % [x_step, z_step]
+			block.scale = Vector3(step_size, 1.0, step_size)
+			block.position = Vector3(wx, target_y - 0.5, wz)
+
+			# Clear scene_file_path and child owners so PackedScene serializes mesh and materials directly
+			block.scene_file_path = ""
+			for c in block.get_children():
+				c.owner = null
+
+			var mesh_nodes := block.find_children("", "MeshInstance3D", true, false)
+			for mn in mesh_nodes:
+				(mn as MeshInstance3D).set_surface_override_material(0, block_mat)
+
+			terrace_root.add_child(block)
+
+	# Translucent water plane
+	var water_plane := MeshInstance3D.new()
+	water_plane.name = "TranslucentWaterPlane"
+	var wpm := PlaneMesh.new()
+	wpm.size = Vector2(36.0, 36.0)
+	water_plane.mesh = wpm
+
+	var w_mat := StandardMaterial3D.new()
+	w_mat.albedo_color = Color(0.12, 0.48, 0.88, 0.65)
+	w_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	w_mat.roughness = 0.1
+	w_mat.metallic = 0.2
+	water_plane.set_surface_override_material(0, w_mat)
+	water_plane.position = Vector3(0.0, -0.2, 0.0)
+	terrace_root.add_child(water_plane)
+
+	# Attach VoxelWorldGenerator
+	var gen_script_path := "res://library/voxel/VoxelWorldGenerator.gd"
+	if ResourceLoader.exists(gen_script_path):
+		var gen_script: Variant = load(gen_script_path)
+		var gen_node: Node3D = gen_script.new()
+		gen_node.name = "VoxelWorldGenerator"
+		terrace_root.add_child(gen_node)
+
+	scene_root.set_meta("voxel_substrate", true)
+
+func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, substrate: Dictionary) -> void:
+	var hex_grid_root := Node3D.new()
+	hex_grid_root.name = "HexGrid"
+	substrate_group.add_child(hex_grid_root)
+
+	var grid_radius: int = int(substrate.get("radius", 4))
+	var hex_radius: float = float(substrate.get("hex_radius", 2.0))
+
+	var tile_prefab_path := "res://library/modular/strategy/hex_tile_base.tscn"
+	var tile_prefab: PackedScene = null
+	if ResourceLoader.exists(tile_prefab_path):
+		tile_prefab = load(tile_prefab_path) as PackedScene
+
+	# Biome materials
+	var plains_mat := StandardMaterial3D.new()
+	plains_mat.albedo_color = Color(0.22, 0.68, 0.28) # Emerald
+	plains_mat.roughness = 0.8
+
+	var forest_mat := StandardMaterial3D.new()
+	forest_mat.albedo_color = Color(0.12, 0.45, 0.18) # Deep green
+	forest_mat.roughness = 0.85
+
+	var mountain_mat := StandardMaterial3D.new()
+	mountain_mat.albedo_color = Color(0.42, 0.45, 0.48) # Slate
+	mountain_mat.roughness = 0.75
+
+	var water_mat := StandardMaterial3D.new()
+	water_mat.albedo_color = Color(0.15, 0.50, 0.90, 0.85) # Azure
+	water_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	water_mat.roughness = 0.15
+
+	var sqrt3: float = 1.732050807568877
+
+	for q in range(-grid_radius, grid_radius + 1):
+		var r1 := maxi(-grid_radius, -q - grid_radius)
+		var r2 := mini(grid_radius, -q + grid_radius)
+		for r in range(r1, r2 + 1):
+			var wx: float = hex_radius * sqrt3 * (float(q) + float(r) * 0.5)
+			var wz: float = hex_radius * 1.5 * float(r)
+
+			var dist: int = maxi(absi(q), maxi(absi(r), absi(-q - r)))
+			var biome_name := "plains"
+			var biome_mat := plains_mat
+			var elevation_y: float = 0.0
+
+			if dist == 0:
+				biome_name = "plains"
+				biome_mat = plains_mat
+				elevation_y = 0.0
+			elif dist == grid_radius and (q + r) % 2 == 0:
+				biome_name = "mountain"
+				biome_mat = mountain_mat
+				elevation_y = 0.35
+			elif (q * 3 + r * 5) % 7 == 0:
+				biome_name = "water"
+				biome_mat = water_mat
+				elevation_y = -0.15
+			elif (q * 2 + r * 3) % 4 == 0:
+				biome_name = "forest"
+				biome_mat = forest_mat
+				elevation_y = 0.0
+
+			var tile: Node3D = null
+			if tile_prefab != null:
+				tile = tile_prefab.instantiate() as Node3D
+			else:
+				var sb := StaticBody3D.new()
+				sb.collision_layer = 1
+				var col := CollisionShape3D.new()
+				var cs := CylinderShape3D.new()
+				cs.radius = hex_radius
+				cs.height = 0.5
+				col.shape = cs
+				col.position.y = 0.25
+				sb.add_child(col)
+
+				var mi := MeshInstance3D.new()
+				var cm := CylinderMesh.new()
+				cm.radial_segments = 6
+				cm.top_radius = hex_radius
+				cm.bottom_radius = hex_radius
+				cm.height = 0.5
+				mi.mesh = cm
+				mi.position.y = 0.25
+				sb.add_child(mi)
+				tile = sb
+
+			tile.name = "HexTile_%d_%d" % [q, r]
+			tile.position = Vector3(wx, elevation_y, wz)
+			tile.set_meta("hex_q", q)
+			tile.set_meta("hex_r", r)
+			tile.set_meta("biome", biome_name)
+
+			# Clear scene_file_path and child owners so PackedScene serializes mesh and biome materials directly
+			tile.scene_file_path = ""
+			for c in tile.get_children():
+				c.owner = null
+
+			var meshes := tile.find_children("", "MeshInstance3D", true, false)
+			for m in meshes:
+				(m as MeshInstance3D).set_surface_override_material(0, biome_mat)
+
+			hex_grid_root.add_child(tile)
+
+	# Ensure TurnManager node is added to scene_root
+	if scene_root.get_node_or_null("TurnManager") == null:
+		var tm_path := "res://library/strategy/TurnManager.gd"
+		if ResourceLoader.exists(tm_path):
+			var tm_script: Variant = load(tm_path)
+			var tm: Node = tm_script.new()
+			tm.name = "TurnManager"
+			scene_root.add_child(tm)
+
+	scene_root.set_meta("hex_substrate", true)
+
+func _apply_scattered_grove_substrate(scene_root: Node3D, substrate_group: Node3D, substrate: Dictionary) -> void:
+	var grove_root := Node3D.new()
+	grove_root.name = "ScatteredGrove"
+	substrate_group.add_child(grove_root)
+
+	var tree_path := "res://library/modular/nature/oak_tree.tscn"
+	var rock_path := "res://library/modular/nature/iron_rock.tscn"
+	var torch_path := "res://library/modular/interactive/omni_torch_brazier.tscn"
+
+	var tree_scene := load(tree_path) as PackedScene if ResourceLoader.exists(tree_path) else null
+	var rock_scene := load(rock_path) as PackedScene if ResourceLoader.exists(rock_path) else null
+	var torch_scene := load(torch_path) as PackedScene if ResourceLoader.exists(torch_path) else null
+
+	var item_count: int = int(substrate.get("density", 14))
+	var clearing_radius: float = float(substrate.get("clearing_radius", 5.0))
+
+	for i in range(item_count):
+		var angle: float = (float(i) / float(item_count)) * TAU + sin(float(i) * 2.3) * 0.15
+		var dist: float = clearing_radius + 2.0 + fmod(absf(sin(float(i) * 4.7) * 4.0), 5.5)
+
+		var px: float = cos(angle) * dist
+		var pz: float = sin(angle) * dist
+		var rot_y: float = rad_to_deg(angle + PI * 0.5)
+
+		var inst: Node3D = null
+		var default_traits: Array = []
+		var asset_id := ""
+
+		var mod_idx := i % 3
+		if mod_idx == 0 and tree_scene != null:
+			inst = tree_scene.instantiate() as Node3D
+			asset_id = "nature_oak_tree"
+			default_traits = [
+				{
+					"type": "harvestable",
+					"resource_name": "Oak Log",
+					"max_charges": 5,
+					"tick_interval_sec": 0.6,
+					"respawn_sec": 8.0
+				}
+			]
+		elif mod_idx == 1 and rock_scene != null:
+			inst = rock_scene.instantiate() as Node3D
+			asset_id = "nature_iron_rock"
+			default_traits = [
+				{
+					"type": "harvestable",
+					"resource_name": "Iron Ore",
+					"max_charges": 4,
+					"tick_interval_sec": 0.6,
+					"respawn_sec": 10.0
+				}
+			]
+		elif torch_scene != null:
+			inst = torch_scene.instantiate() as Node3D
+			asset_id = "light_torch_brazier"
+			default_traits = [
+				{
+					"type": "ambient_motion",
+					"flicker_light": true
+				}
+			]
+
+		if inst != null:
+			inst.name = "%s_%d" % [asset_id, i]
+			inst.position = Vector3(px, 0.0, pz)
+			inst.rotation_degrees.y = rot_y
+
+			if not default_traits.is_empty():
+				var traits_script_path := "res://library/modular/ModularEntityTraits.gd"
+				if ResourceLoader.exists(traits_script_path):
+					var traits_script: Variant = load(traits_script_path)
+					var trait_node: Node3D = traits_script.new()
+					trait_node.name = "ModularEntityTraits"
+					trait_node.set("traits_config", default_traits)
+					inst.add_child(trait_node)
+					inst.set_meta("entity_traits", default_traits)
+
+			grove_root.add_child(inst)
+
+	scene_root.set_meta("scattered_grove", true)
+
+# -----------------------------------------------------------------------------
+# Environment & Palette Application
+# -----------------------------------------------------------------------------
 func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 	var env_node: WorldEnvironment = root.get_node_or_null("WorldEnvironment") as WorldEnvironment
 	if env_node == null:
@@ -263,7 +694,6 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 	if env_node != null and env_node.environment != null:
 		var env: Environment = env_node.environment
 
-		# Sky colors: Support sky_top / sky_top_color / sky_top_hex and sky_horizon / sky_bottom_color / sky_bottom_hex
 		var sky_top_val: Variant = palette.get("sky_top", palette.get("sky_top_color", palette.get("sky_top_hex", null)))
 		var sky_horiz_val: Variant = palette.get("sky_horizon", palette.get("sky_bottom_color", palette.get("sky_bottom_hex", null)))
 		if sky_top_val != null or sky_horiz_val != null:
@@ -281,7 +711,6 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 					sky_mat.ground_bottom_color = horiz_col.darkened(0.3)
 					sky_mat.ground_horizon_color = horiz_col
 
-		# Fog: Support both fog_density / volumetric_fog_density and fog_albedo / volumetric_fog_color
 		var fog_dens: Variant = palette.get("volumetric_fog_density", palette.get("fog_density", null))
 		if fog_dens != null:
 			env.volumetric_fog_enabled = true
@@ -292,7 +721,6 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 			env.volumetric_fog_enabled = true
 			env.volumetric_fog_albedo = _parse_color(fog_col, Color(0.5, 0.2, 0.1, 1.0))
 
-	# Sun: Support both sun_energy / sun_light_energy and sun_color / sun_light_color
 	var sun: DirectionalLight3D = root.get_node_or_null("DirectionalLight3D") as DirectionalLight3D
 	if sun == null:
 		var lights := root.find_children("", "DirectionalLight3D", true, false)
@@ -308,8 +736,6 @@ func _apply_palette(root: Node3D, palette: Dictionary) -> void:
 		if sun_color != null:
 			sun.light_color = _parse_color(sun_color, Color.WHITE)
 
-	# Floor Tinting: Support floor_albedo / grid_tint_hex (or derive darkened tint from fog_albedo / sky_horizon)
-	# Apply StandardMaterial3D (roughness = 0.85, metallic = 0.15) to NavigationRegion3D/GroundFloor/MeshInstance3D
 	var ground_mesh_node: MeshInstance3D = null
 	var ground_floor := root.find_child("GroundFloor", true, false)
 	if ground_floor != null:
@@ -457,4 +883,15 @@ func _build_default_substrate() -> Node3D:
 func _set_owner_recursive(node: Node, scene_owner: Node) -> void:
 	for child in node.get_children():
 		child.owner = scene_owner
-		_set_owner_recursive(child, scene_owner)
+		if child.scene_file_path != "":
+			# Child is an instanced PackedScene. Internal nodes already have owner == child.
+			# Only set owner = scene_owner on newly added dynamic nodes (like ModularEntityTraits).
+			_set_owner_for_dynamic_children(child, scene_owner)
+		else:
+			_set_owner_recursive(child, scene_owner)
+
+func _set_owner_for_dynamic_children(node: Node, scene_owner: Node) -> void:
+	for child in node.get_children():
+		if child.owner == null or child.owner == scene_owner:
+			child.owner = scene_owner
+			_set_owner_for_dynamic_children(child, scene_owner)

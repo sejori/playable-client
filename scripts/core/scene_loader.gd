@@ -87,6 +87,7 @@ func _boot_scene(scene_path: String) -> void:
 func _mount_zone(zone_instance: Node) -> void:
 	_ensure_environment_and_lighting(zone_instance)
 	_ensure_active_camera(zone_instance)
+	ModularEntityTraits.ensure_scene_traits(zone_instance)
 
 static func _ensure_environment_and_lighting(zone_instance: Node) -> void:
 	var existing_envs := zone_instance.find_children("", "WorldEnvironment", true, false)
