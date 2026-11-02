@@ -41,13 +41,13 @@ agent_radius = 0.8
 [sub_resource type="BoxShape3D" id="BoxShape3D_j3wet"]
 size = Vector3(60, 0.4, 60)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_emh2n"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vob5l"]
 albedo_color = Color(0.105882354, 0.078431375, 0.16078432, 1)
 metallic = 0.15
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_vob5l"]
-material = SubResource("StandardMaterial3D_emh2n")
+material = SubResource("StandardMaterial3D_vob5l")
 size = Vector3(48, 0.4, 48)
 
 [node name="CollectorTycoonCircuit" type="Node3D" unique_id=1675344561]
@@ -71,7 +71,7 @@ shape = SubResource("BoxShape3D_j3wet")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=1847208396]
 mesh = SubResource("BoxMesh_vob5l")
-surface_material_override/0 = SubResource("StandardMaterial3D_emh2n")
+surface_material_override/0 = SubResource("StandardMaterial3D_vob5l")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=2085864118]
 
@@ -94,17 +94,17 @@ script = ExtResource("4_7mrkw")
 
 [node name="Entities" type="Node3D" parent="." unique_id=283918657]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=771127434]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=510427618]
 
-[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=467364122 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
+[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=1735064908 groups=["architecture", "platform"] instance=ExtResource("6_j3wet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
 
-[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=98866951 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
+[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=1302416914 groups=["architecture", "stairs"] instance=ExtResource("7_vob5l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=170584906]
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=1274374844]
 
-[node name="BoostPad" type="Area3D" parent="Entities/Hazards" unique_id=1714244128 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+[node name="BoostPad" type="Area3D" parent="Entities/Hazards" unique_id=1916490108 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 collision_layer = 4
 collision_mask = 2
@@ -117,7 +117,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BoostPad" unique_id=1646553438]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BoostPad" unique_id=33149355]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "forward_boost": 18.0,
@@ -128,7 +128,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@2" type="Area3D" parent="Entities/Hazards" unique_id=1294390653 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+[node name="@Area3D@2" type="Area3D" parent="Entities/Hazards" unique_id=1490160518 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1)
 collision_layer = 4
 collision_mask = 2
@@ -141,7 +141,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@2" unique_id=645843465]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@2" unique_id=285646053]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "forward_boost": 18.0,
@@ -152,7 +152,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@3" type="Area3D" parent="Entities/Hazards" unique_id=1733706528 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
+[node name="@Area3D@3" type="Area3D" parent="Entities/Hazards" unique_id=1824851350 groups=["boost_pad", "hazard", "interactable"] instance=ExtResource("7_ldyny")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1)
 collision_layer = 4
 collision_mask = 2
@@ -165,7 +165,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@3" unique_id=2044974791]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@3" unique_id=1145577007]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "forward_boost": 18.0,
@@ -176,7 +176,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=410680142 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
+[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=1598476292 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
 collision_layer = 4
 collision_mask = 2
@@ -189,7 +189,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=1579966505]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=2029489955]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "forward_boost": 4.0,
@@ -200,7 +200,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@4" type="Area3D" parent="Entities/Hazards" unique_id=1657946022 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
+[node name="@Area3D@4" type="Area3D" parent="Entities/Hazards" unique_id=942722172 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("9_gfbki")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 4)
 collision_layer = 4
 collision_mask = 2
@@ -213,7 +213,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@4" unique_id=1252878829]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@4" unique_id=1039392364]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "forward_boost": 4.0,
@@ -224,7 +224,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="MultiplierGate" type="Area3D" parent="Entities/Hazards" unique_id=725943614 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+[node name="MultiplierGate" type="Area3D" parent="Entities/Hazards" unique_id=449278804 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("11_b43nw")
@@ -236,7 +236,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/MultiplierGate" unique_id=232716601]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/MultiplierGate" unique_id=2111449307]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "multiplier": 2.0,
@@ -246,7 +246,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@5" type="Area3D" parent="Entities/Hazards" unique_id=1045312299 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+[node name="@Area3D@5" type="Area3D" parent="Entities/Hazards" unique_id=905564591 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
 collision_layer = 4
 collision_mask = 2
@@ -259,7 +259,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@5" unique_id=761043529]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@5" unique_id=1189953484]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "multiplier": 2.0,
@@ -269,7 +269,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@6" type="Area3D" parent="Entities/Hazards" unique_id=1826594449 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
+[node name="@Area3D@6" type="Area3D" parent="Entities/Hazards" unique_id=1596825628 groups=["hazard", "interactable", "multiplier_gate"] instance=ExtResource("10_pr1lt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
 collision_layer = 4
 collision_mask = 2
@@ -282,7 +282,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@6" unique_id=246006617]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@6" unique_id=476389044]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "multiplier": 2.0,
@@ -292,9 +292,9 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=999326666]
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=795533298]
 
-[node name="CoinTokenGold" type="Area3D" parent="Entities/Interactables" unique_id=1629169145 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="CoinTokenGold" type="Area3D" parent="Entities/Interactables" unique_id=646514970 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 collision_layer = 4
 collision_mask = 2
@@ -310,7 +310,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/CoinTokenGold" unique_id=720874057]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/CoinTokenGold" unique_id=701820380]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -324,7 +324,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@7" type="Area3D" parent="Entities/Interactables" unique_id=817040336 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@7" type="Area3D" parent="Entities/Interactables" unique_id=1130758172 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
 collision_layer = 4
 collision_mask = 2
@@ -340,7 +340,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@7" unique_id=1458809784]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@7" unique_id=2023670402]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -354,7 +354,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=1216345654 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=481328934 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1)
 collision_layer = 4
 collision_mask = 2
@@ -370,7 +370,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=2124865527]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=1239242125]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -384,7 +384,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@9" type="Area3D" parent="Entities/Interactables" unique_id=602077250 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@9" type="Area3D" parent="Entities/Interactables" unique_id=1662341240 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -2.5)
 collision_layer = 4
 collision_mask = 2
@@ -400,7 +400,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@9" unique_id=310216611]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@9" unique_id=1622396503]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -414,7 +414,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@10" type="Area3D" parent="Entities/Interactables" unique_id=772301024 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@10" type="Area3D" parent="Entities/Interactables" unique_id=333399199 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2.5)
 collision_layer = 4
 collision_mask = 2
@@ -430,7 +430,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@10" unique_id=1921371824]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@10" unique_id=18069470]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -444,7 +444,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@11" type="Area3D" parent="Entities/Interactables" unique_id=1150759509 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@11" type="Area3D" parent="Entities/Interactables" unique_id=394736558 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3.5)
 collision_layer = 4
 collision_mask = 2
@@ -460,7 +460,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@11" unique_id=801159592]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@11" unique_id=272228938]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -474,7 +474,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@12" type="Area3D" parent="Entities/Interactables" unique_id=529964705 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@12" type="Area3D" parent="Entities/Interactables" unique_id=297958480 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -3.5)
 collision_layer = 4
 collision_mask = 2
@@ -490,7 +490,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@12" unique_id=1098963096]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@12" unique_id=1121003519]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -504,7 +504,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@13" type="Area3D" parent="Entities/Interactables" unique_id=1914685947 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@13" type="Area3D" parent="Entities/Interactables" unique_id=1437691832 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 collision_layer = 4
 collision_mask = 2
@@ -520,7 +520,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@13" unique_id=1016207883]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@13" unique_id=247496256]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -534,7 +534,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@14" type="Area3D" parent="Entities/Interactables" unique_id=1837079819 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@14" type="Area3D" parent="Entities/Interactables" unique_id=1443976153 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
 collision_layer = 4
 collision_mask = 2
@@ -550,7 +550,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@14" unique_id=1109092284]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@14" unique_id=961138054]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -564,7 +564,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@15" type="Area3D" parent="Entities/Interactables" unique_id=1739747226 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
+[node name="@Area3D@15" type="Area3D" parent="Entities/Interactables" unique_id=66275526 groups=["coin_token", "collectible", "interactable"] instance=ExtResource("12_uw5g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.5)
 collision_layer = 4
 collision_mask = 2
@@ -580,7 +580,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@15" unique_id=193133352]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@15" unique_id=1096805692]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Gold Coin",
@@ -594,7 +594,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="GemCrystalRuby" type="Area3D" parent="Entities/Interactables" unique_id=97347911 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="GemCrystalRuby" type="Area3D" parent="Entities/Interactables" unique_id=1330105328 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5)
 collision_layer = 4
 collision_mask = 2
@@ -611,7 +611,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/GemCrystalRuby" unique_id=1944584309]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/GemCrystalRuby" unique_id=1265250107]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -626,7 +626,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@16" type="Area3D" parent="Entities/Interactables" unique_id=1334243586 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="@Area3D@16" type="Area3D" parent="Entities/Interactables" unique_id=1242072209 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 1.5)
 collision_layer = 4
 collision_mask = 2
@@ -643,7 +643,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@16" unique_id=68126863]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@16" unique_id=1854995680]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -658,7 +658,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@17" type="Area3D" parent="Entities/Interactables" unique_id=541297071 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="@Area3D@17" type="Area3D" parent="Entities/Interactables" unique_id=674902008 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5.5)
 collision_layer = 4
 collision_mask = 2
@@ -675,7 +675,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@17" unique_id=1501091644]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@17" unique_id=1908570749]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -690,7 +690,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@18" type="Area3D" parent="Entities/Interactables" unique_id=1646228850 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="@Area3D@18" type="Area3D" parent="Entities/Interactables" unique_id=2105248649 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -5.5)
 collision_layer = 4
 collision_mask = 2
@@ -707,7 +707,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@18" unique_id=308625616]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@18" unique_id=1285069197]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -722,7 +722,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@19" type="Area3D" parent="Entities/Interactables" unique_id=1685787835 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="@Area3D@19" type="Area3D" parent="Entities/Interactables" unique_id=1814302321 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.5, 6)
 collision_layer = 4
 collision_mask = 2
@@ -739,7 +739,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@19" unique_id=1472779345]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@19" unique_id=2131246974]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -754,7 +754,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@20" type="Area3D" parent="Entities/Interactables" unique_id=624929384 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
+[node name="@Area3D@20" type="Area3D" parent="Entities/Interactables" unique_id=1796836104 groups=["collectible", "gem_token", "interactable"] instance=ExtResource("13_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 6)
 collision_layer = 4
 collision_mask = 2
@@ -771,7 +771,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@20" unique_id=347583349]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@20" unique_id=1543583408]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "item_name": "Ruby Gem",
@@ -786,7 +786,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=34487900 groups=["interactable", "objective", "seal"] instance=ExtResource("12_b43nw")]
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=1286748113 groups=["interactable", "objective", "seal"] instance=ExtResource("12_b43nw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -801,7 +801,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=904490661]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=1343278667]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -815,66 +815,66 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=1727384429]
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=1575016507]
 
-[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1268195267 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1464591612 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -9)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=853623942]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1603114990]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@21" type="StaticBody3D" parent="Entities/Lighting" unique_id=344936351 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+[node name="@StaticBody3D@21" type="StaticBody3D" parent="Entities/Lighting" unique_id=282107807 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -9)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@21" unique_id=1684863187]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@21" unique_id=1902666902]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@22" type="StaticBody3D" parent="Entities/Lighting" unique_id=953714612 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+[node name="@StaticBody3D@22" type="StaticBody3D" parent="Entities/Lighting" unique_id=609751801 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 3)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@22" unique_id=1825770451]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@22" unique_id=868275991]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@23" type="StaticBody3D" parent="Entities/Lighting" unique_id=275777992 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
+[node name="@StaticBody3D@23" type="StaticBody3D" parent="Entities/Lighting" unique_id=2103967645 groups=["lighting", "prop", "torch"] instance=ExtResource("14_erek5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@23" unique_id=933057510]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@23" unique_id=1704228595]
 script = ExtResource("8_3nbw6")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="Characters" type="Node3D" parent="Entities" unique_id=818633046]
+[node name="Characters" type="Node3D" parent="Entities" unique_id=384293240]
 
-[node name="Nature" type="Node3D" parent="Entities" unique_id=1901164325]
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1870607028]
 
-[node name="Substrate" type="Node3D" parent="Entities" unique_id=64319142]
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=480875393]

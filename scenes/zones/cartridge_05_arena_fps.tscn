@@ -40,28 +40,14 @@ polygons = [PackedInt32Array(0, 1, 2, 3)]
 [sub_resource type="BoxShape3D" id="BoxShape3D_s3b53"]
 size = Vector3(48, 0.4, 72)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xn38b"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n0ula"]
 albedo_color = Color(0.101960786, 0.1254902, 0.17254902, 1)
 metallic = 0.15
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_vl8tq"]
-material = SubResource("StandardMaterial3D_xn38b")
+material = SubResource("StandardMaterial3D_n0ula")
 size = Vector3(48, 0.4, 48)
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hero"]
-height = 1.8
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hero"]
-albedo_color = Color(0.22, 0.58, 0.92, 1)
-roughness = 0.5
-emission_enabled = true
-emission = Color(0.1, 0.4, 0.8, 1)
-emission_energy_multiplier = 0.4
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_hero"]
-material = SubResource("StandardMaterial3D_hero")
-height = 1.8
 
 [node name="ArenaFpsThreeLane" type="Node3D" unique_id=1223818449]
 
@@ -84,7 +70,7 @@ shape = SubResource("BoxShape3D_s3b53")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=284164383]
 mesh = SubResource("BoxMesh_vl8tq")
-surface_material_override/0 = SubResource("StandardMaterial3D_xn38b")
+surface_material_override/0 = SubResource("StandardMaterial3D_n0ula")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=1317099955]
 
@@ -105,45 +91,37 @@ collision_layer = 2
 collision_mask = 13
 script = ExtResource("4_is8sa")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCharacter" unique_id=1718944959]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-shape = SubResource("CapsuleShape3D_hero")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerCharacter" unique_id=1057970372]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_hero")
-
 [node name="Entities" type="Node3D" parent="." unique_id=272727700]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=1567779058]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=395084957]
 
-[node name="BunkerWallSteel4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=211912104 instance=ExtResource("5_n0ula")]
+[node name="BunkerWallSteel4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=1617151834 instance=ExtResource("5_n0ula")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
 
-[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=452704523 instance=ExtResource("5_n0ula")]
+[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=2047540501 instance=ExtResource("5_n0ula")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
-[node name="CoverBarrierHalf2x1" type="StaticBody3D" parent="Entities/Architecture" unique_id=1102376305 instance=ExtResource("6_jf2iq")]
+[node name="CoverBarrierHalf2x1" type="StaticBody3D" parent="Entities/Architecture" unique_id=1166366028 instance=ExtResource("6_jf2iq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2)
 
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=547614910 instance=ExtResource("6_jf2iq")]
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=1616685805 instance=ExtResource("6_jf2iq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2)
 
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=719526050 instance=ExtResource("6_jf2iq")]
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=699804688 instance=ExtResource("6_jf2iq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 2)
 
-[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1945310975 instance=ExtResource("6_jf2iq")]
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=698579002 instance=ExtResource("6_jf2iq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2)
 
-[node name="RampRiser4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=919183411 instance=ExtResource("7_ur8ve")]
+[node name="RampRiser4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=145332120 instance=ExtResource("7_ur8ve")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 6)
 
-[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=560755661 instance=ExtResource("7_ur8ve")]
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=614496035 instance=ExtResource("7_ur8ve")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
 
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=1001588837]
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=761286276]
 
-[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=1912451387 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
+[node name="JumpPad" type="Area3D" parent="Entities/Hazards" unique_id=1033893858 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 2)
 collision_layer = 4
 collision_mask = 2
@@ -156,7 +134,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=2146245946]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/JumpPad" unique_id=484317699]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "forward_boost": 4.0,
@@ -167,7 +145,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@7" type="Area3D" parent="Entities/Hazards" unique_id=1099692500 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
+[node name="@Area3D@7" type="Area3D" parent="Entities/Hazards" unique_id=262560796 groups=["hazard", "interactable", "jump_pad"] instance=ExtResource("8_s3b53")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
 collision_layer = 4
 collision_mask = 2
@@ -180,7 +158,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@7" unique_id=407300547]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@Area3D@7" unique_id=243318969]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "forward_boost": 4.0,
@@ -191,7 +169,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="BarrierForcefieldDoor" type="StaticBody3D" parent="Entities/Hazards" unique_id=621441242 groups=["barrier", "door", "hazard"] instance=ExtResource("10_qtn6x")]
+[node name="BarrierForcefieldDoor" type="StaticBody3D" parent="Entities/Hazards" unique_id=2024545099 groups=["barrier", "door", "hazard"] instance=ExtResource("10_qtn6x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9)
 metadata/entity_traits = [{
 "cycle_sec": 5.0,
@@ -204,7 +182,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BarrierForcefieldDoor" unique_id=749564851]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/BarrierForcefieldDoor" unique_id=416007331]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "cycle_sec": 5.0,
@@ -217,9 +195,9 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=2137290314]
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=833018097]
 
-[node name="PickupHealth" type="Area3D" parent="Entities/Interactables" unique_id=958382185 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
+[node name="PickupHealth" type="Area3D" parent="Entities/Interactables" unique_id=995245078 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 4)
 collision_layer = 4
 collision_mask = 2
@@ -235,7 +213,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/PickupHealth" unique_id=747193284]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/PickupHealth" unique_id=69843001]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "item_name": "Health Pack",
@@ -249,7 +227,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=588843499 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
+[node name="@Area3D@8" type="Area3D" parent="Entities/Interactables" unique_id=1086515867 groups=["health_pickup", "interactable"] instance=ExtResource("11_iyb14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
 collision_layer = 4
 collision_mask = 2
@@ -265,7 +243,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=460224729]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/@Area3D@8" unique_id=1829391175]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "item_name": "Health Pack",
@@ -279,7 +257,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="TerminalConsolePanel" type="StaticBody3D" parent="Entities/Interactables" unique_id=291960105 groups=["interactable", "terminal"] instance=ExtResource("12_wugnw")]
+[node name="TerminalConsolePanel" type="StaticBody3D" parent="Entities/Interactables" unique_id=298195568 groups=["interactable", "terminal"] instance=ExtResource("12_wugnw")]
 collision_layer = 4
 metadata/entity_traits = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -291,7 +269,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/TerminalConsolePanel" unique_id=1275650647]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/TerminalConsolePanel" unique_id=1902550851]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -303,11 +281,11 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=702259863]
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=1737248341]
 
-[node name="Characters" type="Node3D" parent="Entities" unique_id=1248674925]
+[node name="Characters" type="Node3D" parent="Entities" unique_id=252790059]
 
-[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=92235081 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
+[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=1610526759 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4)
 collision_layer = 2
 metadata/entity_traits = [{
@@ -321,7 +299,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=1089390390]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=2030798294]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "attack_damage": 22.0,
@@ -334,7 +312,7 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="@CharacterBody3D@9" type="CharacterBody3D" parent="Entities/Characters" unique_id=711242240 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
+[node name="@CharacterBody3D@9" type="CharacterBody3D" parent="Entities/Characters" unique_id=1135509369 groups=["combat_unit", "tactical_unit"] instance=ExtResource("13_th3u7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
 collision_layer = 2
 metadata/entity_traits = [{
@@ -348,7 +326,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@9" unique_id=714475514]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@9" unique_id=185465147]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "attack_damage": 22.0,
@@ -361,7 +339,7 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="GolemBrute" type="CharacterBody3D" parent="Entities/Characters" unique_id=408846256 groups=["boss_target", "combat_unit"] instance=ExtResource("14_47c0o")]
+[node name="GolemBrute" type="CharacterBody3D" parent="Entities/Characters" unique_id=1938972320 groups=["boss_target", "combat_unit"] instance=ExtResource("14_47c0o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 collision_layer = 3
 collision_mask = 3
@@ -377,7 +355,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/GolemBrute" unique_id=1921084092]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/GolemBrute" unique_id=1029297303]
 script = ExtResource("9_vl8tq")
 traits_config = [{
 "attack_damage": 40.0,
@@ -390,6 +368,6 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="Nature" type="Node3D" parent="Entities" unique_id=1050206778]
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1876831705]
 
-[node name="Substrate" type="Node3D" parent="Entities" unique_id=544156470]
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=1583301338]

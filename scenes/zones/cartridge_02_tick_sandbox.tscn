@@ -37,13 +37,13 @@ polygons = [PackedInt32Array(0, 1, 2, 3)]
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfgrk"]
 size = Vector3(40, 0.4, 40)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wp4xb"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ww4gj"]
 albedo_color = Color(0.14117648, 0.23137255, 0.15686275, 1)
 metallic = 0.15
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_tg2gn"]
-material = SubResource("StandardMaterial3D_wp4xb")
+material = SubResource("StandardMaterial3D_ww4gj")
 size = Vector3(40, 0.4, 40)
 
 [node name="TickSandboxTown" type="Node3D" unique_id=188585409]
@@ -68,7 +68,7 @@ shape = SubResource("BoxShape3D_jfgrk")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=254733143]
 mesh = SubResource("BoxMesh_tg2gn")
-surface_material_override/0 = SubResource("StandardMaterial3D_wp4xb")
+surface_material_override/0 = SubResource("StandardMaterial3D_ww4gj")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=1242856969]
 
@@ -94,13 +94,13 @@ script = ExtResource("5_3yxqv")
 
 [node name="Entities" type="Node3D" parent="." unique_id=832140088]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=2012649287]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=1967047702]
 
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=833340238]
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=1537957949]
 
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=1173914694]
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=1965719202]
 
-[node name="BankBooth" type="StaticBody3D" parent="Entities/Interactables" unique_id=519621679 groups=["bank_station", "interactable"] instance=ExtResource("6_ww4gj")]
+[node name="BankBooth" type="StaticBody3D" parent="Entities/Interactables" unique_id=921288128 groups=["bank_station", "interactable"] instance=ExtResource("6_ww4gj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -110,7 +110,7 @@ metadata/entity_traits = [{
 "type": "dialogue_trigger"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/BankBooth" unique_id=1508978297]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/BankBooth" unique_id=811982628]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -119,7 +119,7 @@ traits_config = [{
 "type": "dialogue_trigger"
 }]
 
-[node name="ChestCache" type="StaticBody3D" parent="Entities/Interactables" unique_id=1031134548 groups=["chest", "interactable", "loot"] instance=ExtResource("15_020qv")]
+[node name="ChestCache" type="StaticBody3D" parent="Entities/Interactables" unique_id=1776066744 groups=["chest", "interactable", "loot"] instance=ExtResource("15_020qv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 5.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -129,7 +129,7 @@ metadata/entity_traits = [{
 "type": "collectible"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ChestCache" unique_id=1338752439]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ChestCache" unique_id=1533399275]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "item_name": "Treasure Chest",
@@ -138,7 +138,7 @@ traits_config = [{
 "type": "collectible"
 }]
 
-[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=316333886 groups=["interactable", "objective", "seal"] instance=ExtResource("14_mauxx")]
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=469937834 groups=["interactable", "objective", "seal"] instance=ExtResource("14_mauxx")]
 collision_layer = 4
 metadata/entity_traits = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -152,7 +152,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=833084337]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=977915801]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -166,55 +166,55 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=1045561947]
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=1364835632]
 
-[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1060631713 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1598092461 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 5)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=495583952]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=260914399]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Lighting" unique_id=1103244023 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Lighting" unique_id=2132880527 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@5" unique_id=1987296856]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@5" unique_id=27299467]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Lighting" unique_id=1640221932 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Lighting" unique_id=1672607375 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@6" unique_id=2048383151]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@6" unique_id=2013168107]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="Characters" type="Node3D" parent="Entities" unique_id=1612864365]
+[node name="Characters" type="Node3D" parent="Entities" unique_id=2111947010]
 
-[node name="Nature" type="Node3D" parent="Entities" unique_id=928955656]
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1484756904]
 
-[node name="OakTree" type="StaticBody3D" parent="Entities/Nature" unique_id=882059523 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="OakTree" type="StaticBody3D" parent="Entities/Nature" unique_id=791496407 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 2.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -225,7 +225,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/OakTree" unique_id=1970650303]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/OakTree" unique_id=1439304056]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5.0,
@@ -235,7 +235,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Nature" unique_id=276893853 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Nature" unique_id=1132366270 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 2.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -246,7 +246,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@2" unique_id=458750387]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@2" unique_id=482565463]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5.0,
@@ -256,7 +256,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Nature" unique_id=1938888834 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Nature" unique_id=385950321 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -2.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -267,7 +267,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@3" unique_id=705633054]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@3" unique_id=647336918]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5.0,
@@ -277,7 +277,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="IronRock" type="StaticBody3D" parent="Entities/Nature" unique_id=324843647 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="IronRock" type="StaticBody3D" parent="Entities/Nature" unique_id=788700131 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -2.5)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -288,7 +288,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/IronRock" unique_id=832419135]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/IronRock" unique_id=951739848]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4.0,
@@ -298,7 +298,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Nature" unique_id=121450996 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Nature" unique_id=1157665401 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -309,7 +309,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@4" unique_id=960692597]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Nature/@StaticBody3D@4" unique_id=1073829259]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4.0,
@@ -319,11 +319,11 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="Substrate" type="Node3D" parent="Entities" unique_id=962788795]
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=845124692]
 
-[node name="ScatteredGrove" type="Node3D" parent="Entities/Substrate" unique_id=646200539]
+[node name="ScatteredGrove" type="Node3D" parent="Entities/Substrate" unique_id=307741759]
 
-[node name="nature_oak_tree_0" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=2043820605 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_0" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1257268029 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 0)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -334,7 +334,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_0" unique_id=762804764]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_0" unique_id=2017793376]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,
@@ -344,7 +344,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="nature_iron_rock_1" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=828895241 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="nature_iron_rock_1" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1865410802 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(-0.48341787, 0, 0.8753897, 0, 1, 0, -0.8753897, 0, -0.48341787, 10.504408, 0, 5.8008657)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -355,7 +355,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_1" unique_id=887249715]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_1" unique_id=2126509821]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4,
@@ -365,21 +365,21 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="light_torch_brazier_2" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1231264380 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="light_torch_brazier_2" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=609668638 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(-0.5942595, 0, 0.80427337, 0, 1, 0, -0.80427337, 0, -0.5942595, 6.513892, 0, 4.8129673)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_2" unique_id=1454059084]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_2" unique_id=1244938701]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="nature_oak_tree_3" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=42403027 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_3" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1658290358 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(-0.9535663, 0, 0.30118313, 0, 1, 0, -0.30118313, 0, -0.9535663, 3.6133652, 0, 11.440162)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -390,7 +390,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_3" unique_id=1192408788]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_3" unique_id=1462087182]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,
@@ -400,7 +400,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="nature_iron_rock_4" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1884080372 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="nature_iron_rock_4" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=704506318 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(-0.99944115, 0, -0.033427298, 0, 1, 0, 0.033427298, 0, -0.99944115, -0.27404144, 0, 8.193561)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -411,7 +411,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_4" unique_id=2007870143]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_4" unique_id=1902887470]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4,
@@ -421,21 +421,21 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="light_torch_brazier_5" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=616005722 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="light_torch_brazier_5" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1846496912 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(-0.966034, 0, -0.25841513, 0, 1, 0, 0.25841513, 0, -0.966034, -3.098999, 0, 11.584996)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_5" unique_id=779291596]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_5" unique_id=1316772657]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="nature_oak_tree_6" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1718756892 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_6" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1049026524 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(-0.60027397, 0, -0.79979444, 0, 1, 0, 0.79979444, 0, -0.60027397, -6.635943, 0, 4.9805117)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -446,7 +446,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_6" unique_id=1967004411]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_6" unique_id=1088045727]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,
@@ -456,7 +456,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="nature_iron_rock_7" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1804890587 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="nature_iron_rock_7" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=259959267 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(-0.43497437, 0, -0.90044284, 0, 1, 0, 0.90044284, 0, -0.43497437, -10.791779, 0, 5.2131534)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -467,7 +467,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_7" unique_id=991923578]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_7" unique_id=470900265]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4,
@@ -477,21 +477,21 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="light_torch_brazier_8" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1891988992 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="light_torch_brazier_8" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=866186924 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(-0.06513843, 0, -0.9978762, 0, 1, 0, 0.9978762, 0, -0.06513843, -8.377968, 0, 0.54689133)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_8" unique_id=1976960962]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_8" unique_id=125050326]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="nature_oak_tree_9" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1191782439 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_9" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1093861564 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(0.5114505, 0, -0.8593127, 0, 1, 0, 0.8593127, 0, 0.5114505, -10.290408, 0, -6.124703)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -502,7 +502,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_9" unique_id=1565651169]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_9" unique_id=1774550336]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,
@@ -512,7 +512,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="nature_iron_rock_10" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1249969406 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="nature_iron_rock_10" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1768691311 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(0.6119034, 0, -0.7909325, 0, 1, 0, 0.7909325, 0, 0.6119034, -6.718411, 0, -5.197688)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -523,7 +523,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_10" unique_id=2071906260]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_10" unique_id=1993463513]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4,
@@ -533,21 +533,21 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="light_torch_brazier_11" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1271726485 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="light_torch_brazier_11" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=744892758 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(0.93314683, 0, -0.35949543, 0, 1, 0, 0.35949543, 0, 0.93314683, -4.3006124, 0, -11.163156)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_11" unique_id=1326418118]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_11" unique_id=740758693]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="nature_oak_tree_12" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=313013330 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_12" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=827892763 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(0.99561745, 0, 0.09351938, 0, 1, 0, -0.09351938, 0, 0.99561745, 0.8035665, 0, -8.554826)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -558,7 +558,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_12" unique_id=1426024563]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_12" unique_id=1847810983]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,
@@ -568,7 +568,7 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="nature_iron_rock_13" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1488807613 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
+[node name="nature_iron_rock_13" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=162683477 groups=["harvestable", "interactable", "metal_source", "nature", "ore_vein"] instance=ExtResource("12_rrfrf")]
 transform = Transform3D(0.9706386, 0, 0.24054264, 0, 1, 0, -0.24054264, 0, 0.9706386, 2.8740592, 0, -11.597417)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -579,7 +579,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_13" unique_id=1258660570]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_iron_rock_13" unique_id=1798811131]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 4,
@@ -589,21 +589,21 @@ traits_config = [{
 "type": "harvestable"
 }]
 
-[node name="light_torch_brazier_14" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1027219179 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
+[node name="light_torch_brazier_14" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=2103623057 groups=["lighting", "prop", "torch"] instance=ExtResource("16_mc17v")]
 transform = Transform3D(0.62838286, 0, 0.7779043, 0, 1, 0, -0.7779043, 0, 0.62838286, 6.7602277, 0, -5.4608426)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_14" unique_id=1081437518]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/light_torch_brazier_14" unique_id=299046213]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="nature_oak_tree_15" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=1113188955 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
+[node name="nature_oak_tree_15" type="StaticBody3D" parent="Entities/Substrate/ScatteredGrove" unique_id=208268859 groups=["harvestable", "interactable", "nature", "tree_resource"] instance=ExtResource("11_l0m0d")]
 transform = Transform3D(0.37470242, 0, 0.9271451, 0, 1, 0, -0.9271451, 0, 0.37470242, 11.061888, 0, -4.470625)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -614,7 +614,7 @@ metadata/entity_traits = [{
 "type": "harvestable"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_15" unique_id=144457971]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Substrate/ScatteredGrove/nature_oak_tree_15" unique_id=1312802456]
 script = ExtResource("7_xha8s")
 traits_config = [{
 "max_charges": 5,

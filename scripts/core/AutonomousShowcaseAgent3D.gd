@@ -189,7 +189,10 @@ func _physics_process(delta: float) -> void:
 			return
 
 	# Substrate-specific systems (run concurrently if active)
-	_step_tactical_hex_system(delta)
+	if _is_strategy_scene():
+		_step_tactical_hex_system(delta)
+		return
+
 	_step_voxel_builder_system(delta)
 
 	# Steer protagonist according to current priority goal
@@ -393,16 +396,48 @@ func _physics_combat_skirmisher(delta: float, hostile: Node3D) -> void:
 	var cur_dist := protagonist.global_position.distance_to(h_pos)
 	var move_vec := Vector3.ZERO
 
-	# Skirmish ring between 6.0m and 9.0m
-	if cur_dist > 9.0:
-		move_vec += (h_pos - protagonist.global_position).normalized()
-	elif cur_dist < 6.0:
-		move_vec -= (h_pos - protagonist.global_position).normalized()
+	# Check for unvisited jump_pad, boost_pad, or collectible pickup within 8.5m
+	var now := Time.get_ticks_msec()
+	var nearby_pad: Node3D = null
+	var pad_dist: float = 999.0
+
+	var interactive_candidates: Array[Node] = []
+	interactive_candidates.append_array(get_tree().get_nodes_in_group("jump_pad"))
+	interactive_candidates.append_array(get_tree().get_nodes_in_group("boost_pad"))
+	interactive_candidates.append_array(get_tree().get_nodes_in_group("impulse_pad"))
+	interactive_candidates.append_array(get_tree().get_nodes_in_group("collectible"))
+
+	for c in interactive_candidates:
+		if c is Node3D and is_instance_valid(c):
+			var n := c as Node3D
+			if not n.visible:
+				continue
+			var inst_id := n.get_instance_id()
+			var last_visited: int = int(_recent_runner_ids.get(inst_id, 0))
+			if now - last_visited < 3500:
+				continue
+			var d := protagonist.global_position.distance_to(n.global_position)
+			if d <= 8.5 and d < pad_dist:
+				pad_dist = d
+				nearby_pad = n
+
+	if nearby_pad != null:
+		var to_pad := (nearby_pad.global_position - protagonist.global_position).normalized()
+		to_pad.y = 0.0
+		move_vec = to_pad
+		if pad_dist < 1.4:
+			_recent_runner_ids[nearby_pad.get_instance_id()] = now
 	else:
-		# Lateral strafe orbit
-		var fwd := (h_pos - protagonist.global_position).normalized()
-		var strafe := Vector3(-fwd.z, 0.0, fwd.x)
-		move_vec += strafe
+		# Skirmish ring between 6.0m and 9.0m
+		if cur_dist > 9.0:
+			move_vec += (h_pos - protagonist.global_position).normalized()
+		elif cur_dist < 6.0:
+			move_vec -= (h_pos - protagonist.global_position).normalized()
+		else:
+			# Lateral strafe orbit
+			var fwd := (h_pos - protagonist.global_position).normalized()
+			var strafe := Vector3(-fwd.z, 0.0, fwd.x)
+			move_vec += strafe
 
 	# Repulsion dodge away from any hazard_emitter within 3.5m
 	var hazards := get_tree().get_nodes_in_group("hazard_emitter")
@@ -569,13 +604,24 @@ func _advance_tactical_knights() -> void:
 			# Combat clash!
 			ModularEntityTraitsScript.damage_entity(closest_red, 40.0)
 			_spawn_floating_label("TACTICAL STRIKE -40", Color(1.0, 0.3, 0.2), closest_red.global_position + Vector3(0.0, 2.2, 0.0))
+			_spawn_tactical_bolt(closest_blue.global_position + Vector3(0.0, 1.0, 0.0), closest_red.global_position + Vector3(0.0, 1.0, 0.0), Color(0.1, 0.8, 1.0))
+			_spawn_tactical_bolt(closest_red.global_position + Vector3(0.0, 1.0, 0.0), closest_blue.global_position + Vector3(0.0, 1.0, 0.0), Color(1.0, 0.2, 0.1))
 		else:
 			var step_dir := (closest_red.global_position - closest_blue.global_position).normalized()
 			step_dir.y = 0.0
-			closest_blue.global_position += step_dir * 1.2
-			closest_red.global_position -= step_dir * 1.2
+			var next_b := closest_blue.global_position + step_dir * 1.2
+			var next_r := closest_red.global_position - step_dir * 1.2
+
+			var tw_b := closest_blue.create_tween()
+			tw_b.tween_property(closest_blue, "global_position", next_b, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+			var tw_r := closest_red.create_tween()
+			tw_r.tween_property(closest_red, "global_position", next_r, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
 			closest_blue.look_at(Vector3(closest_red.global_position.x, closest_blue.global_position.y, closest_red.global_position.z), Vector3.UP)
 			closest_red.look_at(Vector3(closest_blue.global_position.x, closest_red.global_position.y, closest_blue.global_position.z), Vector3.UP)
+
+			_spawn_tactical_bolt(next_b + Vector3(0.0, 1.0, 0.0), next_r + Vector3(0.0, 1.0, 0.0), Color(0.2, 0.7, 1.0))
 
 # -----------------------------------------------------------------------------
 # 5. Voxel Builder & Miner
@@ -742,3 +788,27 @@ func _spawn_floating_label(text: String, color: Color, world_pos: Vector3) -> vo
 	tw.tween_property(lbl, "global_position:y", lbl.global_position.y + 1.2, 0.9)
 	tw.parallel().tween_property(lbl, "modulate:a", 0.0, 0.9).set_delay(0.3)
 	tw.tween_callback(lbl.queue_free)
+
+
+func _spawn_tactical_bolt(from_pos: Vector3, to_pos: Vector3, color: Color) -> void:
+	var bolt := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 0.18
+	sm.height = 0.36
+	bolt.mesh = sm
+
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = color
+	mat.emission_enabled = true
+	mat.emission = color
+	mat.emission_energy_multiplier = 4.0
+	bolt.set_surface_override_material(0, mat)
+
+	var sc := get_tree().current_scene
+	var container: Node = sc if sc != null else self
+	container.add_child(bolt)
+	bolt.global_position = from_pos
+
+	var tw := bolt.create_tween()
+	tw.tween_property(bolt, "global_position", to_pos, 0.28).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(bolt.queue_free)

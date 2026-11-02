@@ -198,6 +198,22 @@ func _setup_combat_unit(cfg: Dictionary) -> void:
 	parent.set_meta("role", _combat_role)
 	parent.set_meta("faction", _combat_faction)
 
+	# Visually distinguish hostile units (e.g. Crimson Raiders, Cyber Troopers) from Blue Army
+	if _combat_faction == "hostile" and _combat_role != "boss":
+		var crimson_mat := StandardMaterial3D.new()
+		crimson_mat.albedo_color = Color(0.95, 0.18, 0.15)
+		crimson_mat.emission_enabled = true
+		crimson_mat.emission = Color(1.0, 0.2, 0.1)
+		crimson_mat.emission_energy_multiplier = 2.0
+
+		var team_ring := parent.find_child("TeamRing", true, false) as MeshInstance3D
+		if team_ring != null:
+			team_ring.set_surface_override_material(0, crimson_mat)
+
+		var body_mesh := parent.find_child("BodyMesh", true, false) as MeshInstance3D
+		if body_mesh != null and team_ring == null:
+			body_mesh.set_surface_override_material(0, crimson_mat)
+
 func apply_damage(amount: float) -> void:
 	if not _has_combat_unit or _is_defeated:
 		return

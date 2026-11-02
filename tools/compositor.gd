@@ -502,6 +502,17 @@ func _apply_hex_grid_substrate(scene_root: Node3D, substrate_group: Node3D, subs
 		legacy_hex.get_parent().remove_child(legacy_hex)
 		legacy_hex.free()
 
+	# Clean up legacy KnightPawn_Blue if present (from old cartridge_04)
+	var legacy_knight := scene_root.find_child("KnightPawn_Blue", true, false)
+	if legacy_knight != null:
+		legacy_knight.get_parent().remove_child(legacy_knight)
+		legacy_knight.free()
+
+	# Update VirtualTabletopCamera target_path if it was pointing to KnightPawn_Blue
+	var tabletop_cam := scene_root.find_child("VirtualTabletopCamera", true, false)
+	if tabletop_cam != null:
+		tabletop_cam.set("target_path", NodePath(""))
+
 	var hex_grid_root := Node3D.new()
 	hex_grid_root.name = "HexGrid"
 	substrate_group.add_child(hex_grid_root)

@@ -50,22 +50,6 @@
     {
       "asset_id": "light_torch_brazier",
       "position": [2.0, 0.0, 0.0]
-    },
-    {
-      "asset_id": "char_golem_brute",
-      "position": [0.0, 1.0, -6.5],
-      "traits": [
-        {
-          "type": "combat_unit",
-          "role": "boss",
-          "faction": "hostile",
-          "display_name": "Crag Golem",
-          "max_hp": 1200.0,
-          "attack_damage": 35.0,
-          "attack_range": 4.0,
-          "move_speed": 2.8
-        }
-      ]
     }
   ]
 }

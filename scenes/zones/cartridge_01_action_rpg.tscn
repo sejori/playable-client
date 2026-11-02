@@ -40,19 +40,19 @@ polygons = [PackedInt32Array(0, 1, 2, 3)]
 [sub_resource type="BoxShape3D" id="BoxShape3D_jfgrk"]
 size = Vector3(40, 0.4, 40)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ej70y"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qu5di"]
 albedo_color = Color(0.11764706, 0.09411765, 0.1254902, 1)
 metallic = 0.15
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_tg2gn"]
-material = SubResource("StandardMaterial3D_ej70y")
+material = SubResource("StandardMaterial3D_qu5di")
 size = Vector3(48, 0.4, 48)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_tw1lm"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_ej70y"]
 size = Vector2(72, 72)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tqjrw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tw1lm"]
 albedo_color = Color(1, 0.2, 0, 1)
 roughness = 0.15
 emission_enabled = true
@@ -80,7 +80,7 @@ shape = SubResource("BoxShape3D_jfgrk")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="NavigationRegion3D/GroundFloor" unique_id=254733143]
 mesh = SubResource("BoxMesh_tg2gn")
-surface_material_override/0 = SubResource("StandardMaterial3D_ej70y")
+surface_material_override/0 = SubResource("StandardMaterial3D_qu5di")
 
 [node name="SpawnPoints" type="Node3D" parent="." unique_id=1242856969]
 
@@ -103,38 +103,38 @@ script = ExtResource("5_3yxqv")
 
 [node name="Entities" type="Node3D" parent="." unique_id=970863725]
 
-[node name="Architecture" type="Node3D" parent="Entities" unique_id=1834747843]
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=917404633]
 
-[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=1772825092 groups=["architecture", "platform"] instance=ExtResource("7_676wc")]
+[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=641893664 groups=["architecture", "platform"] instance=ExtResource("7_676wc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
 
-[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=646319775 groups=["architecture", "stairs"] instance=ExtResource("10_bdsda")]
+[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=793581217 groups=["architecture", "stairs"] instance=ExtResource("10_bdsda")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
 
-[node name="PillarMonolith" type="StaticBody3D" parent="Entities/Architecture" unique_id=1895957691 instance=ExtResource("11_givye")]
+[node name="PillarMonolith" type="StaticBody3D" parent="Entities/Architecture" unique_id=2041450922 instance=ExtResource("11_givye")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8)
 
-[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=1644602 instance=ExtResource("11_givye")]
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=1288478805 instance=ExtResource("11_givye")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -8)
 
-[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1926786091 instance=ExtResource("11_givye")]
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1673527809 instance=ExtResource("11_givye")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
 
-[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=211681842 instance=ExtResource("11_givye")]
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=1681429252 instance=ExtResource("11_givye")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
 
-[node name="WallArchway4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=603103603 instance=ExtResource("9_tg2gn")]
+[node name="WallArchway4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=1567574915 instance=ExtResource("9_tg2gn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -12)
 
-[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Architecture" unique_id=1217258009 instance=ExtResource("9_tg2gn")]
+[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Architecture" unique_id=2048356340 instance=ExtResource("9_tg2gn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -12)
 
-[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Architecture" unique_id=169926167 instance=ExtResource("9_tg2gn")]
+[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Architecture" unique_id=171001457 instance=ExtResource("9_tg2gn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)
 
-[node name="Hazards" type="Node3D" parent="Entities" unique_id=1732150507]
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=469020587]
 
-[node name="HazardVent" type="StaticBody3D" parent="Entities/Hazards" unique_id=1453969962 groups=["interactable", "metal_source"] instance=ExtResource("13_mauxx")]
+[node name="HazardVent" type="StaticBody3D" parent="Entities/Hazards" unique_id=1135677921 groups=["interactable", "metal_source"] instance=ExtResource("13_mauxx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 2)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -148,7 +148,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/HazardVent" unique_id=975229114]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/HazardVent" unique_id=1301441952]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "cycle_sec": 4.0,
@@ -161,7 +161,7 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Hazards" unique_id=376718567 groups=["interactable", "metal_source"] instance=ExtResource("13_mauxx")]
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Hazards" unique_id=2125934647 groups=["interactable", "metal_source"] instance=ExtResource("13_mauxx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -175,7 +175,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@StaticBody3D@3" unique_id=648037208]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Hazards/@StaticBody3D@3" unique_id=810927044]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "cycle_sec": 4.0,
@@ -188,9 +188,9 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Interactables" type="Node3D" parent="Entities" unique_id=1678682296]
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=310295284]
 
-[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=1348974243 groups=["interactable", "objective", "seal"] instance=ExtResource("15_mc17v")]
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=25826010 groups=["interactable", "objective", "seal"] instance=ExtResource("15_mc17v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
 collision_layer = 4
 metadata/entity_traits = [{
@@ -205,7 +205,7 @@ metadata/entity_traits = [{
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=703178634]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=95279969]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "dialogue_path": "res://dialogues/prison_break.dialogue",
@@ -219,67 +219,67 @@ traits_config = [{
 "type": "ambient_motion"
 }]
 
-[node name="Lighting" type="Node3D" parent="Entities" unique_id=2060695621]
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=182814951]
 
-[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=458809039 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=1439088929 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -8)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=735078060]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1668083743]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Lighting" unique_id=889600317 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
+[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Lighting" unique_id=390204730 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -8)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=1681062075]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@9" unique_id=608881857]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@10" type="StaticBody3D" parent="Entities/Lighting" unique_id=411059480 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
+[node name="@StaticBody3D@10" type="StaticBody3D" parent="Entities/Lighting" unique_id=690445047 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@10" unique_id=1750837454]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@10" unique_id=1999627442]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="@StaticBody3D@11" type="StaticBody3D" parent="Entities/Lighting" unique_id=1264232181 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
+[node name="@StaticBody3D@11" type="StaticBody3D" parent="Entities/Lighting" unique_id=645209511 groups=["lighting", "prop", "torch"] instance=ExtResource("17_76gow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
 metadata/entity_traits = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@11" unique_id=277226101]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Lighting/@StaticBody3D@11" unique_id=1448616392]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "flicker_light": true,
 "type": "ambient_motion"
 }]
 
-[node name="Characters" type="Node3D" parent="Entities" unique_id=1282109581]
+[node name="Characters" type="Node3D" parent="Entities" unique_id=2089406301]
 
-[node name="GolemBrute" type="CharacterBody3D" parent="Entities/Characters" unique_id=844030621 groups=["boss_target", "combat_unit"] instance=ExtResource("12_2e3pm")]
+[node name="GolemBrute" type="CharacterBody3D" parent="Entities/Characters" unique_id=1738357422 groups=["boss_target", "combat_unit"] instance=ExtResource("12_2e3pm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -8)
 collision_layer = 3
 collision_mask = 3
@@ -295,7 +295,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/GolemBrute" unique_id=1060460384]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/GolemBrute" unique_id=722546992]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "attack_damage": 45.0,
@@ -308,7 +308,7 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=1677412887 groups=["combat_unit", "tactical_unit"] instance=ExtResource("14_ej70y")]
+[node name="UnitKnight" type="CharacterBody3D" parent="Entities/Characters" unique_id=663641646 groups=["combat_unit", "tactical_unit"] instance=ExtResource("14_ej70y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -4)
 collision_layer = 2
 metadata/entity_traits = [{
@@ -322,7 +322,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=190755026]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/UnitKnight" unique_id=664628274]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "attack_damage": 18.0,
@@ -335,7 +335,7 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="@CharacterBody3D@2" type="CharacterBody3D" parent="Entities/Characters" unique_id=1878137757 groups=["combat_unit", "tactical_unit"] instance=ExtResource("14_ej70y")]
+[node name="@CharacterBody3D@2" type="CharacterBody3D" parent="Entities/Characters" unique_id=388687422 groups=["combat_unit", "tactical_unit"] instance=ExtResource("14_ej70y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -4)
 collision_layer = 2
 metadata/entity_traits = [{
@@ -349,7 +349,7 @@ metadata/entity_traits = [{
 "type": "combat_unit"
 }]
 
-[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@2" unique_id=1922132608]
+[node name="ModularEntityTraits" type="Node3D" parent="Entities/Characters/@CharacterBody3D@2" unique_id=1549654051]
 script = ExtResource("10_qu5di")
 traits_config = [{
 "attack_damage": 18.0,
@@ -362,11 +362,11 @@ traits_config = [{
 "type": "combat_unit"
 }]
 
-[node name="Nature" type="Node3D" parent="Entities" unique_id=1783471772]
+[node name="Nature" type="Node3D" parent="Entities" unique_id=1895634690]
 
-[node name="Substrate" type="Node3D" parent="Entities" unique_id=1123522410]
+[node name="Substrate" type="Node3D" parent="Entities" unique_id=1769651737]
 
-[node name="LiquidSubPlane" type="MeshInstance3D" parent="Entities/Substrate" unique_id=842791419]
+[node name="LiquidSubPlane" type="MeshInstance3D" parent="Entities/Substrate" unique_id=47223440]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
-mesh = SubResource("PlaneMesh_tw1lm")
-surface_material_override/0 = SubResource("StandardMaterial3D_tqjrw")
+mesh = SubResource("PlaneMesh_ej70y")
+surface_material_override/0 = SubResource("StandardMaterial3D_tw1lm")
