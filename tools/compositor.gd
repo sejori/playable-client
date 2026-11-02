@@ -80,22 +80,23 @@ func compose_from_manifest(spec: Dictionary) -> int:
 		entities_root.name = "Entities"
 		scene_root.add_child(entities_root)
 
+	# Idempotent Category Clearing: Unless "append": true is explicitly passed,
+	# replace sub-containers so repeated calls replace rather than stack duplicate bodies.
+	var should_append: bool = bool(spec.get("append", false))
+	if not should_append:
+		for group_name in ["Architecture", "Hazards", "Interactables", "Lighting", "Characters", "Nature"]:
+			var old_grp: Node = entities_root.get_node_or_null(group_name)
+			if old_grp != null:
+				entities_root.remove_child(old_grp)
+				old_grp.free()
+
 	# Sub-containers for clean node organization
 	var arch_group := _get_or_create_subgroup(entities_root, "Architecture")
 	var hazard_group := _get_or_create_subgroup(entities_root, "Hazards")
 	var interact_group := _get_or_create_subgroup(entities_root, "Interactables")
 	var light_group := _get_or_create_subgroup(entities_root, "Lighting")
 	var char_group := _get_or_create_subgroup(entities_root, "Characters")
-
-	# Idempotent Category Clearing: Unless "append": true is explicitly passed,
-	# clear existing children inside sub-containers so repeated calls replace rather than stack duplicate bodies.
-	var should_append: bool = bool(spec.get("append", false))
-	if not should_append:
-		var category_groups: Array[Node3D] = [arch_group, hazard_group, interact_group, light_group, char_group]
-		for grp in category_groups:
-			for child in grp.get_children():
-				grp.remove_child(child)
-				child.free()
+	var nature_group := _get_or_create_subgroup(entities_root, "Nature")
 
 	# Instantiate entities
 	var entities: Array = spec.get("entities", [])
@@ -190,6 +191,8 @@ func compose_from_manifest(spec: Dictionary) -> int:
 				light_group.add_child(inst)
 			"characters", "character":
 				char_group.add_child(inst)
+			"nature":
+				nature_group.add_child(inst)
 			_:
 				arch_group.add_child(inst)
 
