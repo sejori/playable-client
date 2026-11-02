@@ -1,14 +1,33 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/zones/fire_prison_controller.gd" id="1_controller"]
-[ext_resource type="Script" path="res://scripts/controllers/player_controller.gd" id="2_player"]
+[ext_resource type="Script" path="res://scenes/ui/controls/TouchControlsOverlay.gd" id="2_lobyy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchLookZone.tscn" id="3_6lkqa"]
 [ext_resource type="PackedScene" path="res://scenes/ui/controls/TouchControlsOverlay.tscn" id="3_touch"]
+[ext_resource type="Script" path="res://scenes/ui/controls/TouchLookZone.gd" id="4_xiwcj"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/VirtualThumbstick.tscn" id="5_gj6kj"]
+[ext_resource type="Script" path="res://scenes/ui/controls/VirtualThumbstick.gd" id="6_c03j4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/ActionCluster.tscn" id="7_m4y0y"]
+[ext_resource type="Script" path="res://scenes/ui/controls/ActionCluster.gd" id="8_7gi0s"]
+[ext_resource type="PackedScene" path="res://scenes/ui/controls/VoicePTTWidget.tscn" id="9_01u3j"]
+[ext_resource type="Script" path="res://scenes/ui/controls/VoicePTTWidget.gd" id="10_f1tg5"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/raised_platform_8x8.tscn" id="11_phxt5"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/floor_tile_4x4.tscn" id="12_ns3a0"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/wall_stone_4x3.tscn" id="13_pn0bv"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/wall_archway_4x3.tscn" id="14_602be"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/stairs_stone_4x2.tscn" id="15_chqh8"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_monolith.tscn" id="16_mjxyy"]
+[ext_resource type="PackedScene" path="res://library/modular/dungeon/pillar_carved_stone.tscn" id="17_wu4jd"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/hazard_vent.tscn" id="18_1lhxx"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/barrier_forcefield_door.tscn" id="19_6oeqv"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/objective_shrine.tscn" id="20_0m1uv"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/chest_cache.tscn" id="21_oo54v"]
+[ext_resource type="PackedScene" path="res://library/modular/interactive/omni_torch_brazier.tscn" id="22_4lbre"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_rig"]
-agent_radius = 0.6
-agent_max_slope = 40.0
 vertices = PackedVector3Array(-24, 0, -48, -24, 0, 24, 24, 0, 24, 24, 0, -48)
 polygons = [PackedInt32Array(0, 1, 2, 3)]
+agent_radius = 0.6
+agent_max_slope = 40.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vent"]
 size = Vector3(2.2, 1.6, 2.2)
@@ -16,47 +35,669 @@ size = Vector3(2.2, 1.6, 2.2)
 [sub_resource type="SphereShape3D" id="SphereShape3D_arena"]
 radius = 12.0
 
-[node name="FirePrisonRig" type="Node3D"]
-script = ExtResource("1_controller")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_secondary"]
+bg_color = Color(0.18, 0.14, 0.08, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.75, 0.14, 0.85)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
+bg_color = Color(0.08, 0.18, 0.32, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.74, 0.97, 0.85)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary_pressed"]
+bg_color = Color(0.22, 0.74, 0.97, 0.9)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ptt"]
+bg_color = Color(0.12, 0.16, 0.24, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.38, 0.82, 0.98, 0.8)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(8, 1.2, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
+albedo_color = Color(0.18, 0.17, 0.16, 1)
+metallic = 0.1
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+material = SubResource("StandardMaterial3D_platform")
+size = Vector3(8, 1.2, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(4, 0.4, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.25, 0.26, 0.28, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(4, 0.4, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(4, 3, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.22, 0.2, 0.19, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(4, 3, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_post_left"]
+size = Vector3(0.8, 3.2, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_post_right"]
+size = Vector3(0.8, 3.2, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lintel"]
+size = Vector3(4, 0.8, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stone"]
+albedo_color = Color(0.38, 0.36, 0.35, 1)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_arch"]
+material = SubResource("StandardMaterial3D_stone")
+size = Vector3(4, 3.2, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stairs"]
+size = Vector3(4, 2, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stairs"]
+albedo_color = Color(0.25, 0.23, 0.22, 1)
+roughness = 0.85
+
+[sub_resource type="PrismMesh" id="PrismMesh_stairs"]
+material = SubResource("StandardMaterial3D_stairs")
+left_to_right = 0.0
+size = Vector3(4, 2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(1.2, 6, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
+albedo_color = Color(0.35, 0.33, 0.31, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+material = SubResource("StandardMaterial3D_pillar")
+size = Vector3(1.2, 6, 1.2)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pillar"]
+height = 5.0
+radius = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2fqta"]
+albedo_color = Color(0.3, 0.28, 0.27, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("StandardMaterial3D_2fqta")
+top_radius = 0.6
+bottom_radius = 0.7
+height = 5.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jpdhi"]
+size = Vector3(2.2, 1.6, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.4
+roughness = 0.7
+emission_enabled = true
+emission = Color(0.85, 0.35, 0.05, 1)
+emission_energy_multiplier = 1.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vent"]
+material = SubResource("StandardMaterial3D_vent")
+top_radius = 1.0
+bottom_radius = 1.2
+height = 1.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_barrier"]
+size = Vector3(4, 3.2, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_barrier"]
+transparency = 1
+albedo_color = Color(0.9, 0.25, 0.05, 0.5)
+roughness = 0.2
+emission_enabled = true
+emission = Color(1, 0.35, 0.05, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_barrier"]
+material = SubResource("StandardMaterial3D_barrier")
+size = Vector3(4, 3.2, 0.4)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_shrine"]
+height = 2.4
+radius = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shrine"]
+albedo_color = Color(0.12, 0.11, 0.13, 1)
+roughness = 0.6
+emission_enabled = true
+emission = Color(0.8, 0.2, 0.05, 1)
+emission_energy_multiplier = 1.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_shrine"]
+material = SubResource("StandardMaterial3D_shrine")
+top_radius = 0.9
+bottom_radius = 1.3
+height = 2.4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chest"]
+size = Vector3(1.4, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chest"]
+albedo_color = Color(0.35, 0.22, 0.12, 1)
+metallic = 0.3
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_chest"]
+material = SubResource("StandardMaterial3D_chest")
+size = Vector3(1.4, 1, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_brazier"]
+height = 2.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+metallic = 0.7
+roughness = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_brazier"]
+material = SubResource("StandardMaterial3D_iron")
+top_radius = 0.6
+bottom_radius = 0.4
+height = 2.2
+
+[node name="FirePrisonRig" type="Node3D" unique_id=1598711610]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1324286897]
 navigation_mesh = SubResource("NavigationMesh_rig")
 
-[node name="RigDeckFloor" type="StaticBody3D" parent="NavigationRegion3D"]
-collision_layer = 1
+[node name="RigDeckFloor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1910716615]
 
-[node name="SpawnPoints" type="Node3D" parent="."]
+[node name="SpawnPoints" type="Node3D" parent="." unique_id=1736535980]
 
-[node name="PlayerBoatSpawn" type="Marker3D" parent="SpawnPoints"]
+[node name="PlayerBoatSpawn" type="Marker3D" parent="SpawnPoints" unique_id=1374871069]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
 
-[node name="Interactables" type="Node3D" parent="."]
+[node name="Interactables" type="Node3D" parent="." unique_id=386263624]
 
-[node name="CoalVent_01" type="StaticBody3D" parent="Interactables" groups=["metal_source"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0.8, 2.0)
+[node name="CoalVent_01" type="StaticBody3D" parent="Interactables" unique_id=1010631327 groups=["metal_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0.8, 2)
 collision_layer = 4
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/CoalVent_01"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/CoalVent_01" unique_id=332680518]
 shape = SubResource("BoxShape3D_vent")
 
-[node name="BossArena" type="Node3D" parent="."]
+[node name="BossArena" type="Node3D" parent="." unique_id=283608709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
 
-[node name="WardenSpawn" type="Marker3D" parent="BossArena"]
+[node name="WardenSpawn" type="Marker3D" parent="BossArena" unique_id=808674500]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
 
-[node name="ArenaTrigger" type="Area3D" parent="BossArena"]
-collision_layer = 1
+[node name="ArenaTrigger" type="Area3D" parent="BossArena" unique_id=801046071]
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BossArena/ArenaTrigger"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BossArena/ArenaTrigger" unique_id=1974297430]
 shape = SubResource("SphereShape3D_arena")
 
-[node name="PlayerCharacter" type="CharacterBody3D" parent="."]
+[node name="PlayerCharacter" type="CharacterBody3D" parent="." unique_id=274990370]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 18)
 collision_layer = 2
-script = ExtResource("2_player")
 
-[node name="TouchControlsOverlay" parent="." instance=ExtResource("3_touch")]
+[node name="TouchControlsOverlay" type="CanvasLayer" parent="." unique_id=1621526437 instance=ExtResource("3_touch")]
+layer = 10
+script = ExtResource("2_lobyy")
+
+[node name="TouchLookZone" type="Control" parent="TouchControlsOverlay" unique_id=1742871030 instance=ExtResource("3_6lkqa")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("4_xiwcj")
+
+[node name="VirtualThumbstick" type="Control" parent="TouchControlsOverlay" unique_id=914078461 instance=ExtResource("5_gj6kj")]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -216.0
+offset_right = 216.0
+offset_bottom = -36.0
+grow_vertical = 0
+script = ExtResource("6_c03j4")
+
+[node name="ActionCluster" type="Control" parent="TouchControlsOverlay" unique_id=1359292102 instance=ExtResource("7_m4y0y")]
+custom_minimum_size = Vector2(210, 160)
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -226.0
+offset_top = -176.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+script = ExtResource("8_7gi0s")
+
+[node name="SecondaryButton" type="Button" parent="TouchControlsOverlay/ActionCluster" unique_id=296504564]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 76.0
+offset_bottom = 74.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_secondary")
+theme_override_font_sizes/font_size = 12
+text = "SHIELD
+(E)"
+
+[node name="PrimaryButton" type="Button" parent="TouchControlsOverlay/ActionCluster" unique_id=2072712306]
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 0
+offset_left = 98.0
+offset_top = 46.0
+offset_right = 174.0
+offset_bottom = 122.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary_pressed")
+theme_override_font_sizes/font_size = 13
+text = "LANCE
+(A)"
+
+[node name="VoicePTTWidget" type="Control" parent="TouchControlsOverlay" unique_id=1617694926 instance=ExtResource("9_01u3j")]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -96.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 96.0
+grow_horizontal = 0
+mouse_filter = 1
+script = ExtResource("10_f1tg5")
+
+[node name="PTTButton" type="Button" parent="TouchControlsOverlay/VoicePTTWidget" unique_id=1375815726]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 68.0
+offset_bottom = 62.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ptt")
+theme_override_font_sizes/font_size = 14
+text = "🎤"
+
+[node name="StatusLabel" type="Label" parent="TouchControlsOverlay/VoicePTTWidget" unique_id=252124771]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 58.0
+offset_right = 76.0
+offset_bottom = 76.0
+theme_override_font_sizes/font_size = 10
+theme_override_colors/font_color = Color(0.65, 0.85, 1, 0.9)
+text = "MIC (L1)"
+horizontal_alignment = 1
+
+[node name="Entities" type="Node3D" parent="." unique_id=1696847597]
+
+[node name="Architecture" type="Node3D" parent="Entities" unique_id=552301849]
+
+[node name="RaisedPlatform8x8" type="StaticBody3D" parent="Entities/Architecture" unique_id=1990255539 groups=["architecture", "platform"] instance=ExtResource("11_phxt5")]
+metadata/entity_tag = "arena_center"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=1041472712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("BoxShape3D_platform")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/RaisedPlatform8x8" unique_id=52701028]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_platform")
+
+[node name="FloorTile4x4" type="StaticBody3D" parent="Entities/Architecture" unique_id=1397323341 instance=ExtResource("12_ns3a0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
+metadata/entity_tag = "floor"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/FloorTile4x4" unique_id=1864251591]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/FloorTile4x4" unique_id=1282263452]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="@StaticBody3D@2" type="StaticBody3D" parent="Entities/Architecture" unique_id=405537971 instance=ExtResource("12_ns3a0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+metadata/entity_tag = "floor"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=706144650]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@2" unique_id=368140316]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="WallStone4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=1138178016 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.5, -12)
+metadata/entity_tag = "perimeter_north"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/WallStone4x3" unique_id=526289956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/WallStone4x3" unique_id=1845924097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@3" type="StaticBody3D" parent="Entities/Architecture" unique_id=118860780 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, -12)
+metadata/entity_tag = "perimeter_north"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=1118317765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@3" unique_id=1610902860]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="WallArchway4x3" type="StaticBody3D" parent="Entities/Architecture" unique_id=1483843946 instance=ExtResource("14_602be")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -12)
+metadata/entity_tag = "main_gate"
+
+[node name="ColPostLeft" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=1751593631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.6, 0)
+shape = SubResource("BoxShape3D_post_left")
+
+[node name="ColPostRight" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=990727491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.6, 0)
+shape = SubResource("BoxShape3D_post_right")
+
+[node name="ColLintel" type="CollisionShape3D" parent="Entities/Architecture/WallArchway4x3" unique_id=1082041185]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+shape = SubResource("BoxShape3D_lintel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/WallArchway4x3" unique_id=1315852123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("BoxMesh_arch")
+
+[node name="@StaticBody3D@4" type="StaticBody3D" parent="Entities/Architecture" unique_id=675892996 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, -12)
+metadata/entity_tag = "perimeter_north"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=481977625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@4" unique_id=574725243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@5" type="StaticBody3D" parent="Entities/Architecture" unique_id=1890086124 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.5, -12)
+metadata/entity_tag = "perimeter_north"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=241013220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@5" unique_id=1258704723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@6" type="StaticBody3D" parent="Entities/Architecture" unique_id=1571846971 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12, 1.5, -4)
+metadata/entity_tag = "perimeter_west"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=1997224343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@6" unique_id=1111342228]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@7" type="StaticBody3D" parent="Entities/Architecture" unique_id=1943052706 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12, 1.5, 4)
+metadata/entity_tag = "perimeter_west"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@7" unique_id=304417483]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@7" unique_id=2038300859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@8" type="StaticBody3D" parent="Entities/Architecture" unique_id=66452839 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 1.5, -4)
+metadata/entity_tag = "perimeter_east"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@8" unique_id=1774660882]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@8" unique_id=1906339551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="@StaticBody3D@9" type="StaticBody3D" parent="Entities/Architecture" unique_id=617356230 groups=["architecture", "wall"] instance=ExtResource("13_pn0bv")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 1.5, 4)
+metadata/entity_tag = "perimeter_east"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=809426675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@9" unique_id=1196095966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall")
+
+[node name="StairsStone4x2" type="StaticBody3D" parent="Entities/Architecture" unique_id=1773312015 groups=["architecture", "stairs"] instance=ExtResource("15_chqh8")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.5, 6)
+metadata/entity_tag = "entry_steps"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/StairsStone4x2" unique_id=2124044678]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_stairs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/StairsStone4x2" unique_id=1208792122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PrismMesh_stairs")
+
+[node name="PillarMonolith" type="StaticBody3D" parent="Entities/Architecture" unique_id=427669703 instance=ExtResource("16_mjxyy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 4, -6)
+metadata/entity_tag = "monolith"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarMonolith" unique_id=917159126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarMonolith" unique_id=1042106055]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="@StaticBody3D@10" type="StaticBody3D" parent="Entities/Architecture" unique_id=1278614882 instance=ExtResource("16_mjxyy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4, -6)
+metadata/entity_tag = "monolith"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@10" unique_id=621125755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@10" unique_id=1689139768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="PillarCarvedStone" type="StaticBody3D" parent="Entities/Architecture" unique_id=1158281857 groups=["architecture", "pillar"] instance=ExtResource("17_wu4jd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, 4)
+metadata/entity_tag = "decor_pillar"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=378418418]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+shape = SubResource("CylinderShape3D_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/PillarCarvedStone" unique_id=1270963943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="@StaticBody3D@11" type="StaticBody3D" parent="Entities/Architecture" unique_id=1217377960 groups=["architecture", "pillar"] instance=ExtResource("17_wu4jd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 4)
+metadata/entity_tag = "decor_pillar"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Architecture/@StaticBody3D@11" unique_id=1004873153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+shape = SubResource("CylinderShape3D_pillar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Architecture/@StaticBody3D@11" unique_id=1261658539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Hazards" type="Node3D" parent="Entities" unique_id=1531071122]
+
+[node name="HazardVent" type="StaticBody3D" parent="Entities/Hazards" unique_id=1445471159 groups=["interactable", "metal_source"] instance=ExtResource("18_1lhxx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 2)
+collision_layer = 4
+metadata/entity_tag = "hazard_center"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Hazards/HazardVent" unique_id=414903814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("BoxShape3D_jpdhi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Hazards/HazardVent" unique_id=605326678]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_vent")
+
+[node name="BarrierForcefieldDoor" type="StaticBody3D" parent="Entities/Hazards" unique_id=570793150 groups=["barrier", "door", "hazard"] instance=ExtResource("19_6oeqv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 12)
+metadata/entity_tag = "sealed_exit"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Hazards/BarrierForcefieldDoor" unique_id=1658559628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("BoxShape3D_barrier")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Hazards/BarrierForcefieldDoor" unique_id=68678438]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("BoxMesh_barrier")
+
+[node name="Interactables" type="Node3D" parent="Entities" unique_id=1608580447]
+
+[node name="ObjectiveShrine" type="StaticBody3D" parent="Entities/Interactables" unique_id=1202417522 groups=["interactable", "objective", "seal"] instance=ExtResource("20_0m1uv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -4)
+collision_layer = 4
+metadata/entity_tag = "capture_objective"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=940780518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CylinderShape3D_shrine")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=1303983995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("CylinderMesh_shrine")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Interactables/ObjectiveShrine" unique_id=366448221]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+light_color = Color(1, 0.35, 0.1, 1)
+light_energy = 2.2
+omni_range = 6.0
+
+[node name="ChestCache" type="StaticBody3D" parent="Entities/Interactables" unique_id=912947802 groups=["chest", "interactable", "loot"] instance=ExtResource("21_oo54v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, 2)
+collision_layer = 4
+metadata/entity_tag = "loot"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Interactables/ChestCache" unique_id=432654987]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_chest")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Interactables/ChestCache" unique_id=268614201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_chest")
+
+[node name="Lighting" type="Node3D" parent="Entities" unique_id=711863774]
+
+[node name="OmniTorchBrazier" type="StaticBody3D" parent="Entities/Lighting" unique_id=134750893 groups=["lighting", "prop", "torch"] instance=ExtResource("22_4lbre")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, -3)
+metadata/entity_tag = "brazier"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1391661025]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+shape = SubResource("CylinderShape3D_brazier")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1795505396]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("CylinderMesh_brazier")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/OmniTorchBrazier" unique_id=1547976279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 2.5
+shadow_enabled = true
+omni_range = 8.0
+omni_attenuation = 1.2
+
+[node name="@StaticBody3D@12" type="StaticBody3D" parent="Entities/Lighting" unique_id=264810142 groups=["lighting", "prop", "torch"] instance=ExtResource("22_4lbre")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, -3)
+metadata/entity_tag = "brazier"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entities/Lighting/@StaticBody3D@12" unique_id=1456260698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+shape = SubResource("CylinderShape3D_brazier")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Entities/Lighting/@StaticBody3D@12" unique_id=1680926423]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("CylinderMesh_brazier")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Entities/Lighting/@StaticBody3D@12" unique_id=1176243322]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 2.5
+shadow_enabled = true
+omni_range = 8.0
+omni_attenuation = 1.2
 
 [connection signal="body_entered" from="BossArena/ArenaTrigger" to="." method="_on_arena_trigger_body_entered"]
